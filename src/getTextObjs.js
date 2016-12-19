@@ -3,8 +3,8 @@ import Path from 'path';
 import fs from 'fs';
 import nSort from 'javascript-natural-sort';
 
-export default async function getTexts(globPat) {
-  let texts = [];
+export default async function getTextObjs(globPat) {
+  let textObjs = [];
 
   let routes = await new Promise((resolve) => {
     glob(globPat, (err, routes) => {
@@ -16,13 +16,13 @@ export default async function getTexts(globPat) {
     let route = routes[i];
     let fileName = Path.basename(route);
 
-    let text = await new Promise((resolve) => {
+    let textObj = await new Promise((resolve) => {
       fs.readFile(route, 'utf8', (err, text) => {
         resolve({'fileName': fileName, 'text': text});
       });
     });
-    texts.push(text);
+    textObjs.push(textObj);
   }
 
-  return texts;
+  return textObjs;
 };
