@@ -2,6 +2,8 @@ const emptyTag = /<[\s\/]*>/g;
 const noEndArrow = /<[^>]*?(\n|$)/g;
 const noStartArrow = /(^|\n|>)[^<|\n]*>/g;
 
+import reportErr from './reportErr.js';
+
 export default function checkTagFormat(textObjs) {
   let errMessages = [];
 
@@ -20,9 +22,5 @@ export default function checkTagFormat(textObjs) {
     saveErr(fileName, emptyTags.concat(noEndArrows).concat(noStartArrows));
   });
 
-  let errStr = errMessages.join('\n');
-  if ('' !== errStr) {
-    console.log('Wrong Tag Format:\n' + errStr);
-    throw new Error();
-  }
+  reportErr(errMessages);
 };

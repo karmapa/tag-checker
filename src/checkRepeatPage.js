@@ -1,5 +1,7 @@
 const pageTypes = ['pb', 'jp'];
 
+import reportErr from './reportErr.js';
+
 export default function checkReteatPage(textObjs) {
   let errMessages = [];
 
@@ -23,9 +25,5 @@ export default function checkReteatPage(textObjs) {
     });
   });
 
-  let errStr = errMessages.join('\n')
-  if ('' !== errStr) {
-    console.log('Repeat Page:\n' + errStr);
-    throw new Error();
-  }
+  reportErr(errMessages);
 }
