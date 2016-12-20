@@ -20,7 +20,7 @@ export default function checkTagFormat(textObjs) {
     saveErr(fileName, emptyTags.concat(noEndArrows).concat(noStartArrows));
   });
 
-  let errStr = errMessages.join('\n')
+  let errStr = errMessages.join('\n');
   if ('' !== errStr) {
     console.log('Wrong Tag Format:\n' + errStr);
     throw new Error();
