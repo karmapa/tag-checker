@@ -2,8 +2,6 @@ const emptyTag = /<[\s\/]*>/g;
 const noEndArrow = /<[^>]*?(\n|$)/g;
 const noStartArrow = /(^|\n|>)[^<|\n]*>/g;
 
-var errorResult = false;
-
 export default function checkTagFormat(textObjs) {
   let errMessages = [];
 
