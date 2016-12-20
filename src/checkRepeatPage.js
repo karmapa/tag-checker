@@ -1,7 +1,5 @@
 const pageTypes = ['pb', 'jp'];
 
-var pageRegex = /<pb id="([^<>]+)"/g;
-
 export default function checkReteatPage(textObjs) {
   let errMessages = [];
 
