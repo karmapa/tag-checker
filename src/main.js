@@ -6,7 +6,7 @@ import checkTagFormat from './checkTagFormat';
 
 checkTag(globPatt);
 
-async function checkTag(globPatt) {
-  let textObjs = await getTextObjs(globPatt);
+function checkTag(globPatt) {
+  let textObjs = getTextObjs(globPatt);
   checkTagFormat(textObjs);
 }
