@@ -1,7 +1,7 @@
-export default function reportErr(errMessages) {
+export default function reportErr(errType, errMessages) {
   let errStr = errMessages.join('\n')
   if ('' !== errStr) {
-    console.log('Repeat Page:\n' + errStr);
+    console.log(errType + ':\n', errStr);
     throw new Error();
   }
 }

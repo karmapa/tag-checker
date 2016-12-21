@@ -25,5 +25,5 @@ export default function checkReteatPage(textObjs) {
     });
   });
 
-  reportErr(errMessages);
+  reportErr('Repeat Page', errMessages);
 }
