@@ -5,6 +5,7 @@ import getTextObjs from './getTextObjs';
 import checkTagFormat from './checkTagFormat.js';
 import checkRepeatPage from './checkRepeatPage.js';
 import checkStructure from './checkStructure.js';
+import checkVolPbOrder from './checkVolPbOrder.js';
 
 checkTag(globPatt);
 
@@ -13,4 +14,5 @@ function checkTag(globPatt) {
   checkTagFormat(textObjs);
   checkRepeatPage(textObjs);
   checkStructure(textObjs);
+  checkVolPbOrder(textObjs);
 }
