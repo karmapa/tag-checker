@@ -44,7 +44,7 @@ export default function checkStructure(textObjs) {
       lastDivN = divN;
     });
 
-    if (1 === divNumber || 1 === volNumber) {
+    if (1 === divNumber || 1 === volNumber && divNumber <= 1) {
       let wrongTagPoses = checkTagPos(text, divNumber, volNumber, fileName);
       if (wrongTagPoses.length > 0) {
         allWrongTagPoses = allWrongTagPoses.concat(wrongTagPoses);
