@@ -1,11 +1,8 @@
 const allDivRegex = /<division n="(\d+?)"/g;
 const allVolRegex = /<vol/g;
-const first3pbRegex = /^([\s\S]*?<pb){1,4}/;
 const divPosRegex = /^<sutra.+?>\n<division.+?>\n<vol.+?>\n<pb/;
 const volPosRegex1 = /^(<sutra.+?>\n)?<vol.+?>\n<pb/;
 const volPosRegex2 = /^<vol/;
-const shortPageRegex = /<pb.+?>\n?(?!<sutra)(.+?\n){0,4}(?=<pb)/g;
-const wrongVolPosRegex = /^<vol.+?>\n?<pb.+?>\n?<sutra/;
 
 import reportErr from './reportErr.js';
 
@@ -18,7 +15,6 @@ export default function checkStructure(textObjs) {
     let fileName = textObj.fileName;
     let text = textObj.text;
     let divNumber = 0;
-    let first3pbText = text.match(first3pbRegex)[0];
 
     let volNumber = (text.match(allVolRegex) || []).length;
     if (volNumber > 1) {
@@ -46,7 +42,7 @@ export default function checkStructure(textObjs) {
     });
 
     if ((divNumber + volNumber) !== 0 && (1 <= divNumber || 1 <= volNumber)) {
-      let wrongTagPoses = checkTagPos(first3pbText, divNumber, volNumber, fileName);
+      let wrongTagPoses = checkTagPos(text, divNumber, fileName);
       if (wrongTagPoses.length > 0) {
         allWrongTagPoses = allWrongTagPoses.concat(wrongTagPoses);
       }
@@ -56,7 +52,7 @@ export default function checkStructure(textObjs) {
   reportErr('Structure Error', multiVols.concat(multiDivs, repeatDivs, allWrongTagPoses));
 }
 
-function checkTagPos(text, divNumber, volNumber, fileName) {
+function checkTagPos(text, divNumber, fileName) {
   let wrongTagPoses = [];
 
   if (divNumber) {
@@ -69,10 +65,7 @@ function checkTagPos(text, divNumber, volNumber, fileName) {
       wrongTagPoses.push('Wrong vol tag position! ' + fileName);
     }
     else if (text.match(volPosRegex2)) {
-      let simpleText = text.replace(shortPageRegex, '');
-      if (text.match(wrongVolPosRegex)) {
-        wrongTagPoses.push('Wrong vol tag position! ' + fileName);
-      }
+      console.log('Warning! Vol not followed by sutra!', fileName);
     }
   }
 
