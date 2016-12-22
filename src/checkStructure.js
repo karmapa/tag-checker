@@ -1,10 +1,11 @@
 const allDivRegex = /<division n="(\d+?)"/g;
 const allVolRegex = /<vol/g;
-const divPosRegex = /^<sutra.+?>\n<division.+?>\n<vol/;
-const volPosRegex1 = /^(<sutra.+?>\n)?<vol/;
-const volPosRegex2 = /^<vol/;
 const first3pbRegex = /^([\s\S]*?<pb){1,4}/;
-const wrongVolPosRegex = /^<vol[\s\S]+?(<pb.+?>\n?(.*?\n?){0,4}){0,3}<sutra/;
+const divPosRegex = /^<sutra.+?>\n<division.+?>\n<vol.+?>\n<pb/;
+const volPosRegex1 = /^(<sutra.+?>\n)?<vol.+?>\n<pb/;
+const volPosRegex2 = /^<vol/;
+const shortPageRegex = /<pb.+?>\n?(?!<sutra)(.+?\n){0,4}(?=<pb)/g;
+const wrongVolPosRegex = /^<vol.+?>\n?<pb.+?>\n?<sutra/;
 
 import reportErr from './reportErr.js';
 
@@ -45,7 +46,7 @@ export default function checkStructure(textObjs) {
     });
 
     if ((divNumber + volNumber) !== 0 && (1 <= divNumber || 1 <= volNumber)) {
-      let wrongTagPoses = checkTagPos(text, divNumber, volNumber, fileName);
+      let wrongTagPoses = checkTagPos(first3pbText, divNumber, volNumber, fileName);
       if (wrongTagPoses.length > 0) {
         allWrongTagPoses = allWrongTagPoses.concat(wrongTagPoses);
       }
@@ -58,24 +59,22 @@ export default function checkStructure(textObjs) {
 function checkTagPos(text, divNumber, volNumber, fileName) {
   let wrongTagPoses = [];
 
-  if (1 === divNumber) {
+  if (divNumber) {
     if (! text.match(divPosRegex)) {
       wrongTagPoses.push('Wrong division tag position! ' + fileName);
     }
   }
-/*
-  if (1 === volNumber && 0 === divNumber) {
+  else {
     if (! text.match(volPosRegex1)) {
       wrongTagPoses.push('Wrong vol tag position! ' + fileName);
     }
-    else {
-      if (text.match(volPosRegex2)) {
-        if (text.match(wrongVolPosRegex)) {
-          wrongTagPoses.push('Wrong vol tag position! ' + fileName);
-        }
+    else if (text.match(volPosRegex2)) {
+      let simpleText = text.replace(shortPageRegex, '');
+      if (text.match(wrongVolPosRegex)) {
+        wrongTagPoses.push('Wrong vol tag position! ' + fileName);
       }
     }
   }
-*/
+
   return wrongTagPoses;
 }
