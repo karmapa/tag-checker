@@ -65,7 +65,7 @@ function checkTagPos(text, divNumber, fileName) {
       wrongTagPoses.push('Wrong vol tag position! ' + fileName);
     }
     else if (text.match(volPosRegex2)) {
-      console.log('Warning! Vol not followed by sutra!', fileName);
+      console.log('Warning! Vol not follow sutra!', fileName);
     }
   }
 
