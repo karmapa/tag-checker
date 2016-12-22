@@ -9,7 +9,7 @@ const wrongVolPosRegex = /^<vol[\s\S]+?(<pb.+?>\n?(.*?\n?){0,4}){0,3}<sutra/;
 import reportErr from './reportErr.js';
 
 export default function checkStructure(textObjs) {
-  let multiVols = [], multiDivs = [], repeatDivs = [], wrongTagPoses = [];
+  let multiVols = [], multiDivs = [], repeatDivs = [], allWrongTagPoses = [];
   let divNs = {};
   let lastDivN = 0, lastDivFile = 'First div n is not 1';
 
@@ -43,10 +43,16 @@ export default function checkStructure(textObjs) {
       }
       lastDivN = divN;
     });
-//    wrongTagPoses = wrongTagPoses.concat(checkTagPos(text, divNumber, volNumber, fileName));
+
+    if (1 === divNumber || 1 === volNumber) {
+      let wrongTagPoses = checkTagPos(text, divNumber, volNumber, fileName);
+      if (wrongTagPoses.length > 0) {
+        allWrongTagPoses = allWrongTagPoses.concat(wrongTagPoses);
+      }
+    }
   });
 
-  reportErr('Structure Error', multiVols.concat(multiDivs).concat(repeatDivs).concat(wrongTagPoses));
+  reportErr('Structure Error', multiVols.concat(multiDivs).concat(repeatDivs).concat(allWrongTagPoses));
 }
 
 function checkTagPos(text, divNumber, volNumber, fileName) {
@@ -57,7 +63,7 @@ function checkTagPos(text, divNumber, volNumber, fileName) {
       wrongTagPoses.push('Wrong division tag position! ' + fileName);
     }
   }
-
+/*
   if (1 === volNumber && 0 === divNumber) {
     if (! text.match(volPosRegex1)) {
       wrongTagPoses.push('Wrong vol tag position! ' + fileName);
@@ -70,6 +76,6 @@ function checkTagPos(text, divNumber, volNumber, fileName) {
       }
     }
   }
-
+*/
   return wrongTagPoses;
 }
