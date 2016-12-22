@@ -52,7 +52,7 @@ export default function checkStructure(textObjs) {
     }
   });
 
-  reportErr('Structure Error', multiVols.concat(multiDivs).concat(repeatDivs).concat(allWrongTagPoses));
+  reportErr('Structure Error', multiVols.concat(multiDivs, repeatDivs, allWrongTagPoses));
 }
 
 function checkTagPos(text, divNumber, volNumber, fileName) {
