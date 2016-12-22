@@ -1,6 +1,6 @@
 const allDivRegex = /<division n="(\d+?)"/g;
 const allVolRegex = /<vol/g;
-const divPosRegex = /^<sutra.+?>\n<division/;
+const divPosRegex = /^<sutra.+?>\n<division.+?>\n<vol/;
 const volPosRegex1 = /^(<sutra.+?>\n)?<vol/;
 const volPosRegex2 = /^<vol/;
 const first3pbRegex = /^([\s\S]*?<pb){1,4}/;
