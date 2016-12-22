@@ -28,24 +28,24 @@ export default function checkTagFormat(textObjs) {
     let emptyTags = text.match(emptyTag) || [];
     let noEndArrows = text.match(noEndArrow) || [];
     let noStartArrows = text.match(noStartArrow) || [];
-    let wrongTagContents = checkTagContent(text);
-    saveErr(fileName, emptyTags.concat(noEndArrows).concat(noStartArrows).concat(wrongTagContents));
+    let wrongPropFormats = checkPropFormat(text);
+    saveErr(fileName, emptyTags.concat(noEndArrows).concat(noStartArrows).concat(wrongPropFormats));
   });
 
   reportErr('Worng Tag Format', errMessages);
 };
 
-function checkTagContent(text) {
-  let wrongTagContents = [];
+function checkPropFormat(text) {
+  let wrongPropFormats = [];
   tagRegexs.forEach((tagRegex) => {
     let tagType = tagRegex[0];
     let findingRegex = new RegExp('^.+?' + tagType + '.+?$', 'gm');
     let correctRegex = tagRegex[1];
     text.replace(findingRegex, (str) => {
       if (! str.match(correctRegex)) {
-        wrongTagContents.push(tagType + ': ' + str);
+        wrongPropFormats.push(tagType + ': ' + str);
       }
     });
   });
-  return wrongTagContents;
+  return wrongPropFormats;
 }
