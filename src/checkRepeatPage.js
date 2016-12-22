@@ -19,7 +19,7 @@ export default function checkReteatPage(textObjs) {
           pageIdStore[pageId] = fileName;
         }
         else {
-          errMessages.push(pageId + ' in ' + storedId + ' and ' + fileName);
+          errMessages.push(pageType + ' ' + pageId + ' in ' + storedId + ' and ' + fileName);
         }
       });
     });
