@@ -3,18 +3,16 @@ const volNRegex = /<vol n="(.+?)"/;
 const pbVolNRegex = /<pb id="(\d+?-\d+?)-/;
 const pbXregex = /<pb id="(\d+?)-(\d+?)-(\d+?)([abcd])"/;
 const pbNoXregex = /<pb id="\d+?-\d+?-\d+?"/;
-const volPbXRegex = /<vol n="\d+?-\d+?"|<pb id="\d+?-\d+?-\d+?[abcd]"/g;
-const volPbNoXRegex = /<vol n="\d+?-\d+?"|<pb id="\d+?-\d+?-\d+?"/g;
 
 import reportErr from './reportErr.js';
 
 export default function checkVolPbOrder(textObjs) {
   let errMessages = [];
-  let {pbRegex, volPbRegex} = initSetting(textObjs[0]);
+  let {pbRegex, pbsRegex} = initSetting(textObjs[0]);
   let lastTextVolN, lastFileName, lastPbId;
 
   textObjs.forEach((obj) => {
-    let {text, fileName, hasVol, textVolN, firstPb} = initText(obj, pbRegex, volPbRegex);
+    let {text, fileName, hasVol, textVolN, firstPb} = initText(obj, pbRegex);
     let volMessage = [lastFileName, lastTextVolN, fileName, textVolN].join(' ');
  
     if (textVolN === lastTextVolN && hasVol) {
@@ -29,8 +27,9 @@ export default function checkVolPbOrder(textObjs) {
       }
     }
 
+    let pbs = text.match(pbsRegex);
+
     lastTextVolN = textVolN, lastFileName = fileName;
- //   let volPbs = text.match(volPbRegex);
   });
 }
 
@@ -38,9 +37,9 @@ function initSetting(obj) {
   let text = obj.text;
   let pbHasSuffix = pbXregex.test(text);
   let pbRegex = pbHasSuffix ? pbXregex : pbNoXregex;
-  let volPbRegex = pbHasSuffix ? volPbXRegex : volPbNoXRegex;
+  let pbsRegex = new RegExp(pbRegex, 'g');
   checkFirstVolN(text, obj.fileName);
-  return {pbRegex: pbRegex, volPbRegex: volPbRegex};
+  return {pbRegex: pbRegex, pbsRegex: pbsRegex};
 }
 
 function checkFirstVolN(text, fileName) {
@@ -55,7 +54,7 @@ function checkFirstVolN(text, fileName) {
   }
 }
 
-function initText(obj, pbRegex, volPbRegex) {
+function initText(obj, pbRegex) {
   let text = obj.text;
   let hasVol = /<vol/.test(text);
   let textVolN = hasVol ? text.match(volNRegex)[1] : text.match(pbVolNRegex)[1];
