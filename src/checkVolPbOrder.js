@@ -9,11 +9,17 @@ const volPbNoSLRegex = /<vol n="\d+?-\d+?"|<pb id="\d+?-\d+?-\d+?"/g;
 import reportErr from './reportErr.js';
 
 export default function checkVolPbOrder(textObjs) {
-  let {pbRegex, volPbRegex, firstVolN} = initSet(textObjs[0]);
+  let errMessages = [];
+  let {pbRegex, volPbRegex} = initSet(textObjs[0]);
+  let lastTextVolN, lastFileName, lastPbId;
 
-  textObjs.forEach((textObj, index) => {
-    let text = textObj.text, fileName = textObj.fileName;
-    let volPbs = text.match(volPbRegex);
+  textObjs.forEach((textObj) => {
+    let {text, fileName, hasVol, textVolN} = initText(textObj, volPbRegex);
+    if (textVolN === lastTextVolN && hasVol) {
+      errMessages.push('Vol tag should not in ' + fileName + ', repeat vol tag or vol tag should be put in ' + lastFileName);
+    }
+
+ //   let volPbs = text.match(volPbRegex);
 
   });
 }
@@ -23,8 +29,8 @@ function initSet(textObj) {
   let pbHasSuffixLetter = text.match(pbSLregex);
   let pbRegex = pbHasSuffixLetter ? pbSLregex : pbNoSLregex;
   let volPbRegex = pbHasSuffixLetter ? volPbSLRegex : volPbNoSLRegex;
-  let firstVolN = checkFirstVolN(text, fileName);
-  return {pbRegex: pbRegex, volPbRegex: volPbRegex, firstVolN: firstVolN};
+  checkFirstVolN(text, fileName);
+  return {pbRegex: pbRegex, volPbRegex: volPbRegex};
 }
 
 function checkFirstVolN(text, fileName) {
@@ -37,5 +43,18 @@ function checkFirstVolN(text, fileName) {
   if (volN !== '1-1') {
     console.log('Warning! Vol not start from 1-1', fileName);
   }
-  return volN;
 }
+
+function initText(textObj, volPbRegex) {
+  let text = textObj.text;
+  let hasVol = /<vol/.test(text);
+  let textVolN = hasVol ? text.match(volNRegex)[1] : text.match(pbVolNRegex)[1];
+  return {text: text, fileName: textObj.fileName, hasVol: hasVol, textVolN: textVolN};
+}
+// vol tag 會在每個檔案前面
+// 一個檔案只有一個 vol
+
+// 換檔案 vol n 改變，要檢查 vol n 順序
+// 換檔案 vol n 改變，要檢查有沒有 vol
+
+// 每個檔案的 vol n 相同
