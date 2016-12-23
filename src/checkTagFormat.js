@@ -29,7 +29,7 @@ export default function checkTagFormat(textObjs) {
     let noEndArrows = text.match(noEndArrow) || [];
     let noStartArrows = text.match(noStartArrow) || [];
     let wrongPropFormats = checkPropFormat(text);
-    saveErr(fileName, emptyTags.concat(noEndArrows).concat(noStartArrows).concat(wrongPropFormats));
+    saveErr(fileName, emptyTags.concat(noEndArrows, noStartArrows, wrongPropFormats));
   });
 
   reportErr('Worng Tag Format', errMessages);
