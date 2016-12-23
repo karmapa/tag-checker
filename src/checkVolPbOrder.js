@@ -1,21 +1,21 @@
 const volRegex = /<vol n="(\d+?)-(\d+?)"/;
 const volNRegex = /<vol n="(.+?)"/;
 const pbVolNRegex = /<pb id="(\d+?-\d+?)-/;
-const pbSLregex = /<pb id="(\d+?)-(\d+?)-(\d+?)([abcd])"/;
-const pbNoSLregex = /<pb id="\d+?-\d+?-\d+?"/;
-const volPbSLRegex = /<vol n="\d+?-\d+?"|<pb id="\d+?-\d+?-\d+?[abcd]"/g;
-const volPbNoSLRegex = /<vol n="\d+?-\d+?"|<pb id="\d+?-\d+?-\d+?"/g;
+const pbXregex = /<pb id="(\d+?)-(\d+?)-(\d+?)([abcd])"/;
+const pbNoXregex = /<pb id="\d+?-\d+?-\d+?"/;
+const volPbXRegex = /<vol n="\d+?-\d+?"|<pb id="\d+?-\d+?-\d+?[abcd]"/g;
+const volPbNoXRegex = /<vol n="\d+?-\d+?"|<pb id="\d+?-\d+?-\d+?"/g;
 
 import reportErr from './reportErr.js';
 
 export default function checkVolPbOrder(textObjs) {
   let errMessages = [];
-  let {pbRegex, volPbRegex} = initSet(textObjs[0]);
+  let {pbRegex, volPbRegex} = initSetting(textObjs[0]);
   let lastTextVolN, lastFileName, lastPbId;
 
-  textObjs.forEach((textObj) => {
-    let {text, fileName, hasVol, textVolN, firstPb} = initText(textObj, pbRegex, volPbRegex);
-    let volMessage = lastFileName + ' ' + lastTextVolN + ' ' + fileName + ' ' + textVolN;
+  textObjs.forEach((obj) => {
+    let {text, fileName, hasVol, textVolN, firstPb} = initText(obj, pbRegex, volPbRegex);
+    let volMessage = [lastFileName, lastTextVolN, fileName, textVolN].join(' ');
  
     if (textVolN === lastTextVolN && hasVol) {
       errMessages.push('Vol tag in ' + fileName + 'may repeat in or should be put in ' + lastFileName);
@@ -25,22 +25,21 @@ export default function checkVolPbOrder(textObjs) {
         errMessages.push('Wrong vol order: ' + volMessage);
       };
       if (! hasVol) {
-        console.log('Vol tag may be missing in : ' + fileName + ' ' + firstPb);
+        console.log('Vol tag may miss in:', fileName, firstPb);
       }
     }
 
     lastTextVolN = textVolN, lastFileName = fileName;
  //   let volPbs = text.match(volPbRegex);
-
   });
 }
 
-function initSet(textObj) {
-  let text = textObj.text, fileName = textObj.fileName;
-  let pbHasSuffixLetter = text.match(pbSLregex);
-  let pbRegex = pbHasSuffixLetter ? pbSLregex : pbNoSLregex;
-  let volPbRegex = pbHasSuffixLetter ? volPbSLRegex : volPbNoSLRegex;
-  checkFirstVolN(text, fileName);
+function initSetting(obj) {
+  let text = obj.text;
+  let pbHasSuffix = pbXregex.test(text);
+  let pbRegex = pbHasSuffix ? pbXregex : pbNoXregex;
+  let volPbRegex = pbHasSuffix ? volPbXRegex : volPbNoXRegex;
+  checkFirstVolN(text, obj.fileName);
   return {pbRegex: pbRegex, volPbRegex: volPbRegex};
 }
 
@@ -56,12 +55,12 @@ function checkFirstVolN(text, fileName) {
   }
 }
 
-function initText(textObj, pbRegex, volPbRegex) {
-  let text = textObj.text;
+function initText(obj, pbRegex, volPbRegex) {
+  let text = obj.text;
   let hasVol = /<vol/.test(text);
   let textVolN = hasVol ? text.match(volNRegex)[1] : text.match(pbVolNRegex)[1];
   let firstPb = text.match(pbRegex)[0];
-  return {text: text, fileName: textObj.fileName, hasVol: hasVol, textVolN: textVolN, firstPb: firstPb};
+  return {text: text, fileName: obj.fileName, hasVol: hasVol, textVolN: textVolN, firstPb: firstPb};
 }
 
 function wrongVolOrder(lastTextVolN, textVolN, lastFileName, fileName, volMessage) {
@@ -74,7 +73,7 @@ function wrongVolOrder(lastTextVolN, textVolN, lastFileName, fileName, volMessag
   let minorJump = thisMinor - lastMinor > 1;
 
   if (majorJump || majorEqual && minorJump || majorNormal && thisMinor > 1) {
-    console.log('Warning! Missing vol: ' + volMessage);
+    console.log('Warning! Missing vol: ', volMessage);
   }
 
   if (thisMajor < lastMajor || majorEqual && thisMinor < lastMajor) {
