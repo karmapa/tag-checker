@@ -35,6 +35,7 @@ export default function checkTagFormat(textObjs) {
   textObjs.forEach((textObj) => {
     let text = textObj.text;
     let fileName = textObj.fileName;
+    hasPb(text, pbRegex, fileName);
     let emptyTags = text.match(emptyTag) || [];
     let noEndArrows = text.match(noEndArrow) || [];
     let noStartArrows = text.match(noStartArrow) || [];
@@ -60,8 +61,8 @@ function checkPropFormat(text, tagInfos) {
   return wrongPropFormats;
 }
 
-function hasPb(text, pbRegex) {
+function hasPb(text, pbRegex, fileName) {
   if (! text.match(pbRegex)) {
-    return ['no pb tag'];
+    reportErr('No Pb Tag', [fileName]);
   }
 }
