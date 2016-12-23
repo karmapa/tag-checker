@@ -2,7 +2,7 @@ const repo = process.argv[2];
 const emptyTag = /<[\s\/]*>/g;
 const noEndArrow = /<[^>]*?(\n|$)/g;
 const noStartArrow = /(^|\n|>)[^<|\n]*>/g;
-let tagRegexs = [
+const nonPbRules = [
   ['division', new RegExp('<division n="(\\d+?)" t=".+?" i18n="' + repo + '-division-\\1"\\/>')],
   ['vol', /<vol n="\d+?-\d+?" t=".+?"\/>/],
   ['sutra', /<sutra id=".+?"\/>/],
@@ -10,7 +10,7 @@ let tagRegexs = [
   ['head', /<head n="\d+?" t=".+?"( \w+?=".+?")*?\/>/]
 ];
 
-const pbRegexs = [
+const pbRules = [
     ['(pb|jp)', /<(pb|jp) id="\d+?-\d+?-\d+?[abcd]"\/>/],
     ['(pb|jp)', /<(pb|jp) id="\d+?-\d+?-\d+?"\/>/]
 ]
@@ -19,12 +19,11 @@ import reportErr from './reportErr.js';
 
 export default function checkTagFormat(textObjs) {
   let errMessages = [];
-  let pbRegex = pbRegexs[0][1];
-  let pbHasLetterSuffix = textObjs[0].text.match(pbRegex);
-  if (! pbHasLetterSuffix) {
-    pbRegex = pbRegexs[1][1];
-  }
-  let tagInfos = tagRegexs.concat([pbRegex]);
+  let pbLetterSuffixRegex = pbRules[0][1];
+  let pbHasLetterSuffix = textObjs[0].text.match(pbLetterSuffixRegex);
+  let pbRule = pbHasLetterSuffix ? pbRules[0] : pbRules[1];
+  let pbRegex = pbRule[1];
+  let tagRules = nonPbRules.concat([pbRule]);
 
   function saveErr(fileName, wrongTags) {
     if (wrongTags.length > 0) {
@@ -39,19 +38,19 @@ export default function checkTagFormat(textObjs) {
     let emptyTags = text.match(emptyTag) || [];
     let noEndArrows = text.match(noEndArrow) || [];
     let noStartArrows = text.match(noStartArrow) || [];
-    let wrongPropFormats = checkPropFormat(text, tagInfos);
+    let wrongPropFormats = checkPropFormat(text, tagRules);
     saveErr(fileName, emptyTags.concat(noEndArrows, noStartArrows, wrongPropFormats));
   });
 
   reportErr('Worng Tag Format', errMessages);
 };
 
-function checkPropFormat(text, tagInfos) {
+function checkPropFormat(text, tagRules) {
   let wrongPropFormats = [];
-  tagInfos.forEach((tagInfo) => {
-    let tagType = tagInfo[0];
+  tagRules.forEach((tagRule) => {
+    let tagType = tagRule[0];
     let findingRegex = new RegExp('^.+?' + tagType + '.+?$', 'gm');
-    let correctRegex = tagInfo[1];
+    let correctRegex = tagRule[1];
     text.replace(findingRegex, (str) => {
       if (! str.match(correctRegex)) {
         wrongPropFormats.push(tagType + ': ' + str);
