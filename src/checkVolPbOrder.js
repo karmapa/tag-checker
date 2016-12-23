@@ -14,7 +14,7 @@ export default function checkVolPbOrder(textObjs) {
   let lastTextVolN, lastFileName, lastPbId;
 
   textObjs.forEach((textObj) => {
-    let {text, fileName, hasVol, textVolN} = initText(textObj, volPbRegex);
+    let {text, fileName, hasVol, textVolN, firstPb} = initText(textObj, pbRegex, volPbRegex);
     let volMessage = lastFileName + ' ' + lastTextVolN + ' ' + fileName + ' ' + textVolN;
  
     if (textVolN === lastTextVolN && hasVol) {
@@ -24,6 +24,9 @@ export default function checkVolPbOrder(textObjs) {
       if (wrongVolOrder(lastTextVolN, textVolN, lastFileName, fileName, volMessage)) {
         errMessages.push('Wrong vol order: ' + volMessage);
       };
+      if (! hasVol) {
+        console.log('Vol tag may be missing in : ' + fileName + ' ' + firstPb);
+      }
     }
 
     lastTextVolN = textVolN, lastFileName = fileName;
@@ -53,11 +56,12 @@ function checkFirstVolN(text, fileName) {
   }
 }
 
-function initText(textObj, volPbRegex) {
+function initText(textObj, pbRegex, volPbRegex) {
   let text = textObj.text;
   let hasVol = /<vol/.test(text);
   let textVolN = hasVol ? text.match(volNRegex)[1] : text.match(pbVolNRegex)[1];
-  return {text: text, fileName: textObj.fileName, hasVol: hasVol, textVolN: textVolN};
+  let firstPb = text.match(pbRegex)[0];
+  return {text: text, fileName: textObj.fileName, hasVol: hasVol, textVolN: textVolN, firstPb: firstPb};
 }
 
 function wrongVolOrder(lastTextVolN, textVolN, lastFileName, fileName, volMessage) {
@@ -82,9 +86,5 @@ function splitVolN(volN) {
   let splits = volN.split('-');
   return {major: Number(splits[0]), minor: Number(splits[1])};
 }
-// vol tag 會在每個檔案前面
-// 一個檔案只有一個 vol
-
-// 換檔案 vol n 改變，要檢查有沒有 vol
 
 // 每個檔案的 vol n 相同
