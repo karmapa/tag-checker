@@ -28,10 +28,32 @@ export default function checkVolPbOrder(textObjs) {
       }
     }
 
-    getWrongPbOrder(text, lastPbId, pbsRegex, pbHasX);
+    let wrongPbOrderMessages = getWrongPbOrder(text, pbsRegex, textVolN, fileName);
+    errMessages = errMessages.concat(wrongPbOrderMessages);
 
     lastTextVolN = textVolN, lastFileName = fileName;
   });
+
+  reportErr('Wrong vol and pb', errMessages);
+}
+
+function getWrongPbOrder(text, pbsRegex, textVolN, fileName) {
+  let errMessages = [];
+  let pbs = text.match(pbsRegex);
+  errMessages = errMessages.concat(checkPbVolN(pbs , textVolN, fileName));
+  return errMessages;
+}
+
+
+function checkPbVolN(pbs, textVolN, fileName) {
+  let errMessages = [];
+  pbs.forEach((pb) => {
+    let pbVolN = pb.match(pbVolNRegex)[1];
+    if (pbVolN !== textVolN) {
+      errMessages.push(fileName + ' ' + pb + ', vol part should be ' + textVolN);
+    }
+  });
+  return errMessages;
 }
 
 function initSetting(obj) {
@@ -86,8 +108,3 @@ function splitVolN(volN) {
   let splits = volN.split('-');
   return {major: Number(splits[0]), minor: Number(splits[1])};
 }
-
-function getWrongPbOrder(text, lastPbId, pbsRegex pbHasX) {
- pbsRegex.exec(text);
-}
-// 每個檔案的 vol n 相同
