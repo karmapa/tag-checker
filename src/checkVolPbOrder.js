@@ -99,7 +99,7 @@ function wrongVolOrder(lastTextVolN, textVolN, lastFileName, fileName, volMessag
     console.log('Warning! Missing vol: ', volMessage);
   }
 
-  if (majorLess || ! majorLess && thisMinor < lastMajor) {
+  if (majorLess || majorEqual && thisMinor < lastMinor) {
     return true;
   }
 }
