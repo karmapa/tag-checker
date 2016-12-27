@@ -123,6 +123,16 @@ function xPbOrderChecker(lastPb, thisPb) {
   }
 }
 
+function noXpbOrderChecker(lastPb, thisPb) {
+  let pbSets = [lastPb, thisPb];
+  let thisPbId = Number(thisPb.match(pbNoXregex)[1]);
+  let lastPbId = Number(lastPb.match(pbNoXregex)[1]);
+
+  if (1 !== lastNum - thisNum) {
+    return pbSets;
+  }
+}
+
 function initText(obj, pbRegex, lastTextVolN) {
   let text = obj.text;
   let hasVol = /<vol/.test(text);
