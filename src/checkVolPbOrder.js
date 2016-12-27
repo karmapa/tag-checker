@@ -32,7 +32,7 @@ export default function checkVolPbOrder(textObjs) {
     if (lastTextPb) {
       checkFirstPbId(isNewVolN, pbs[0], pbHasX, fileName, lastTextPb, pbOrderChecker);
     }
-    let wrongPbOrderMessages = getWrongPbOrder(pbs, pbsRegex, textVolN, fileName);
+    let wrongPbOrderMessages = getWrongPbOrder(pbs, pbsRegex, textVolN, fileName, pbOrderChecker);
     errMessages = errMessages.concat(wrongPbOrderMessages);
 
     lastTextVolN = textVolN, lastFileName = fileName, lastTextPb =  pbs[pbs.length - 1];
@@ -88,7 +88,7 @@ function checkFirstPbId(isNewVolN, firstPb, pbHasX, fileName, lastTextPb, pbOrde
   else {
     let suspectedPbSets = pbOrderChecker(lastTextPb, firstPb);
     if (suspectedPbSets) {
-      console.log('Warning! LastPb:', lastTextPb, 'ThisPb:', firstPb);
+      console.log('Warning! LastPb:', lastTextPb, 'ThisPb:', firstPb, fileName);
     }
   }
 }
@@ -110,7 +110,7 @@ function xPbOrderChecker(lastPb, thisPb) {
       return pbSets;
     }
   }
-  else if (1 === lastNum - thisNum) {
+  else if (1 === thisNum - lastNum) {
     if (lastLetter === 'b' && thisLetter !== 'a') {
       return pbSets;
     }
@@ -128,7 +128,7 @@ function noXpbOrderChecker(lastPb, thisPb) {
   let thisPbId = Number(thisPb.match(pbNoXregex)[1]);
   let lastPbId = Number(lastPb.match(pbNoXregex)[1]);
 
-  if (1 !== lastNum - thisNum) {
+  if (1 !== thisNum - lastNum) {
     return pbSets;
   }
 }
@@ -169,13 +169,22 @@ function splitVolN(volN) {
   return {major: Number(splits[0]), minor: Number(splits[1])};
 }
 
-function getWrongPbOrder(pbs, pbsRegex, textVolN, fileName) {
+function getWrongPbOrder(pbs, pbsRegex, textVolN, fileName, pbOrderChecker) {
   let errMessages = [];
+  let lastPb;
 
   pbs.forEach((pb) => {
     if (isPbVolNwrong(pb, textVolN)) {
       errMessages.push(fileName + ' ' + pb + ', vol part should be ' + textVolN);
     }
+    if (lastPb) {
+      let wrongPbSets = pbOrderChecker(lastPb, pb);
+      if (wrongPbSets) {
+        errMessages.push('Wrong Pb Order! LastPb: ' + lastPb + ' ThisPb: ' + pb + ' ' + fileName);
+      }
+    }
+
+    lastPb = pb;
   });
 
   return errMessages;
