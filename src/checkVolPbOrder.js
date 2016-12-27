@@ -40,20 +40,19 @@ export default function checkVolPbOrder(textObjs) {
 function getWrongPbOrder(text, pbsRegex, textVolN, fileName) {
   let errMessages = [];
   let pbs = text.match(pbsRegex);
-  errMessages = errMessages.concat(checkPbVolN(pbs , textVolN, fileName));
-  return errMessages;
-}
 
-
-function checkPbVolN(pbs, textVolN, fileName) {
-  let errMessages = [];
   pbs.forEach((pb) => {
-    let pbVolN = pb.match(pbVolNRegex)[1];
-    if (pbVolN !== textVolN) {
+    if (isPbVolNwrong(pb, textVolN)) {
       errMessages.push(fileName + ' ' + pb + ', vol part should be ' + textVolN);
     }
   });
+
   return errMessages;
+}
+
+function isPbVolNwrong(pb, textVolN) {
+  let pbVolN = pb.match(pbVolNRegex)[1];
+  return pbVolN !== textVolN;
 }
 
 function initSetting(obj) {
