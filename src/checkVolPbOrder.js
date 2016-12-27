@@ -9,8 +9,7 @@ import reportErr from './reportErr.js';
 
 export default function checkVolPbOrder(textObjs) {
   let errMessages = [];
-  let {pbRegex, pbsRegex, pbHasX} = initSetting(textObjs[0]);
-  let {firstPageChecker, pbOrderChecker} = initFunction(pbHasX);
+  let {pbRegex, pbsRegex, pbHasX, pbOrderChecker} = initSetting(textObjs[0]);
   let lastTextVolN, lastFileName, lastTextPb;
 
   textObjs.forEach((obj) => {
@@ -31,7 +30,7 @@ export default function checkVolPbOrder(textObjs) {
 
     let pbs = text.match(pbsRegex);
     if (lastTextPb) {
-      firstPageChecker(isNewVolN, pbs[0], pbHasX, fileName, lastTextPb);
+      checkFirstPbId(isNewVolN, pbs[0], pbHasX, fileName, lastTextPb, pbOrderChecker);
     }
     let wrongPbOrderMessages = getWrongPbOrder(pbs, pbsRegex, textVolN, fileName);
     errMessages = errMessages.concat(wrongPbOrderMessages);
@@ -45,11 +44,12 @@ export default function checkVolPbOrder(textObjs) {
 function initSetting(obj) {
   let text = obj.text;
   let pbHasSuffix = pbXregex.test(text);
+  let pbOrderChecker = pbHasSuffix ? xPbOrderChecker : noXpbOrderChecker;
   let pbRegex = pbHasSuffix ? pbXregex : pbNoXregex;
   let pbsRegex = new RegExp(pbRegex, 'g');
   checkFirstVolNandPbId(text, obj.fileName, pbHasSuffix);
   return {
-    pbRegex: pbRegex, pbsRegex: pbsRegex, pbHasX: pbHasSuffix
+    pbRegex: pbRegex, pbsRegex: pbsRegex, pbHasX: pbHasSuffix, pbOrderChecker: pbOrderChecker
   };
 }
 
@@ -81,21 +81,12 @@ function checkPbFrom0or1ora(str, pbHasX, fileName) {
   }
 }
 
-function initFunction(pbHasX) {
-  if (pbHasX) {
-    return {firstPageChecker: firstXpageChecker, pbOrderChecker: xPbOrderChecker};
-  }
-  else {
-    return {firstPageChecker: firstNoXpageChecker, pbOrderChecker: 'noXpbOrderChecker'};
-  }
-}
-
-function firstXpageChecker(isNewVolN, firstPb, pbHasX, fileName, lastTextPb) {
+function checkFirstPbId(isNewVolN, firstPb, pbHasX, fileName, lastTextPb, pbOrderChecker) {
   if (isNewVolN) {
     checkPbFrom0or1ora(firstPb, pbHasX, fileName);
   }
   else {
-    let suspectedPbSets = xPbOrderChecker(lastTextPb, firstPb);
+    let suspectedPbSets = pbOrderChecker(lastTextPb, firstPb);
     if (suspectedPbSets) {
       console.log('Warning! LastPb:', lastTextPb, 'ThisPb:', firstPb);
     }
