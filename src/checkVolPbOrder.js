@@ -1,14 +1,15 @@
+const pbXregex = /<pb id="(\d+?)-(\d+?)-(\d+?)([abcd])"/;
+const pbNoXregex = /<pb id="\d+?-\d+?-\d+?"/;
 const volRegex = /<vol n="(\d+?)-(\d+?)"/;
 const volNRegex = /<vol n="(.+?)"/;
 const pbVolNRegex = /<pb id="(\d+?-\d+?)-/;
-const pbXregex = /<pb id="(\d+?)-(\d+?)-(\d+?)([abcd])"/;
-const pbNoXregex = /<pb id="\d+?-\d+?-\d+?"/;
+
 
 import reportErr from './reportErr.js';
 
 export default function checkVolPbOrder(textObjs) {
   let errMessages = [];
-  let {pbRegex, pbsRegex} = initSetting(textObjs[0]);
+  let {pbRegex, pbsRegex, pbHasX} = initSetting(textObjs[0]);
   let lastTextVolN, lastFileName, lastPbId;
 
   textObjs.forEach((obj) => {
@@ -27,7 +28,7 @@ export default function checkVolPbOrder(textObjs) {
       }
     }
 
-    let pbs = text.match(pbsRegex);
+    getWrongPbOrder(text, lastPbId, pbsRegex, pbHasX);
 
     lastTextVolN = textVolN, lastFileName = fileName;
   });
@@ -39,7 +40,7 @@ function initSetting(obj) {
   let pbRegex = pbHasSuffix ? pbXregex : pbNoXregex;
   let pbsRegex = new RegExp(pbRegex, 'g');
   checkFirstVolN(text, obj.fileName);
-  return {pbRegex: pbRegex, pbsRegex: pbsRegex};
+  return {pbRegex: pbRegex, pbsRegex: pbsRegex, pbHasX: pbHasSuffix};
 }
 
 function checkFirstVolN(text, fileName) {
@@ -68,6 +69,7 @@ function wrongVolOrder(lastTextVolN, textVolN, lastFileName, fileName, volMessag
 
   let majorEqual = thisMajor === lastMajor;
   let majorNormal = lastMajor + 1 === thisMajor;
+  let majorLess = thisMajor < lastMajor;
   let majorJump = thisMajor - lastMajor > 1;
   let minorJump = thisMinor - lastMinor > 1;
 
@@ -75,7 +77,7 @@ function wrongVolOrder(lastTextVolN, textVolN, lastFileName, fileName, volMessag
     console.log('Warning! Missing vol: ', volMessage);
   }
 
-  if (thisMajor < lastMajor || majorEqual && thisMinor < lastMajor) {
+  if (majorLess || ! majorLess && thisMinor < lastMajor) {
     return true;
   }
 }
@@ -85,4 +87,7 @@ function splitVolN(volN) {
   return {major: Number(splits[0]), minor: Number(splits[1])};
 }
 
+function getWrongPbOrder(text, lastPbId, pbsRegex pbHasX) {
+ pbsRegex.exec(text);
+}
 // 每個檔案的 vol n 相同
