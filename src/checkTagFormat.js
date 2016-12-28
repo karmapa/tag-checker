@@ -5,9 +5,9 @@ const noStartArrow = /(^|\n|>)[^<|\n]*>/g;
 const nonPbRules = [
   ['division', new RegExp('<division n="(\\d+?)" t=".+?" i18n="' + repo + '-division-\\1"\\/>')],
   ['vol', /<vol n="\d+?-\d+?" t=".+?"\/>/],
-  ['sutra', /<sutra id=".+?"( \w+?=".+?")*?\/>/],
-  ['bampo', /<bampo n=".+?"( \w+?=".+?")*?\/>/],
-  ['head', /<head n="\d+?" t=".+?"( \w+?=".+?")*?\/>/]
+  ['sutra', /<sutra id=".+?"( [a-zA-Z]\w+?=".+?")*?\/>/],
+  ['bampo', /<bampo n=".+?"( [a-zA-Z]\w+?=".+?")*?\/>/],
+  ['head', /<head n="\d+?" t=".+?"( [a-zA-Z]\w+?=".+?")*?\/>/]
 ];
 
 const pbRules = [
