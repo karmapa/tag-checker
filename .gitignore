@@ -3,3 +3,4 @@ node_modules
 *.xml
 .DS_Store
 *.log
+*.zip
