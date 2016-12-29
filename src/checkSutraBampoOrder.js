@@ -16,7 +16,8 @@ export default function checkSutraBampoOrder(textObjs) {
         pb = tagBio.pb;
       }
       else if (lastBio) {
-        checkOrder(lastBio, tagBio);
+        checkOrder(lastBio, tagBio, firstBampoAhead);
+        firstBampoAhead = isFirstBampoAhead(lastBio, tagBio);
         lastBio = tagBio;
       }
       else {
@@ -27,8 +28,8 @@ export default function checkSutraBampoOrder(textObjs) {
   });
 }
 
-function checkOrder(lastBio, tagBio) {
-  let lastType = lastBio.type, type = tagBio.type;
+function checkOrder(lastBio, bio) {
+  let lastType = lastBio.type, type = bio.type;
 
   if (lastType === 'sutra' && type === 'sutra') {
 
@@ -42,6 +43,11 @@ function checkOrder(lastBio, tagBio) {
   else {
 
   }
+}
+
+function isFirstBampoAhead(lastBio, bio) {
+  let {sutraNL: lastSutraNL, bampoN} = lastBio, {sutraNL} = bio;
+  return lastSutraNL === sutraNL && (bampoN === '1' || bampoN === '1.1');
 }
 
 function checkFirstBio(bio) {
