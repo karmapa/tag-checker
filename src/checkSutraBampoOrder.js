@@ -4,7 +4,7 @@ const bampoRegex = /<bampo n="([\da-zA-Z]+?)\.((\d+?)(\.(\d+?))?)"/;
 const pbRegex = /<pb id="(.+?)"/;
 
 export default function checkSutraBampoOrder(textObjs) {
-  let lastBio;
+  let lastBio, firstBampoAhead;
 
   textObjs.forEach((textObj) => {
     let pb = 'beforePb', fn = textObj.fileName;
@@ -15,8 +15,12 @@ export default function checkSutraBampoOrder(textObjs) {
       if (tagBio.type === 'pb') {
         pb = tagBio.pb;
       }
-      else {
+      else if (lastBio) {
         checkOrder(lastBio, tagBio);
+        lastBio = tagBio;
+      }
+      else {
+        checkFirstBio(tagBio);
         lastBio = tagBio;
       }
     });
@@ -24,11 +28,19 @@ export default function checkSutraBampoOrder(textObjs) {
 }
 
 function checkOrder(lastBio, tagBio) {
-  if (lastBio) {
+  let lastType = lastBio.type, type = tagBio.type;
+
+  if (lastType === 'sutra' && type === 'sutra') {
+
+  }
+  else if (lastType === 'sutra' && type === 'bampo') {
+
+  }
+  else if (lastType === 'bampo' && type === 'sutra') {
 
   }
   else {
-    checkFirstBio(tagBio);
+
   }
 }
 
