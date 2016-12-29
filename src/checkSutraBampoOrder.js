@@ -28,21 +28,37 @@ export default function checkSutraBampoOrder(textObjs) {
   });
 }
 
-function checkOrder(lastBio, bio) {
+function checkOrder(lastBio, bio, firstBampoAhead) {
   let lastType = lastBio.type, type = bio.type;
 
   if (lastType === 'sutra' && type === 'sutra') {
-
+    checkSutraOrder(lastBio, bio);
   }
   else if (lastType === 'sutra' && type === 'bampo') {
-
+    checkSutra_bampoOrder(lastBio, bio, firstBampoAhead);
   }
   else if (lastType === 'bampo' && type === 'sutra') {
-
+    checkSutra_bampoOrder(lastBio, bio);
   }
   else {
-
+    checkBampoOrder(lastBio, bio);
   }
+}
+
+function checkSutraOrder(lastBio, bio) {
+
+}
+
+function checkBampoOrder(lastBio, bio) {
+
+}
+
+function checkSutra_bampoOrder(lastBio, bio, firstBampoAhead) {
+
+}
+
+function checkBampo_sutraOrder(lastBio, bio) {
+
 }
 
 function isFirstBampoAhead(lastBio, bio) {
