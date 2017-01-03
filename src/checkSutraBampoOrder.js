@@ -3,8 +3,10 @@ const sutraRegex = /<sutra id="([\da-zA-Z]*?[a-zA-Z])((\d+?)([a-zA-Z])?)"/;
 const bampoRegex = /<bampo n="([\da-zA-Z]+?)\.((\d+?)(\.(\d+?))?)"/;
 const pbRegex = /<pb id="(.+?)"/;
 
+import reportErr from './reportErr.js';
+
 export default function checkSutraBampoOrder(textObjs) {
-  let lastBio, firstBampoAhead;
+  let lastBio, lackSutraInBampos, firstBampoAhead, errMessages = [];
 
   textObjs.forEach((textObj) => {
     let pb = 'beforePb', fn = textObj.fileName;
@@ -16,7 +18,11 @@ export default function checkSutraBampoOrder(textObjs) {
         pb = tagBio.pb;
       }
       else if (lastBio) {
-        checkOrder(lastBio, tagBio, firstBampoAhead);
+        let wrongOrder = checkOrder(lastBio, tagBio, firstBampoAhead);
+        if (wrongOrder) {
+          errMessages = errMessages.concat(wrongOrder);
+        }
+
         firstBampoAhead = isFirstBampoAhead(lastBio, tagBio);
         lastBio = tagBio;
       }
@@ -26,27 +32,93 @@ export default function checkSutraBampoOrder(textObjs) {
       }
     });
   });
+
+  reportErr('Wrong Sutra Bampo Order', errMessages);
+}
+
+function analyzeTag(tag, pb, fn) {
+  if (hasPb(tag)) {
+    return {type: 'pb', pb: tag.match(pbRegex)[1]};
+  }
+  else if (hasBampo(tag)) {
+    return analyzeBampo(tag, pb, fn);
+  }
+  else {
+    return analyzeSutra(tag, pb, fn);
+  }
+}
+
+function hasPb(str) {
+  return /pb/.test(str);
+}
+
+function hasBampo(str) {
+  return /bampo/.test(str);
+}
+
+function analyzeBampo(tag, pb, fn) {
+  let bio = tag.match(bampoRegex);
+  return {
+    type: 'bampo',
+    pb: pb,
+    fn: fn,
+    tag: bio[0],
+    sutraNL: bio[1],
+    bampoN: bio[2],
+    bampo1n: bio[3],
+    bampo2n: bio[5]
+  }
+}
+
+function analyzeSutra(tag, pb, fn) {
+  let bio = tag.match(sutraRegex);
+  return {
+    type: 'sutra',
+    pb: pb,
+    fn: fn,
+    tag: bio[0],
+    sutraV: bio[1],
+    sutraNL: bio[2],
+    sutraN: bio[3],
+    sutraL: bio[4]
+  }
 }
 
 function checkOrder(lastBio, bio, firstBampoAhead) {
-  let lastType = lastBio.type, type = bio.type;
+  let {type: lastType, pb: lastPb, fn: lastFn, tag: lastTag} = lastBio;
+  let {type, pb, fn, tag} = bio;
+  let errInfo = lastTag + ' ' + lastFn + ' ' + lastPb + ', ' + tag + ' ' + fn + ' ' + pb;
 
   if (lastType === 'sutra' && type === 'sutra') {
-    checkSutraOrder(lastBio, bio);
+    return checkSutraOrder(lastBio, bio, errInfo);
   }
   else if (lastType === 'sutra' && type === 'bampo') {
     checkSutra_bampoOrder(lastBio, bio, firstBampoAhead);
+    // 如果 sutraNL 不同，firstBampoAhead 下，不要報錯
   }
   else if (lastType === 'bampo' && type === 'sutra') {
     checkSutra_bampoOrder(lastBio, bio);
   }
   else {
-    checkBampoOrder(lastBio, bio);
+    checkBampoOrder(lastBio, bio, firstBampoAhead);
+    // 如果 sutraNL 不同，不要報錯
   }
 }
 
-function checkSutraOrder(lastBio, bio) {
+function checkSutraOrder(lastBio, bio, errInfo) {
+  let errMessages = [];
+  let {sutraN: lastSutraN} = lastBio;
+  let {sutraN} = bio;
 
+  if (lastBio.sutraV !== bio.sutraV) {
+    errMessages.push('Sutra id not consistent! ' + errInfo);
+  }
+
+  if (lastSutraN > sutraN) {
+
+  }
+
+  return 0 === errMessages.length ? false : errMessages;
 }
 
 function checkBampoOrder(lastBio, bio) {
@@ -84,51 +156,5 @@ function checkFirstSutraNL(sutraNL) {
 function checkFirstBampoN(bampoN) {
   if (bampoN !== '1' && bampoN !== '1.1') {
     console.log('Warning! Bampo n not start from 1 or 1.1');
-  }
-}
-
-function analyzeTag(tag, pb, fn) {
-  if (hasPb(tag)) {
-    return {type: 'pb', pb: tag.match(pbRegex)[1]};
-  }
-  else if (hasBampo(tag)) {
-    return analyzeBampo(tag, pb, fn);
-  }
-  else {
-    return analyzeSutra(tag, pb, fn);
-  }
-}
-
-function hasPb(str) {
-  return /pb/.test(str);
-}
-
-function hasBampo(str) {
-  return /bampo/.test(str);
-}
-
-function analyzeBampo(tag, pb, fn) {
-  let bio = tag.match(bampoRegex);
-  return {
-    type: 'bampo',
-    pb: pb,
-    fn: fn,
-    sutraNL: bio[1],
-    bampoN: bio[2],
-    bampo1n: bio[3],
-    bampo2n: bio[5]
-  }
-}
-
-function analyzeSutra(tag, pb, fn) {
-  let bio = tag.match(sutraRegex);
-  return {
-    type: 'sutra',
-    pb: pb,
-    fn: fn,
-    sutraV: bio[1],
-    sutraNL: bio[2],
-    sutraN: bio[3],
-    sutraL: bio[4]
   }
 }
