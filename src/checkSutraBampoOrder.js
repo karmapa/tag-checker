@@ -64,9 +64,9 @@ function analyzeBampo(tag, pb, fn) {
     fn: fn,
     tag: bio[0],
     sutraNL: bio[1],
-    bampoN: bio[2],
-    bampo1n: bio[3],
-    bampo2n: bio[5]
+    bampoN: Number(bio[2]),
+    bampo1n: Number(bio[3]),
+    bampo2n: Number(bio[5])
   }
 }
 
@@ -79,7 +79,7 @@ function analyzeSutra(tag, pb, fn) {
     tag: bio[0],
     sutraV: bio[1],
     sutraNL: bio[2],
-    sutraN: bio[3],
+    sutraN: Number(bio[3]),
     sutraL: bio[4]
   }
 }
@@ -115,7 +115,7 @@ function checkSutraOrder(lastBio, bio, errInfo) {
   }
 
   if (lastSutraN > sutraN) {
-
+    errMessages.push('Wrong sutra order! ' + errInfo);
   }
 
   return 0 === errMessages.length ? false : errMessages;
