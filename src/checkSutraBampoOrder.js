@@ -107,8 +107,8 @@ function checkOrder(lastBio, bio, firstBampoAhead) {
 
 function checkSutraOrder(lastBio, bio, errInfo) {
   let errMessages = [];
-  let {sutraN: lastSutraN} = lastBio;
-  let {sutraN} = bio;
+  let {sutraN: lastSutraN, sutraL: lastSutraL} = lastBio;
+  let {sutraN, sutraL} = bio;
 
   if (lastBio.sutraV !== bio.sutraV) {
     errMessages.push('Sutra id not consistent! ' + errInfo);
@@ -116,6 +116,25 @@ function checkSutraOrder(lastBio, bio, errInfo) {
 
   if (lastSutraN > sutraN) {
     errMessages.push('Wrong sutra order! ' + errInfo);
+  }
+
+  if (sutraN - lastSutraN > 1) {
+    console.log('Warning! Sutra is missing! ' + errInfo);
+  }
+
+  if (sutraN === lastSutraN) {
+    if (! sutraL || ! lastSutraL) {
+      errMessages.push('Wrong sutra order! ' + errInfo);
+    }
+    else {
+      sutraL = sutraL.charCodeAt(0), lastSutraL = lastSutraL.charCodeAt(0);
+      if (sutraL - lastSutraL > 1) {
+        console.log('Warning! Sutra is missing! ' + errInfo);
+      }
+      else if (sutraL <= lastSutraL) {
+        errMessages.push('Wrong sutra order! ' + errInfo);
+      }
+    }
   }
 
   return 0 === errMessages.length ? false : errMessages;
