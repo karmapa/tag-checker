@@ -92,14 +92,12 @@ function checkSutra_bampoOrder(lastBio, bio, firstBampoAhead, errInfo) {
     }
   }
   else if (firstBampoAhead && sameSutraNL) {
-
+    check2ndBampoN(bampoN, errInfo);
   }
   else {
 
   }
 // firstBampoAhead
-// sutra NL 同
-// bampo 從 2 開始
 // sutra NL 不同
 // 檢查 sutra NL
 // bampo 從 1 開始
@@ -133,5 +131,11 @@ function checkFirstBio(bio) {
 function checkFirstSutraNL(sutraNL) {
   if (sutraNL !== '1' && sutraNL !== '1a' && sutraNL !== '1A') {
     console.log('Warning! Sutra id not start from 1, 1a, or 1A');
+  }
+}
+
+function check2ndBampoN(bampoN, errInfo = '') {
+  if (bampoN !== '2' && bampoN !== '2.1') {
+    console.log('Warning! Bampo n is not 2 or 2.1', errInfo);
   }
 }
