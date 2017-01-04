@@ -2,7 +2,7 @@ const sutraBampoPbRegex = /<(sutra|bampo).+?>|<pb.+?>(?=([\s\S](?!<pb))*?(?=<sut
 
 import reportErr from './reportErr.js';
 import analyzeTag from './analyzeTag.js';
-import {checkFirstBampoN, checkSutraNlOrder} from './sutraBampoOrderHelper.js';
+import {checkFirstBampoN, checkSutraNlOrder, isFirstBampoAhead} from './sutraBampoOrderHelper.js';
 
 export default function checkSutraBampoOrder(textObjs) {
   let lastBio, lackSutraInBampos, firstBampoAhead, errMessages = [];
@@ -48,7 +48,7 @@ function checkOrder(lastBio, bio, firstBampoAhead) {
     // 如果 sutraNL 不同，firstBampoAhead 下，不要報錯
   }
   else if (lastType === 'bampo' && type === 'sutra') {
-    checkBampo_sutraOrder(lastBio, bio);
+    return checkBampo_sutraOrder(lastBio, bio);
   }
   else {
     checkBampoOrder(lastBio, bio, firstBampoAhead);
@@ -107,19 +107,15 @@ function checkSutra_bampoOrder(lastBio, bio, firstBampoAhead, errInfo) {
   return 0 === errMessages.length ? false : errMessages;
 }
 
+function checkBampo_sutraOrder(lastBio, bio) {
+  let errMessages = [];
+
+  return 0 === errMessages.length ? false : errMessages;
+}
+
 function checkBampoOrder(lastBio, bio) {
   let errMessages = [];
   return 0 === errMessages.length ? false : errMessages;
-}
-
-function checkBampo_sutraOrder(lastBio, bio) {
-  let errMessages = [];
-  return 0 === errMessages.length ? false : errMessages;
-}
-
-function isFirstBampoAhead(lastBio, bio) {
-  let {sutraNL: lastSutraNL, bampoN} = lastBio, {sutraNL} = bio;
-  return lastSutraNL === sutraNL && (bampoN === '1' || bampoN === '1.1');
 }
 
 function checkFirstBio(bio) {

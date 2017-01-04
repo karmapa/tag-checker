@@ -1,3 +1,8 @@
+function isFirstBampoAhead(lastBio, bio) {
+  let {sutraNL: lastSutraNL, bampoN} = lastBio, {sutraNL} = bio;
+  return lastSutraNL === sutraNL && (bampoN === '1' || bampoN === '1.1');
+}
+
 function checkFirstBampoN(bampoN, errInfo = '') {
   if (bampoN !== '1' && bampoN !== '1.1') {
     console.log('Warning! Bampo n is not 1 or 1.1', errInfo);
@@ -35,4 +40,4 @@ function checkSutraNlOrder(lastSutraN, lastSutraL, sutraN, sutraL, errInfo) {
   return errMessages;
 }
 
-export {checkFirstBampoN, checkSutraNlOrder};
+export {checkFirstBampoN, checkSutraNlOrder, isFirstBampoAhead};
