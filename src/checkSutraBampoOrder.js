@@ -48,7 +48,7 @@ function checkOrder(lastBio, bio, firstBampoAhead) {
     // 如果 sutraNL 不同，firstBampoAhead 下，不要報錯
   }
   else if (lastType === 'bampo' && type === 'sutra') {
-    return checkBampo_sutraOrder(lastBio, bio);
+    return checkBampo_sutraOrder(lastBio, bio, errInfo);
   }
   else {
     checkBampoOrder(lastBio, bio, firstBampoAhead);
@@ -107,8 +107,14 @@ function checkSutra_bampoOrder(lastBio, bio, firstBampoAhead, errInfo) {
   return 0 === errMessages.length ? false : errMessages;
 }
 
-function checkBampo_sutraOrder(lastBio, bio) {
+function checkBampo_sutraOrder(lastBio, bio, errInfo) {
   let errMessages = [];
+  let {sutraN: lastSutraN, sutraL: lastSutraL} = lastBio;
+  let {sutraN, sutraL} = bio;
+
+  if (! isFirstBampoAhead(lastBio, bio)) {
+    errMessages = checkSutraNlOrder(lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
+  }
 
   return 0 === errMessages.length ? false : errMessages;
 }
