@@ -95,12 +95,15 @@ function checkSutra_bampoOrder(lastBio, bio, firstBampoAhead, errInfo) {
     check2ndBampoN(bampoN, errInfo);
   }
   else {
-
+    let wrongSutraNlOrder = checkSutraNlOrder(lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
+    if (wrongSutraNlOrder[0]) {
+      errMessages = errMessages.concat(wrongSutraNlOrder);
+    }
+    else {
+      checkFirstBampoN(bampoN, errInfo);
+    }
   }
-// firstBampoAhead
-// sutra NL 不同
-// 檢查 sutra NL
-// bampo 從 1 開始
+
   return 0 === errMessages.length ? false : errMessages;
 }
 
