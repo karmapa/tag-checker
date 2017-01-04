@@ -2,7 +2,7 @@ const sutraBampoPbRegex = /<(sutra|bampo).+?>|<pb.+?>(?=([\s\S](?!<pb))*?(?=<sut
 
 import reportErr from './reportErr.js';
 import analyzeTag from './analyzeTag.js';
-import {checkFirstBampoN} from './sutraBampoOrderHelper.js';
+import {checkFirstBampoN, checkSutraNlOrder} from './sutraBampoOrderHelper.js';
 
 export default function checkSutraBampoOrder(textObjs) {
   let lastBio, lackSutraInBampos, firstBampoAhead, errMessages = [];
@@ -65,27 +65,9 @@ function checkSutraOrder(lastBio, bio, errInfo) {
     errMessages.push('Sutra id not consistent! ' + errInfo);
   }
 
-  if (lastSutraN > sutraN) {
-    errMessages.push('Wrong sutra order! ' + errInfo);
-  }
-
-  if (sutraN - lastSutraN > 1) {
-    console.log('Warning! Sutra is missing! ' + errInfo);
-  }
-
-  if (sutraN === lastSutraN) {
-    if (! sutraL || ! lastSutraL) {
-      errMessages.push('Wrong sutra order! ' + errInfo);
-    }
-    else {
-      sutraL = sutraL.charCodeAt(0), lastSutraL = lastSutraL.charCodeAt(0);
-      if (sutraL - lastSutraL > 1) {
-        console.log('Warning! Sutra is missing! ' + errInfo);
-      }
-      else if (sutraL <= lastSutraL) {
-        errMessages.push('Wrong sutra order! ' + errInfo);
-      }
-    }
+  let wrongSutraNlOrder = checkSutraNlOrder(lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
+  if (wrongSutraNlOrder[0]) {
+    errMessages = errMessages.concat(wrongSutraNlOrder);
   }
 
   return 0 === errMessages.length ? false : errMessages;
@@ -101,7 +83,13 @@ function checkSutra_bampoOrder(lastBio, bio, firstBampoAhead, errInfo) {
     checkFirstBampoN(bampoN, errInfo);
   }
   else if (! firstBampoAhead && ! sameSutraNL) {
-
+    let wrongSutraNlOrder = checkSutraNlOrder(lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
+    if (wrongSutraNlOrder[0]) {
+      errMessages = errMessages.concat(wrongSutraNlOrder);
+    }
+    else {
+      checkFirstBampoN(bampoN, errInfo);
+    }
   }
   else if (firstBampoAhead && sameSutraNL) {
 
@@ -115,11 +103,6 @@ function checkSutra_bampoOrder(lastBio, bio, firstBampoAhead, errInfo) {
 // sutra NL 不同
 // 檢查 sutra NL
 // bampo 從 1 開始
-// ! firstBampoAhead
-// sutra NL 不同
-// 檢查 sutra NL
-// bampo 從 1 開始
-
   return 0 === errMessages.length ? false : errMessages;
 }
 
