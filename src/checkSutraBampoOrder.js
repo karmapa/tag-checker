@@ -2,6 +2,7 @@ const sutraBampoPbRegex = /<(sutra|bampo).+?>|<pb.+?>(?=([\s\S](?!<pb))*?(?=<sut
 
 import reportErr from './reportErr.js';
 import analyzeTag from './analyzeTag.js';
+import {checkFirstBampoN} from './sutraBampoOrderHelper.js';
 
 export default function checkSutraBampoOrder(textObjs) {
   let lastBio, lackSutraInBampos, firstBampoAhead, errMessages = [];
@@ -97,7 +98,7 @@ function checkSutra_bampoOrder(lastBio, bio, firstBampoAhead, errInfo) {
   let sameSutraNL = lastSutraNL === sutraNL;
 
   if (! firstBampoAhead && sameSutraNL) {
-
+    checkFirstBampoN(bampoN, errInfo);
   }
   else if (! firstBampoAhead && ! sameSutraNL) {
 
@@ -115,8 +116,6 @@ function checkSutra_bampoOrder(lastBio, bio, firstBampoAhead, errInfo) {
 // 檢查 sutra NL
 // bampo 從 1 開始
 // ! firstBampoAhead
-// sutra NL 同
-// bampo 從 1 開始
 // sutra NL 不同
 // 檢查 sutra NL
 // bampo 從 1 開始
@@ -144,18 +143,12 @@ function checkFirstBio(bio) {
 
   if (bio.type === 'bampo') {
     console.log('Warning! No sutra before first bampo');
-    checkFirstBampoN(bio.bampoN);
+    checkFirstBampoN(bio.bampoN, 'from the beginning');
   }
 }
 
 function checkFirstSutraNL(sutraNL) {
   if (sutraNL !== '1' && sutraNL !== '1a' && sutraNL !== '1A') {
     console.log('Warning! Sutra id not start from 1, 1a, or 1A');
-  }
-}
-
-function checkFirstBampoN(bampoN) {
-  if (bampoN !== '1' && bampoN !== '1.1') {
-    console.log('Warning! Bampo n not start from 1 or 1.1');
   }
 }
