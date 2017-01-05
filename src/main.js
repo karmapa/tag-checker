@@ -7,6 +7,7 @@ import checkRepeatPage from './checkRepeatPage.js';
 import checkStructure from './checkStructure.js';
 import checkVolPbOrder from './checkVolPbOrder.js';
 import checkSutraBampoOrder from './checkSutraBampoOrder.js';
+import checkHead from './checkHead.js';
 
 checkTag(globPatt);
 
@@ -17,4 +18,5 @@ function checkTag(globPatt) {
   checkStructure(textObjs);
   checkVolPbOrder(textObjs);
   checkSutraBampoOrder(textObjs);
+  checkHead(textObjs);
 }
