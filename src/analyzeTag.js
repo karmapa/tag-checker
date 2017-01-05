@@ -1,4 +1,6 @@
-import {sutraCIRegex, bampoCIRegex, headSIRegex, pbSIRegex, sutraDRegex, pbDRegex} from './regexs.js';
+import {
+  sutraCIRegex, bampoCIRegex, headSIRegex, pbSIRegex, sutraDRegex, pbDRegex
+} from './regexs.js';
 
 export function analyzeHead(fn, pb, tag) {
   let bio = headSIRegex.exec(tag);
