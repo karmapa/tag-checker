@@ -8,7 +8,7 @@ export default function checkSutraBampoOrder(textObjs) {
   let lastBio, lackSutraInBampos, firstBampoAhead, errMessages = [];
 
   textObjs.forEach((textObj) => {
-    let pb = 'beforePb', fn = textObj.fileName;
+    let pb = 'beforePb', fn = textObj.fn;
 
     textObj.text.replace(sutraBampoPbRegex, (tag) => {
       let tagBio = analyzeTag(tag, pb, fn);

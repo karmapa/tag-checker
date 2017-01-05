@@ -10,16 +10,16 @@ export default function checkReteatPage(textObjs) {
     let pageIdStore = {};
 
     textObjs.forEach((textObj) => {
-      let fileName = textObj.fileName;
+      let fn = textObj.fn;
 
       textObj.text.replace(pageRegex, (tag, pageId) => {
         let storedId = pageIdStore[pageId];
 
         if (! storedId) {
-          pageIdStore[pageId] = fileName;
+          pageIdStore[pageId] = fn;
         }
         else {
-          errMessages.push(pageType + ' ' + pageId + ' in ' + storedId + ' and ' + fileName);
+          errMessages.push(pageType + ' ' + pageId + ' in ' + storedId + ' and ' + fn);
         }
       });
     });

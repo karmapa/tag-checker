@@ -9,6 +9,6 @@ export default function getTextObjs(globPat) {
     .map((route) => {
       let fileName = Path.basename(route);
       let text = fs.readFileSync(route, 'utf8');
-      return {'fileName': fileName, 'text': text};
+      return {fn: fileName, text: text};
     });
 };

@@ -7,7 +7,7 @@ export default function checkHeadN(textObjs) {
   let followVol, pbId, lastBio;
 
   textObjs.forEach((textObj) => {
-    let {fileName: fn, text} = textObj;
+    let {fn, text} = textObj;
 
     text.replace(volHeadPbSWRegex, (tag) => {
       if (pbDRegex.test(tag)) {

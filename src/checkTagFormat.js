@@ -25,21 +25,21 @@ export default function checkTagFormat(textObjs) {
   let pbRegex = pbRule[1];
   let tagRules = nonPbRules.concat([pbRule]);
 
-  function saveErr(fileName, wrongTags) {
+  function saveErr(fn, wrongTags) {
     if (wrongTags.length > 0) {
-      errMessages.push(fileName + '\n' + wrongTags.join('\n'));
+      errMessages.push(fn + '\n' + wrongTags.join('\n'));
     }
   }
 
   textObjs.forEach((textObj) => {
     let text = textObj.text;
-    let fileName = textObj.fileName;
-    hasPb(text, pbRegex, fileName);
+    let fn = textObj.fn;
+    hasPb(text, pbRegex, fn);
     let emptyTags = text.match(emptyTag) || [];
     let noEndArrows = text.match(noEndArrow) || [];
     let noStartArrows = text.match(noStartArrow) || [];
     let wrongPropFormats = checkPropFormat(text, tagRules);
-    saveErr(fileName, emptyTags.concat(noEndArrows, noStartArrows, wrongPropFormats));
+    saveErr(fn, emptyTags.concat(noEndArrows, noStartArrows, wrongPropFormats));
   });
 
   reportErr('Worng Tag Format', errMessages);
@@ -60,8 +60,8 @@ function checkPropFormat(text, tagRules) {
   return wrongPropFormats;
 }
 
-function hasPb(text, pbRegex, fileName) {
+function hasPb(text, pbRegex, fn) {
   if (! text.match(pbRegex)) {
-    reportErr('No Pb Tag', [fileName]);
+    reportErr('No Pb Tag', [fn]);
   }
 }

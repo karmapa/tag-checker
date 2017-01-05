@@ -12,37 +12,37 @@ export default function checkStructure(textObjs) {
   let lastDivN = 0, lastDivFile = 'First div n is not 1';
 
   textObjs.forEach((textObj) => {
-    let fileName = textObj.fileName;
+    let fn = textObj.fn;
     let text = textObj.text;
     let divNumber = 0;
 
     let volNumber = (text.match(allVolRegex) || []).length;
     if (volNumber > 1) {
-      multiVols.push('Many vol tag in ' + fileName);
+      multiVols.push('Many vol tag in ' + fn);
     }
 
     text.replace(allDivRegex, (divTag, divN) => {
       if (2 === ++ divNumber) {
-        multiDivs.push('Many division tag in ' + fileName);
+        multiDivs.push('Many division tag in ' + fn);
       }
 
       divN = Number(divN);
       let storedDivN = divNs[divN];
       if (! storedDivN) {
-        divNs[divN] = fileName;
+        divNs[divN] = fn;
       }
       else {
-        repeatDivs.push('Repeat div n in ' + storedDivN + ' and ' + 'fileName');
+        repeatDivs.push('Repeat div n in ' + storedDivN + ' and ' + 'fn');
       }
 
       if (divN - lastDivN !== 1) {
-        console.log('Warning! Div n is not ordered!', lastDivFile, lastDivN, fileName, divN);
+        console.log('Warning! Div n is not ordered!', lastDivFile, lastDivN, fn, divN);
       }
       lastDivN = divN;
     });
 
     if ((divNumber + volNumber) !== 0 && (1 <= divNumber || 1 <= volNumber)) {
-      let wrongTagPoses = checkTagPos(text, divNumber, fileName);
+      let wrongTagPoses = checkTagPos(text, divNumber, fn);
       if (wrongTagPoses.length > 0) {
         allWrongTagPoses = allWrongTagPoses.concat(wrongTagPoses);
       }
@@ -52,20 +52,20 @@ export default function checkStructure(textObjs) {
   reportErr('Structure Error', multiVols.concat(multiDivs, repeatDivs, allWrongTagPoses));
 }
 
-function checkTagPos(text, divNumber, fileName) {
+function checkTagPos(text, divNumber, fn) {
   let wrongTagPoses = [];
 
   if (divNumber) {
     if (! text.match(divPosRegex)) {
-      wrongTagPoses.push('Wrong division tag position! ' + fileName);
+      wrongTagPoses.push('Wrong division tag position! ' + fn);
     }
   }
   else {
     if (! text.match(volPosRegex1)) {
-      wrongTagPoses.push('Wrong vol tag position! ' + fileName);
+      wrongTagPoses.push('Wrong vol tag position! ' + fn);
     }
     else if (text.match(volPosRegex2)) {
-      console.log('Warning! Vol not follow sutra!', fileName);
+      console.log('Warning! Vol not follow sutra!', fn);
     }
   }
 

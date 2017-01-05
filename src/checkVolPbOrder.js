@@ -13,29 +13,29 @@ export default function checkVolPbOrder(textObjs) {
   let lastTextVolN, lastFileName, lastTextPb;
 
   textObjs.forEach((obj) => {
-    let {text, fileName, hasVol, textVolN, firstPb, isNewVolN} = initText(obj, pbRegex, lastTextVolN);
-    let volMessage = [lastFileName, lastTextVolN, fileName, textVolN].join(' ');
+    let {text, fn, hasVol, textVolN, firstPb, isNewVolN} = initText(obj, pbRegex, lastTextVolN);
+    let volMessage = [lastFileName, lastTextVolN, fn, textVolN].join(' ');
  
     if (textVolN === lastTextVolN && hasVol) {
-      errMessages.push('Vol tag in ' + fileName + 'may repeat or should be put in ' + lastFileName);
+      errMessages.push('Vol tag in ' + fn + 'may repeat or should be put in ' + lastFileName);
     }
     else if (lastTextVolN && textVolN !== lastTextVolN) {
-      if (wrongVolOrder(lastTextVolN, textVolN, lastFileName, fileName, volMessage)) {
+      if (wrongVolOrder(lastTextVolN, textVolN, lastFileName, fn, volMessage)) {
         errMessages.push('Wrong vol order: ' + volMessage);
       };
       if (! hasVol) {
-        console.log('Vol tag may miss in:', fileName, firstPb);
+        console.log('Vol tag may miss in:', fn, firstPb);
       }
     }
 
     let pbs = text.match(pbsRegex);
     if (lastTextPb) {
-      checkFirstPbId(isNewVolN, pbs[0], pbHasX, fileName, lastTextPb, pbOrderChecker);
+      checkFirstPbId(isNewVolN, pbs[0], pbHasX, fn, lastTextPb, pbOrderChecker);
     }
-    let wrongPbOrderMessages = getWrongPbOrder(pbs, pbsRegex, textVolN, fileName, pbOrderChecker);
+    let wrongPbOrderMessages = getWrongPbOrder(pbs, pbsRegex, textVolN, fn, pbOrderChecker);
     errMessages = errMessages.concat(wrongPbOrderMessages);
 
-    lastTextVolN = textVolN, lastFileName = fileName, lastTextPb =  pbs[pbs.length - 1];
+    lastTextVolN = textVolN, lastFileName = fn, lastTextPb =  pbs[pbs.length - 1];
   });
 
   reportErr('Wrong vol and pb', errMessages);
@@ -47,48 +47,48 @@ function initSetting(obj) {
   let pbOrderChecker = pbHasSuffix ? xPbOrderChecker : noXpbOrderChecker;
   let pbRegex = pbHasSuffix ? pbXregex : pbNoXregex;
   let pbsRegex = new RegExp(pbRegex, 'g');
-  checkFirstVolNandPbId(text, obj.fileName, pbHasSuffix);
+  checkFirstVolNandPbId(text, obj.fn, pbHasSuffix);
   return {
     pbRegex: pbRegex, pbsRegex: pbsRegex, pbHasX: pbHasSuffix, pbOrderChecker: pbOrderChecker
   };
 }
 
-function checkFirstVolNandPbId(text, fileName, pbHasSuffix) {
+function checkFirstVolNandPbId(text, fn, pbHasSuffix) {
   let volInfo = text.match(volNRegex);
   if (! volInfo) {
-    console.log('Warning! No vol in', fileName);
+    console.log('Warning! No vol in', fn);
     volInfo = text.match(pbVolNRegex);
   }
   let volN = volInfo[1];
   if (volN !== '1-1') {
-    console.log('Warning! Vol not start from 1-1', fileName);
+    console.log('Warning! Vol not start from 1-1', fn);
   }
 
-  checkPbFrom0or1ora(text, pbHasSuffix, fileName);
+  checkPbFrom0or1ora(text, pbHasSuffix, fn);
 }
 
-function checkPbFrom0or1ora(str, pbHasX, fileName) {
+function checkPbFrom0or1ora(str, pbHasX, fn) {
   let pbId = str.match(/<pb id="\d+?-\d+?-(\d+?[abcd])?"/)[1];
   if (pbHasX) {
     if (pbId !== '0a' && pbId !== '1a') {
-      console.log('Warning! Pb not start from 0a or 1a', fileName);
+      console.log('Warning! Pb not start from 0a or 1a', fn);
     }
   }
   else {
     if (pbId !== '0' && pbId !== '1') {
-      console.log('Warning! Pb not start from 0a or 1a', fileName);
+      console.log('Warning! Pb not start from 0a or 1a', fn);
     }
   }
 }
 
-function checkFirstPbId(isNewVolN, firstPb, pbHasX, fileName, lastTextPb, pbOrderChecker) {
+function checkFirstPbId(isNewVolN, firstPb, pbHasX, fn, lastTextPb, pbOrderChecker) {
   if (isNewVolN) {
-    checkPbFrom0or1ora(firstPb, pbHasX, fileName);
+    checkPbFrom0or1ora(firstPb, pbHasX, fn);
   }
   else {
     let suspectedPbSets = pbOrderChecker(lastTextPb, firstPb);
     if (suspectedPbSets) {
-      console.log('Warning! LastPb:', lastTextPb, 'ThisPb:', firstPb, fileName);
+      console.log('Warning! LastPb:', lastTextPb, 'ThisPb:', firstPb, fn);
     }
   }
 }
@@ -140,12 +140,12 @@ function initText(obj, pbRegex, lastTextVolN) {
   let firstPb = text.match(pbRegex)[0];
   let isNewVolN = textVolN !== lastTextVolN;
   return {
-    text: text, fileName: obj.fileName, hasVol: hasVol, 
+    text: text, fn: obj.fn, hasVol: hasVol, 
     textVolN: textVolN, firstPb: firstPb, isNewVolN: isNewVolN
   };
 }
 
-function wrongVolOrder(lastTextVolN, textVolN, lastFileName, fileName, volMessage) {
+function wrongVolOrder(lastTextVolN, textVolN, lastFileName, fn, volMessage) {
   let {major: lastMajor, minor: lastMinor} = splitVolN(lastTextVolN);
   let {major: thisMajor, minor: thisMinor} = splitVolN(textVolN);
 
@@ -169,18 +169,18 @@ function splitVolN(volN) {
   return {major: Number(splits[0]), minor: Number(splits[1])};
 }
 
-function getWrongPbOrder(pbs, pbsRegex, textVolN, fileName, pbOrderChecker) {
+function getWrongPbOrder(pbs, pbsRegex, textVolN, fn, pbOrderChecker) {
   let errMessages = [];
   let lastPb;
 
   pbs.forEach((pb) => {
     if (isPbVolNwrong(pb, textVolN)) {
-      errMessages.push(fileName + ' ' + pb + ', vol part should be ' + textVolN);
+      errMessages.push(fn + ' ' + pb + ', vol part should be ' + textVolN);
     }
     if (lastPb) {
       let wrongPbSets = pbOrderChecker(lastPb, pb);
       if (wrongPbSets) {
-        errMessages.push('Wrong Pb Order! LastPb: ' + lastPb + ' ThisPb: ' + pb + ' ' + fileName);
+        errMessages.push('Wrong Pb Order! LastPb: ' + lastPb + ' ThisPb: ' + pb + ' ' + fn);
       }
     }
 
