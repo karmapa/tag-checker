@@ -33,15 +33,31 @@ export default function checkHeadN(textObjs) {
 };
 
 function check1stHeadAndOrder(lastBio, bio, followVol) {
-  if (lastBio) {
-    let {fn: lastFn, pb: lastPb, tag: lastTag, headN: lastHeadN} = lastBio;
-  }
   let {fn, pb, tag, headN} = bio;
-  let bioMessages = fn + ' ' + pb + ' ' + tag;
+  let bioMessage = fn + ' ' + pb + ' ' + tag;
 
-  if (followVol && headN !== 1) {
-    return 'Head n is not 1 after vol tag! ' + bioMessages;
+  if (lastBio && ! followVol) {
+    let {fn: lastFn, pb: lastPb, tag: lastTag, headN: lastHeadN} = lastBio;
+    let lastBioMessage = lastFn + ' ' + lastPb + ' ' + lastTag;
+    checkHeadOrder(lastHeadN, headN, lastBioMessage, bioMessage);
   }
+  else if (lastBio && followVol) {
+    return check1stHead(headN, bioMessage);
+  }
+  else {
+    check1stHead(headN, bioMessage)
+    if (! followVol) {
+      console.log('Warning! No Vol Tag At The Very Beginning!');
+    }
+  }
+}
 
-  return;
-};
+function check1stHead(headN, bioMessage) {
+  return 1 === headN ? false : 'Head n is not 1 after vol tag! ' + bioMessage;
+}
+
+function checkHeadOrder(lastHeadN, headN, lastBioMessage, bioMessage) {
+  if (headN - lastHeadN > 1) {
+    console.log('Warning! Head n might be missing!', lastBioMessage, bioMessage);
+  } 
+}
