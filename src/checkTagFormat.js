@@ -1,7 +1,11 @@
+import {
+  emptyTag, noEndArrow, noStartArrow
+} from './regexs.js';
+
+import reportErr from './reportErr.js';
+
 const repo = process.argv[2];
-const emptyTag = /<[\s\/]*>/g;
-const noEndArrow = /<[^>]*?(\n|$)/g;
-const noStartArrow = /(^|\n|>)[^<|\n]*>/g;
+
 const nonPbRules = [
   ['division', new RegExp('<division n="(\\d+?)" t=".+?" i18n="' + repo + '-division-\\1"\\/>')],
   ['vol', /<vol n="\d+?-\d+?" t=".+?"\/>/],
@@ -14,8 +18,6 @@ const pbRules = [
     ['(pb|jp)', /<(pb|jp) id="\d+?-\d+?-\d+?[abcd]"\/>/],
     ['(pb|jp)', /<(pb|jp) id="\d+?-\d+?-\d+?"\/>/]
 ]
-
-import reportErr from './reportErr.js';
 
 export default function checkTagFormat(textObjs) {
   let errMessages = [];
@@ -32,9 +34,9 @@ export default function checkTagFormat(textObjs) {
   }
 
   textObjs.forEach((textObj) => {
-    let text = textObj.text;
-    let fn = textObj.fn;
-    hasPb(text, pbRegex, fn);
+    let {fn, text} = textObj;
+
+    confirmPbInFile(fn, text, pbRegex);
     let emptyTags = text.match(emptyTag) || [];
     let noEndArrows = text.match(noEndArrow) || [];
     let noStartArrows = text.match(noStartArrow) || [];
@@ -60,8 +62,8 @@ function checkPropFormat(text, tagRules) {
   return wrongPropFormats;
 }
 
-function hasPb(text, pbRegex, fn) {
-  if (! text.match(pbRegex)) {
+function confirmPbInFile(fn, text, pbRegex) {
+  if (! pbRegex.test(text)) {
     reportErr('No Pb Tag', [fn]);
   }
 }
