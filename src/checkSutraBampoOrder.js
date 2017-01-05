@@ -12,17 +12,22 @@ export default function checkSutraBampoOrder(textObjs) {
 
     textObj.text.replace(sutraBampoPbRegex, (tag) => {
       let tagBio = analyzeTag(tag, pb, fn);
+      let type = tagBio.type;
 
-      if (tagBio.type === 'pb') {
+      if (type === 'pb') {
         pb = tagBio.pb;
       }
       else if (lastBio) {
+        let lastType = lastBio.type;
         let wrongOrder = checkOrder(lastBio, tagBio, firstBampoAhead);
         if (wrongOrder) {
           errMessages = errMessages.concat(wrongOrder);
         }
 
-        firstBampoAhead = isFirstBampoAhead(lastBio, tagBio);
+        if (lastType === 'bampo' && type === 'sutra') {
+          firstBampoAhead = isFirstBampoAhead(lastBio, tagBio);
+        }
+
         lastBio = tagBio;
       }
       else {
