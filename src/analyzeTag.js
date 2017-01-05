@@ -8,6 +8,7 @@ export function analyzeHead(fn, pb, tag) {
     type: 'head',
     fn: fn,
     pb: pb,
+    tag: bio[0],
     headN: Number(bio[1])
   };
 }
