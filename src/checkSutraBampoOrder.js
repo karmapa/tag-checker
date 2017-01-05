@@ -28,6 +28,17 @@ export default function checkSutraBampoOrder(textObjs) {
           firstBampoAhead = isFirstBampoAhead(lastBio, tagBio);
         }
 
+        if (lackSutraInBampos) {
+          if (! firstBampoAhead) {
+            console.log('Warning! There is no sutra tag between bampos!', lackSutraInBampos.join(' '));
+          }
+          lackSutraInBampos = false;
+        }
+
+        if (lastType === 'bampo' && type === 'bampo' && ! wrongOrder && lastBio.sutraNL !== tagBio.sutraNL) {
+          lackSutraInBampos = [lastBio.fn, lastBio.pb, lastBio.tag, tagBio.fn, tagBio.pb, tagBio.tag];
+        }
+
         lastBio = tagBio;
       }
       else {
