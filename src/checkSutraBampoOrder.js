@@ -45,14 +45,12 @@ function checkOrder(lastBio, bio, firstBampoAhead) {
   }
   else if (lastType === 'sutra' && type === 'bampo') {
     return checkSutra_bampoOrder(lastBio, bio, firstBampoAhead, errInfo);
-    // 如果 sutraNL 不同，firstBampoAhead 下，不要報錯
   }
   else if (lastType === 'bampo' && type === 'sutra') {
     return checkBampo_sutraOrder(lastBio, bio, errInfo);
   }
   else {
-    checkBampoOrder(lastBio, bio, firstBampoAhead);
-    // 如果 sutraNL 不同，不要報錯
+    return checkBampoOrder(lastBio, bio, firstBampoAhead);
   }
 }
 
@@ -119,8 +117,48 @@ function checkBampo_sutraOrder(lastBio, bio, errInfo) {
   return 0 === errMessages.length ? false : errMessages;
 }
 
-function checkBampoOrder(lastBio, bio) {
+function checkBampoOrder(lastBio, bio, errInfo) {
   let errMessages = [];
+  let {sutraNL: lastSutraNL, sutraN: lastSutraN, sutraL: lastSutraL, bampo1n: lastBampo1n, bampo2n: lastBampo2n} = lastBio;
+  let {sutraNL, sutraN, sutraL, bampo1n, bampo2n} = bio;
+  let sameSutraNL = lastSutraNL === sutraNL;
+
+  if (sameSutraNL) {
+    if (! lastBampo2n && ! bampo2n) {
+      if (bampo1n <= lastBampo1n) {
+        errMessages.push('Wrong bampo order: ' + errInfo);
+      }
+      else if (bampo1n - lastBampo1n > 1) {
+        console.log('Warning! Bampo tag might be missing!', errInfo);
+      }
+    }
+    else if (! lastBampo2n && bampo2n) {
+      if (bampo2n !== 1) {
+        console.log('Warning! Bampo tag might be missing!', errInfo);
+      }
+    }
+    else if (lastBampo2n && bampo2n && lastBampo1n === bampo1n) {
+      if (bampo2n <= lastBampo2n) {
+        errMessages.push('Wrong bampo order: ' + errInfo);
+      }
+      else if (bampo2n - lastBampo2n > 1) {
+        console.log('Warning! Bampo tag might be missing!', errInfo);
+      }
+    }
+    else if (lastBampo2n && bampo2n && lastBampo1n !== bampo1n) {
+      if (bampo1n < lastBampo1n) {
+        errMessages.push('Wrong bampo order: ' + errInfo);
+      }
+      else if (bampo1n - lastBampo1n > 1) {
+        console.log('Warning! Bampo tag might be missing!', errInfo);
+      }
+
+      if (bampo2n !== 1) {
+        console.log('Warning! Bampo tag might be missing!', errInfo);
+      }
+    }
+  }
+
   return 0 === errMessages.length ? false : errMessages;
 }
 
