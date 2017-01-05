@@ -2,9 +2,11 @@
 
 const volHeadPbSWRegex = /<(vol|head).+?>|<pb.+?>(?=([\s\S](?!<pb))*?(?=<head))/g;
 
-const headIRegex = /<head n="(\d+?)"/;
+const headSIRegex = /<head n="(\d+?)"/;
+const pbSIRegex = /<pb id="(.+?)"/;
 
 const volDRegex = /<vol/;
 const headDRegex = /<head/;
+const pbDRegex = /<pb/;
 
-export {volHeadPbSWRegex, headIRegex, volDRegex, headDRegex};
+export {volHeadPbSWRegex, headSIRegex, pbSIRegex, headDRegex, pbDRegex};
