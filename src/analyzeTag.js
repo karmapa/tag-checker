@@ -1,8 +1,4 @@
-const sutraRegex = /<sutra id="([\da-zA-Z]*?[a-zA-Z])((\d+?)([a-zA-Z])?)"/;
-const bampoRegex = /<bampo n="((\d+?)([a-zA-Z])?)\.((\d+?)(\.(\d+?))?)"/;
-const pbRegex = /<pb id="(.+?)"/;
-
-import {headSIRegex} from './regexs.js';
+import {sutraCIRegex, bampoCIRegex, headSIRegex, pbSIRegex, sutraDRegex, pbDRegex} from './regexs.js';
 
 export function analyzeHead(fn, pb, tag) {
   let bio = headSIRegex.exec(tag);
@@ -15,27 +11,19 @@ export function analyzeHead(fn, pb, tag) {
 }
 
 export function analyzeTag(tag, pb, fn) {
-  if (hasPb(tag)) {
-    return {type: 'pb', pb: tag.match(pbRegex)[1]};
+  if (pbDRegex.test(tag)) {
+    return {type: 'pb', pb: pbSIRegex.exec(tag)[1]};
   }
-  else if (hasBampo(tag)) {
-    return analyzeBampo(tag, pb, fn);
-  }
-  else {
+  else if (sutraDRegex.test(tag)) {
     return analyzeSutra(tag, pb, fn);
   }
-}
-
-function hasPb(str) {
-  return /pb/.test(str);
-}
-
-function hasBampo(str) {
-  return /bampo/.test(str);
+  else {
+    return analyzeBampo(tag, pb, fn);
+  }
 }
 
 function analyzeBampo(tag, pb, fn) {
-  let bio = tag.match(bampoRegex);
+  let bio = bampoCIRegex.exec(tag);
   return {
     type: 'bampo',
     pb: pb,
@@ -51,7 +39,7 @@ function analyzeBampo(tag, pb, fn) {
 }
 
 function analyzeSutra(tag, pb, fn) {
-  let bio = tag.match(sutraRegex);
+  let bio = sutraCIRegex.exec(tag);
   return {
     type: 'sutra',
     pb: pb,
