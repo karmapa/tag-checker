@@ -1,7 +1,7 @@
 const sutraBampoPbRegex = /<(sutra|bampo).+?>|<pb.+?>(?=([\s\S](?!<pb))*?(?=<sutra|<bampo))/g;
 
 import reportErr from './reportErr.js';
-import analyzeTag from './analyzeTag.js';
+import {analyzeTag} from './analyzeTag.js';
 import {checkFirstBampoN, checkSutraNlOrder, isFirstBampoAhead} from './sutraBampoOrderHelper.js';
 
 export default function checkSutraBampoOrder(textObjs) {

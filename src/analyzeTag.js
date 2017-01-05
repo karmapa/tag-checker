@@ -2,7 +2,19 @@ const sutraRegex = /<sutra id="([\da-zA-Z]*?[a-zA-Z])((\d+?)([a-zA-Z])?)"/;
 const bampoRegex = /<bampo n="((\d+?)([a-zA-Z])?)\.((\d+?)(\.(\d+?))?)"/;
 const pbRegex = /<pb id="(.+?)"/;
 
-export default function analyzeTag(tag, pb, fn) {
+import {headSIRegex} from './regexs.js';
+
+export function analyzeHead(fn, pb, tag) {
+  let bio = headSIRegex.exec(tag);
+  return {
+    type: 'head',
+    fn: fn,
+    pb: pb,
+    headN: Number(bio[1])
+  };
+}
+
+export function analyzeTag(tag, pb, fn) {
   if (hasPb(tag)) {
     return {type: 'pb', pb: tag.match(pbRegex)[1]};
   }
