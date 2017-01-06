@@ -5,7 +5,7 @@ export const divXWRegex = new RegExp('<division n="(\\d+?)" t=".+?" i18n="' + re
 export const volXWRegex = /<vol n="\d+?-\d+?" t="[\u0f00-\u0fff]+?"\/>/;
 export const sutraXWRegex = /<sutra id="[\da-zA-Z]*?[a-zA-Z]\d+?[a-zA-Z]?"( [a-zA-Z]\w*?="[^<>\n]+?")*?\/>/;
 export const bampoXWRegex = /<bampo n="\d+?[a-zA-Z]?\.\d+?(\.\d+?)?"( [a-zA-Z]\w*?="[^<>\n]+?")*?\/>/;
-export const headXWRegex = /<head n="\d+?" t="[\u0f00-\u0fff]+?"( [a-zA-Z]\w*?="[^<>\n]+?")*?\/>/;
+export const headXWRegex = /<head n="\d+?" t="[\u0f00-\u0fff ]+?"( [a-zA-Z]\w*?="[^<>\n]+?")*?\/>/;
 
 export const volHeadPbSWRegex = /<(vol|head).+?>|<pb.+?>(?=([\s\S](?!<pb))*?(?=<head))/g;
 
