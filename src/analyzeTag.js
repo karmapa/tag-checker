@@ -1,5 +1,5 @@
 import {
-  sutraCIRegex, bampoCIRegex, headSIRegex, pbSIRegex, sutraDRegex, pbDRegex
+  sutraXIRegex, bampoXIRegex, headSIRegex, pbSIRegex, sutraDRegex, pbDRegex
 } from './regexs.js';
 
 export function analyzeHead(fn, pb, tag) {
@@ -26,7 +26,7 @@ export function analyzeTag(tag, pb, fn) {
 }
 
 function analyzeBampo(tag, pb, fn) {
-  let bio = bampoCIRegex.exec(tag);
+  let bio = bampoXIRegex.exec(tag);
   return {
     type: 'bampo',
     pb: pb,
@@ -42,7 +42,7 @@ function analyzeBampo(tag, pb, fn) {
 }
 
 function analyzeSutra(tag, pb, fn) {
-  let bio = sutraCIRegex.exec(tag);
+  let bio = sutraXIRegex.exec(tag);
   return {
     type: 'sutra',
     pb: pb,

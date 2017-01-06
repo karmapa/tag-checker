@@ -2,11 +2,15 @@
 const repo = process.argv[2];
 
 export const divXWRegex = new RegExp('<division n="(\\d+?)" t=".+?" i18n="' + repo + '-division-\\1"\\/>');
+export const volXWRegex = /<vol n="\d+?-\d+?" t="[\u0f00-\u0fff]+?"\/>/;
+export const sutraXWRegex = /<sutra id="[\da-zA-Z]*?[a-zA-Z]\d+?[a-zA-Z]?"( [a-zA-Z]\w*?="[^<>\n]+?")*?\/>/;
+export const bampoXWRegex = /<bampo n="\d+?[a-zA-Z]?\.\d+?(\.\d+?)?"( [a-zA-Z]\w*?="[^<>\n]+?")*?\/>/;
+export const headXWRegex = /<head n="\d+?" t="[\u0f00-\u0fff]+?"( [a-zA-Z]\w*?="[^<>\n]+?")*?\/>/;
 
 export const volHeadPbSWRegex = /<(vol|head).+?>|<pb.+?>(?=([\s\S](?!<pb))*?(?=<head))/g;
 
-export const sutraCIRegex = /<sutra id="([\da-zA-Z]*?[a-zA-Z])((\d+?)([a-zA-Z])?)"/;
-export const bampoCIRegex = /<bampo n="((\d+?)([a-zA-Z])?)\.((\d+?)(\.(\d+?))?)"/;
+export const sutraXIRegex = /<sutra id="([\da-zA-Z]*?[a-zA-Z])((\d+?)([a-zA-Z])?)"/;
+export const bampoXIRegex = /<bampo n="((\d+?)([a-zA-Z])?)\.((\d+?)(\.(\d+?))?)"/;
 
 export const headSIRegex = /<head n="(\d+?)"/;
 export const pbSIRegex = /<pb id="(.+?)"/;

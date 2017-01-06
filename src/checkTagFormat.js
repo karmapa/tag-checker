@@ -1,5 +1,6 @@
 import {
-  emptyTag, noEndArrow, noStartArrow
+  emptyTag, noEndArrow, noStartArrow,
+  divXWRegex, volXWRegex, sutraXWRegex, bampoXWRegex, headXWRegex
 } from './regexs.js';
 
 import reportErr from './reportErr.js';
@@ -7,11 +8,11 @@ import reportErr from './reportErr.js';
 const repo = process.argv[2];
 
 const nonPbRules = [
-  ['division', new RegExp('<division n="(\\d+?)" t=".+?" i18n="' + repo + '-division-\\1"\\/>')],
-  ['vol', /<vol n="\d+?-\d+?" t=".+?"\/>/],
-  ['sutra', /<sutra id=".+?"( [a-zA-Z]\w+?=".+?")*?\/>/],
-  ['bampo', /<bampo n=".+?"( [a-zA-Z]\w+?=".+?")*?\/>/],
-  ['head', /<head n="\d+?" t=".+?"( [a-zA-Z]\w+?=".+?")*?\/>/]
+  ['division', divXWRegex],
+  ['vol', volXWRegex],
+  ['sutra', sutraXWRegex],
+  ['bampo', bampoXWRegex],
+  ['head', headXWRegex]
 ];
 
 const pbRules = [
@@ -37,6 +38,7 @@ export default function checkTagFormat(textObjs) {
     let {fn, text} = textObj;
 
     confirmPbInFile(fn, text, pbRegex);
+
     let emptyTags = text.match(emptyTag) || [];
     let noEndArrows = text.match(noEndArrow) || [];
     let noStartArrows = text.match(noStartArrow) || [];
