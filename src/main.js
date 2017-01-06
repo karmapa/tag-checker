@@ -14,9 +14,9 @@ checkTag(globPatt);
 function checkTag(globPatt) {
   let textObjs = getTextObjs(globPatt);
   checkTagFormat(textObjs);
-  checkRepeatPage(textObjs);
-  checkStructure(textObjs);
-  checkVolPbOrder(textObjs);
-  checkSutraBampoOrder(textObjs);
-  checkHeadN(textObjs);
+  //checkRepeatPage(textObjs);
+  //checkStructure(textObjs);
+  //checkVolPbOrder(textObjs);
+  //checkSutraBampoOrder(textObjs);
+  //checkHeadN(textObjs);
 }

@@ -2,11 +2,11 @@
 // D for Detect, LD for Detect in Line W for Whole tag
 const repo = process.argv[2];
 
-export const divXWgRegex = new RegExp('<division n="(\\d+?)" t=".+?" i18n="' + repo + '-division-\\1"\\/>', 'g');
-export const volXWgRegex = /<vol n="\d+?-\d+?" t="[\u0f00-\u0fff]+?"\/>/g;
-export const sutraXWgRegex = /<sutra id="[\da-zA-Z]*?[a-zA-Z]\d+?[a-zA-Z]?"( [a-zA-Z]\w*?="[^<>\n]+?")*?\/>/g;
-export const bampoXWgRegex = /<bampo n="\d+?[a-zA-Z]?\.\d+?(\.\d+?)?"( [a-zA-Z]\w*?="[^<>\n]+?")*?\/>/g;
-export const headXWgRegex = /<head n="\d+?" t="[\u0f00-\u0fff ]+?"( [a-zA-Z]\w*?="[^<>\n]+?")*?\/>/g;
+export const divXWgRegex = new RegExp('<division n="(\\d+?)" t="[^<>\n]+?" i18n="' + repo + '-division-\\1"\\/>', 'g');
+export const volXWgRegex = /<vol n="\d+?" t="[\u0f00-\u0fff]+?"\/>/g;
+export const sutraXWgRegex = /<sutra id="[\da-zA-Z]*?[a-zA-Z]\d+?[a-zA-Z]?"\/>/g;
+export const bampoXWgRegex = /<bampo n="\d+?[a-zA-Z]?\.\d+?(\.\d+?)?"\/>/g;
+export const headXWgRegex = /<head n="\d+?" t="[\u0f00-\u0fff ]+?"( (type|zh|lv|st)="[^<>\n]+?")*?\/>/g;
 export const jpb4XWgRegex = /<(pb|jp) id="\d+?-\d+?-\d+?[abcd]"\/>/g;
 export const jpbXWgRegex = /<(pb|jp) id="\d+?-\d+?-\d+?"\/>/g;
 

@@ -44,7 +44,7 @@ function findPbRule(text) {
     return {type: '(pb|jp)', cR: regexs.jpb4XWgRegex, DgR: regexs.jpbDgRegex, LDR: regexs.jpbLDRegex};
   }
   else {
-    return {type: '(pb|jp)', cR: regexs.jpbWgRegex, DgR: regexs.jpbDgRegex, LDR: regexs.jpbLDRegex};
+    return {type: '(pb|jp)', cR: regexs.jpbXWgRegex, DgR: regexs.jpbDgRegex, LDR: regexs.jpbLDRegex};
   }
 }
 
