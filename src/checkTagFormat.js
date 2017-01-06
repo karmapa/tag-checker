@@ -1,32 +1,20 @@
-import {
-  emptyTag, noEndArrow, noStartArrow,
-  divXWRegex, volXWRegex, sutraXWRegex, bampoXWRegex, headXWRegex
-} from './regexs.js';
-
+import *  as regexs from './regexs.js';
 import reportErr from './reportErr.js';
 
-const repo = process.argv[2];
-
-const nonPbRules = [
-  ['division', divXWRegex],
-  ['vol', volXWRegex],
-  ['sutra', sutraXWRegex],
-  ['bampo', bampoXWRegex],
-  ['head', headXWRegex]
+// cR correct regex, DgR global detect regex, LDR line detect regex
+const tagRules = [
+  {type: 'division', cR: regexs.divXWgRegex, DgR: regexs.divDgRegex, LDR: regexs.divLDRegex},
+  {type: 'vol', cR: regexs.volXWgRegex, DgR: regexs.volDgRegex, LDR: regexs.volLDRegex},
+  {type: 'sutra', cR: regexs.sutraXWgRegex, DgR: regexs.sutraDgRegex, LDR: regexs.sutraLDRegex},
+  {type: 'bampo', cR: regexs.bampoXWgRegex, DgR: regexs.bampoDgRegex, LDR: regexs.bampoLDRegex},
+  {type: 'head', cR: regexs.headXWgRegex, DgR: regexs.headDgRegex, LDR: regexs.headLDRegex}
 ];
-
-const pbRules = [
-    ['(pb|jp)', /<(pb|jp) id="\d+?-\d+?-\d+?[abcd]"\/>/],
-    ['(pb|jp)', /<(pb|jp) id="\d+?-\d+?-\d+?"\/>/]
-]
 
 export default function checkTagFormat(textObjs) {
   let errMessages = [];
-  let pbLetterSuffixRegex = pbRules[0][1];
-  let pbHasLetterSuffix = textObjs[0].text.match(pbLetterSuffixRegex);
-  let pbRule = pbHasLetterSuffix ? pbRules[0] : pbRules[1];
-  let pbRegex = pbRule[1];
-  let tagRules = nonPbRules.concat([pbRule]);
+  let pbRule = findPbRule(textObjs[0].text);
+  let pbRegex = pbRule.cR;
+  tagRules.push(pbRule);
 
   function saveErr(fn, wrongTags) {
     if (wrongTags.length > 0) {
@@ -39,9 +27,9 @@ export default function checkTagFormat(textObjs) {
 
     confirmPbInFile(fn, text, pbRegex);
 
-    let emptyTags = text.match(emptyTag) || [];
-    let noEndArrows = text.match(noEndArrow) || [];
-    let noStartArrows = text.match(noStartArrow) || [];
+    let emptyTags = text.match(regexs.emptyTag) || [];
+    let noEndArrows = text.match(regexs.noEndArrow) || [];
+    let noStartArrows = text.match(regexs.noStartArrow) || [];
     let wrongPropFormats = checkPropFormat(text, tagRules);
     saveErr(fn, emptyTags.concat(noEndArrows, noStartArrows, wrongPropFormats));
   });
@@ -49,15 +37,28 @@ export default function checkTagFormat(textObjs) {
   reportErr('Worng Tag Format', errMessages);
 };
 
+function findPbRule(text) {
+  let jpbLetterSuffixRegex = regexs.jpb4XWRegex;
+  let pbHasLetterSuffix = jpbLetterSuffixRegex.test(text);
+  if (pbHasLetterSuffix) {
+    return {type: '(pb|jp)', cR: regexs.jpb4XWgRegex, DgR: regexs.jpbDgRegex, LDR: regexs.jpbLDRegex};
+  }
+  else {
+    return {type: '(pb|jp)', cR: regexs.jpbWgRegex, DgR: regexs.jpbDgRegex, LDR: regexs.jpbLDRegex};
+  }
+}
+
 function checkPropFormat(text, tagRules) {
   let wrongPropFormats = [];
+
   tagRules.forEach((tagRule) => {
-    let tagType = tagRule[0];
-    let findingRegex = new RegExp('^.+?' + tagType + '.+?$', 'gm');
-    let correctRegex = tagRule[1];
-    text.replace(findingRegex, (str) => {
-      if (! str.match(correctRegex)) {
-        wrongPropFormats.push(tagType + ': ' + str);
+    let {type, cR, LDR, DgR} = tagRule;
+
+    text.replace(LDR, (str) => {
+      let suspectedTags = str.match(DgR);
+      let correctTags = str.match(cR);
+      if (! correctTags && correctTags.length !== suspectedTags.length) {
+        wrongPropFormats.push(type + ': ' + str);
       }
     });
   });
