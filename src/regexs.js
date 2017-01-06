@@ -44,7 +44,3 @@ export const pbDRegex = /pb/;
 export const emptyTag = /<[\s\/]*>/g;
 export const noEndArrow = /<[^>]*?(<|\n|$)/g;
 export const noStartArrow = /(^|\n|>)[^<\n]*>/g;
-
-export function makeGlobalRegex(regex) {
-  return new RegExp(regex, 'g');
-}
