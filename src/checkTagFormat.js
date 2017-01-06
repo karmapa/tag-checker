@@ -55,9 +55,9 @@ function checkPropFormat(text, tagRules) {
     let {type, cR, LDR, DgR} = tagRule;
 
     text.replace(LDR, (str) => {
-      let suspectedTags = str.match(DgR);
+      let suspectedTagsN = type !== 'division' ? str.match(DgR).length : str.match(DgR).length / 2;
       let correctTags = str.match(cR);
-      if (! correctTags && correctTags.length !== suspectedTags.length) {
+      if (! correctTags || correctTags.length !== suspectedTagsN) {
         wrongPropFormats.push(type + ': ' + str);
       }
     });

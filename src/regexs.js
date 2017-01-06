@@ -20,12 +20,12 @@ export const bampoXIRegex = /<bampo n="((\d+?)([a-zA-Z])?)\.((\d+?)(\.(\d+?))?)"
 export const headSIRegex = /<head n="(\d+?)"/;
 export const pbSIRegex = /<pb id="(.+?)"/;
 
-export const divLDRegex = /^.+?div.+?$/mg;
-export const volLDRegex = /^.+?vol.+?$/mg;
-export const sutraLDRegex = /^.+?sutra.+?$/mg;
-export const bampoLDRegex = /^.+?bampo.+?$/mg;
-export const headLDRegex = /^.+?head.+?$/mg;
-export const jpbLDRegex = /^.+?(pb|jp).+?$/mg;
+export const divLDRegex = /^.*?div.*?$/mg;
+export const volLDRegex = /^.*?vol.*?$/mg;
+export const sutraLDRegex = /^.*?sutra.*?$/mg;
+export const bampoLDRegex = /^.*?bampo.*?$/mg;
+export const headLDRegex = /^.*?head.*?$/mg;
+export const jpbLDRegex = /^.*?(pb|jp).*?$/mg;
 
 export const divDgRegex = /div/g;
 export const volDgRegex = /vol/g;
