@@ -18,6 +18,8 @@ export const sutraXIRegex = /<sutra id="([\da-zA-Z]*?[a-zA-Z])((\d+?)([a-zA-Z])?
 export const bampoXIRegex = /<bampo n="((\d+?)([a-zA-Z])?)\.((\d+?)(\.(\d+?))?)"/;
 
 export const divSIgRegex = /<division n="(\d+?)"/g;
+export const pbSIgRegex = /<pb id="(.+?)"/g;
+export const jpSIgRegex = /<jp id="(.+?)"/g;
 
 export const headSIRegex = /<head n="(\d+?)"/;
 export const pbSIRegex = /<pb id="(.+?)"/;
