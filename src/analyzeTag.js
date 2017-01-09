@@ -1,5 +1,5 @@
 import {
-  sutraXIRegex, bampoXIRegex, headSIRegex, pbSIRegex, sutraDRegex, pbDRegex
+  sutraXIRegex, bampoXIRegex, pb4XIRegex, pbXIRegex, headSIRegex, pbSIRegex, sutraDRegex, pbDRegex
 } from './regexs.js';
 
 export function analyzeHead(fn, pb, tag) {
@@ -10,6 +10,32 @@ export function analyzeHead(fn, pb, tag) {
     pb: pb,
     tag: bio[0],
     headN: Number(bio[1])
+  };
+}
+
+export function analyzePb4(fn, tag) {
+  let bio = pb4XIRegex.exec(tag);
+  return {
+    fn: fn,
+    tag: bio[0],
+    pbVolN: bio[1],
+    vol1n: bio[2],
+    vol2n: bio[3],
+    pbNL: bio[4],
+    pbN: bio[5],
+    pbL: bio[6]
+  };
+}
+
+export function analyzePb(fn, tag) {
+  let bio = pbXIRegex.exec(tag);
+  return {
+    fn: fn,
+    tag: bio[0],
+    pbVolN: bio[1],
+    vol1n: bio[2],
+    vol2n: bio[3],
+    pbN: bio[4]
   };
 }
 

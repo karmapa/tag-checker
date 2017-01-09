@@ -13,14 +13,18 @@ export const jpbXWgRegex = /<(pb|jp) id="\d+?-\d+?-\d+?"\/>/g;
 export const jpb4XWRegex = /<(pb|jp) id="\d+?-\d+?-\d+?[abcd]"\/>/;
 
 export const volHeadPbSWRegex = /<(vol|head).+?>|<pb.+?>(?=([\s\S](?!<pb))*?(?=<head))/g;
+export const pbSWgRegex = /<pb id=.+?>/g;
 
 export const sutraXIRegex = /<sutra id="([\da-zA-Z]*?[a-zA-Z])((\d+?)([a-zA-Z])?)"/;
 export const bampoXIRegex = /<bampo n="((\d+?)([a-zA-Z])?)\.((\d+?)(\.(\d+?))?)"/;
+export const pb4XIRegex = /<pb id="((\d+?)-(\d+?))-((\d+?)([abcd]?))"/;
+export const pbXIRegex = /<pb id="((\d+?)-(\d+?))-(\d+?)"/;
 
 export const divSIgRegex = /<division n="(\d+?)"/g;
 export const pbSIgRegex = /<pb id="(.+?)"/g;
 export const jpSIgRegex = /<jp id="(.+?)"/g;
 
+export const volSIRegex = /<vol n="(\d+?)"/;
 export const headSIRegex = /<head n="(\d+?)"/;
 export const pbSIRegex = /<pb id="(.+?)"/;
 
