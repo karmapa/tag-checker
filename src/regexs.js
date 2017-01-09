@@ -17,15 +17,17 @@ export const volHeadPbSWRegex = /<(vol|head).+?>|<pb.+?>(?=([\s\S](?!<pb))*?(?=<
 export const sutraXIRegex = /<sutra id="([\da-zA-Z]*?[a-zA-Z])((\d+?)([a-zA-Z])?)"/;
 export const bampoXIRegex = /<bampo n="((\d+?)([a-zA-Z])?)\.((\d+?)(\.(\d+?))?)"/;
 
+export const divSIgRegex = /<division n="(\d+?)"/g;
+
 export const headSIRegex = /<head n="(\d+?)"/;
 export const pbSIRegex = /<pb id="(.+?)"/;
 
-export const divLDRegex = /^.*?div.*?$/mg;
-export const volLDRegex = /^.*?vol.*?$/mg;
-export const sutraLDRegex = /^.*?sutra.*?$/mg;
-export const bampoLDRegex = /^.*?bampo.*?$/mg;
-export const headLDRegex = /^.*?head.*?$/mg;
-export const jpbLDRegex = /^.*?(pb|jp).*?$/mg;
+export const divDlRegex = /^.*?div.*?$/mg;
+export const volDlRegex = /^.*?vol.*?$/mg;
+export const sutraDlRegex = /^.*?sutra.*?$/mg;
+export const bampoDlRegex = /^.*?bampo.*?$/mg;
+export const headDlRegex = /^.*?head.*?$/mg;
+export const jpbDlRegex = /^.*?(pb|jp).*?$/mg;
 
 export const divDgRegex = /div/g;
 export const volDgRegex = /vol/g;

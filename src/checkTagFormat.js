@@ -1,13 +1,13 @@
 import *  as regexs from './regexs.js';
 import reportErr from './reportErr.js';
 
-// cR correct regex, DgR global detect regex, LDR line detect regex
+// cR correct regex, DgR global detect regex, DlR line detect regex
 const tagRules = [
-  {type: 'division', cR: regexs.divXWgRegex, DgR: regexs.divDgRegex, LDR: regexs.divLDRegex},
-  {type: 'vol', cR: regexs.volXWgRegex, DgR: regexs.volDgRegex, LDR: regexs.volLDRegex},
-  {type: 'sutra', cR: regexs.sutraXWgRegex, DgR: regexs.sutraDgRegex, LDR: regexs.sutraLDRegex},
-  {type: 'bampo', cR: regexs.bampoXWgRegex, DgR: regexs.bampoDgRegex, LDR: regexs.bampoLDRegex},
-  {type: 'head', cR: regexs.headXWgRegex, DgR: regexs.headDgRegex, LDR: regexs.headLDRegex}
+  {type: 'division', cR: regexs.divXWgRegex, DgR: regexs.divDgRegex, DlR: regexs.divDlRegex},
+  {type: 'vol', cR: regexs.volXWgRegex, DgR: regexs.volDgRegex, DlR: regexs.volDlRegex},
+  {type: 'sutra', cR: regexs.sutraXWgRegex, DgR: regexs.sutraDgRegex, DlR: regexs.sutraDlRegex},
+  {type: 'bampo', cR: regexs.bampoXWgRegex, DgR: regexs.bampoDgRegex, DlR: regexs.bampoDlRegex},
+  {type: 'head', cR: regexs.headXWgRegex, DgR: regexs.headDgRegex, DlR: regexs.headDlRegex}
 ];
 
 export default function checkTagFormat(textObjs) {
@@ -41,10 +41,10 @@ function findPbRule(text) {
   let jpbLetterSuffixRegex = regexs.jpb4XWRegex;
   let pbHasLetterSuffix = jpbLetterSuffixRegex.test(text);
   if (pbHasLetterSuffix) {
-    return {type: '(pb|jp)', cR: regexs.jpb4XWgRegex, DgR: regexs.jpbDgRegex, LDR: regexs.jpbLDRegex};
+    return {type: '(pb|jp)', cR: regexs.jpb4XWgRegex, DgR: regexs.jpbDgRegex, DlR: regexs.jpbDlRegex};
   }
   else {
-    return {type: '(pb|jp)', cR: regexs.jpbXWgRegex, DgR: regexs.jpbDgRegex, LDR: regexs.jpbLDRegex};
+    return {type: '(pb|jp)', cR: regexs.jpbXWgRegex, DgR: regexs.jpbDgRegex, DlR: regexs.jpbDlRegex};
   }
 }
 
@@ -52,9 +52,9 @@ function checkPropFormat(text, tagRules) {
   let wrongPropFormats = [];
 
   tagRules.forEach((tagRule) => {
-    let {type, cR, LDR, DgR} = tagRule;
+    let {type, cR, DlR, DgR} = tagRule;
 
-    text.replace(LDR, (str) => {
+    text.replace(DlR, (str) => {
       let suspectedTagsN = type !== 'division' ? str.match(DgR).length : str.match(DgR).length / 2;
       let correctTags = str.match(cR);
       if (! correctTags || correctTags.length !== suspectedTagsN) {

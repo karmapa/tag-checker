@@ -1,9 +1,8 @@
-const allDivRegex = /<division n="(\d+?)"/g;
-const allVolRegex = /<vol/g;
 const divPosRegex = /^<sutra.+?>\n<division.+?>\n<vol.+?>\n<pb/;
 const volPosRegex1 = /^(<sutra.+?>\n)?<vol.+?>\n<pb/;
 const volPosRegex2 = /^<vol/;
 
+import {volDgRegex, divSIgRegex} from './regexs.js';
 import reportErr from './reportErr.js';
 
 export default function checkStructure(textObjs) {
@@ -12,16 +11,15 @@ export default function checkStructure(textObjs) {
   let lastDivN = 0, lastDivFile = 'First div n is not 1';
 
   textObjs.forEach((textObj) => {
-    let fn = textObj.fn;
-    let text = textObj.text;
+    let {fn, text} = textObj;
     let divNumber = 0;
 
-    let volNumber = (text.match(allVolRegex) || []).length;
+    let volNumber = (text.match(volDgRegex) || []).length;
     if (volNumber > 1) {
       multiVols.push('Many vol tag in ' + fn);
     }
 
-    text.replace(allDivRegex, (divTag, divN) => {
+    text.replace(divSIgRegex, (divTag, divN) => {
       if (2 === ++ divNumber) {
         multiDivs.push('Many division tag in ' + fn);
       }
@@ -32,16 +30,16 @@ export default function checkStructure(textObjs) {
         divNs[divN] = fn;
       }
       else {
-        repeatDivs.push('Repeat div n in ' + storedDivN + ' and ' + 'fn');
+        repeatDivs.push('Repeat div n in ' + storedDivN + ' and ' + fn);
       }
 
       if (divN - lastDivN !== 1) {
         console.log('Warning! Div n is not ordered!', lastDivFile, lastDivN, fn, divN);
       }
-      lastDivN = divN;
+      lastDivN = divN, lastDivFile = fn;
     });
 
-    if ((divNumber + volNumber) !== 0 && (1 <= divNumber || 1 <= volNumber)) {
+    if (1 === divNumber || 1 === volNumber) {
       let wrongTagPoses = checkTagPos(text, divNumber, fn);
       if (wrongTagPoses.length > 0) {
         allWrongTagPoses = allWrongTagPoses.concat(wrongTagPoses);
