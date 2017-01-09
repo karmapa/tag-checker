@@ -1,5 +1,5 @@
-const divPosRegex = /^<sutra.+?>\n<division.+?>\n<vol.+?>\n<pb/;
-const volPosRegex1 = /^(<sutra.+?>\n)?<vol.+?>\n<pb/;
+const divPosRegex = /^<sutra.+?>\r?\n<division.+?>\r?\n<vol.+?>\r?\n<pb/;
+const volPosRegex1 = /^(<sutra.+?>\r?\n)?<vol.+?>\r?\n<pb/;
 const volPosRegex2 = /^<vol/;
 
 import {volDgRegex, divSIgRegex} from './regexs.js';
