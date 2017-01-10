@@ -1,12 +1,14 @@
-import {pbSIgRegex, jpSIgRegex} from './regexs.js';
+const pbRegex = /<pb id="(.+?)"/g;
+const jpRegex = /<jp id="(.+?)"/g;
+
 import reportErr from './reportErr.js';
 
 export default function checkReteatPage(textObjs) {
   let errMessages = [];
-  let pageTypes = [{type: 'pb', pageRegex: pbSIgRegex}, {type: 'jp', pageRegex: jpSIgRegex}];
+  let pageTypes = [{pageType: 'pb', pageRegex: pbRegex}, {pageType: 'jp', pageRegex: jpRegex}];
 
   pageTypes.forEach((pageTypeObj) => {
-    let {type, pageRegex} = pageTypeObj;
+    let {pageType, pageRegex} = pageTypeObj;
     let pageIdStore = {};
 
     textObjs.forEach((textObj) => {
