@@ -1,19 +1,24 @@
 import {analyzePb4, analyzePb, analyzeVol} from './analyzeTag.js';
 import {detectVol} from './detectTag.js';
+import {saveErr} from './helper.js';
 import reportErr from './reportErr.js';
 
 export default function checkVolPbOrder(textObjs) {
   let [pb1stBio, pbAnalyzer] = init(textObjs[0]);
+  let [lastFn, lastVol1n] = ['no-last-file', 0];
+  let errMessages = [];
 
   check1stPb(pb1stBio);
-
-  let [lastFn, lastVol1n] = ['no-last-file', 0];
 
   textObjs.forEach((textObj) => {
     let [fn, text, hasVol, vol1n] = setVariables(textObj, pbAnalyzer);
 
-    console.log(fn, hasVol, vol1n);
+    let wrongVol1nIn2Files = checkVol1nIn2Files(fn, vol1n, lastfn, lastVol1n, hasVol);
+    saveErr(errMessages, [wrongVol1nIn2Files]);
+
   });
+
+  reportErr('Wrong Volumn Pb Order!', errMessages);
 };
 
 function init(textObj) {
