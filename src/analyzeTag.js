@@ -3,7 +3,7 @@ import {
 } from './regexs.js';
 
 const volAnalyzeRegex = /<vol n="(\d+?)"/;
-const pb4AnalyzeRegex = /<pb id="((\d+?)-(\d+?))-((\d+?)([abcd]?))"/;
+const pb4AnalyzeRegex = /<pb id="((\d+?)-(\d+?))-((\d+?)([abcd]))"/;
 const pbAnalyzeRegex = /<pb id="((\d+?)-(\d+?))-(\d+?)"/;
 
 export function analyzeVol(fn, tag) {
