@@ -21,8 +21,8 @@ export const bampoXIRegex = /<bampo n="((\d+?)([a-zA-Z])?)\.((\d+?)(\.(\d+?))?)"
 //export const pbXIRegex = /<pb id="((\d+?)-(\d+?))-(\d+?)"/;
 
 export const divSIgRegex = /<division n="(\d+?)"/g;
-export const pbSIgRegex = /<pb id="(.+?)"/g;
-export const jpSIgRegex = /<jp id="(.+?)"/g;
+//export const pbSIgRegex = /<pb id="(.+?)"/g;
+//export const jpSIgRegex = /<jp id="(.+?)"/g;
 
 //export const volSIRegex = /<vol n="(\d+?)"/;
 export const headSIRegex = /<head n="(\d+?)"/;
