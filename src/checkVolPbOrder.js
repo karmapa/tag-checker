@@ -1,10 +1,19 @@
-import {analyzePb4, analyzePb} from './analyzeTag.js';
+import {analyzePb4, analyzePb, analyzeVol} from './analyzeTag.js';
+import {detectVol} from './detectTag.js';
 import reportErr from './reportErr.js';
 
 export default function checkVolPbOrder(textObjs) {
   let [pb1stBio, pbAnalyzer] = init(textObjs[0]);
 
   check1stPb(pb1stBio);
+
+  let [lastFn, lastVol1n] = ['no-last-file', 0];
+
+  textObjs.forEach((textObj) => {
+    let [fn, text, hasVol, vol1n] = setVariables(textObj, pbAnalyzer);
+
+    console.log(fn, hasVol, vol1n);
+  });
 };
 
 function init(textObj) {
@@ -41,3 +50,11 @@ function vol1nIs1(vol1n) {
 function pbIsFirst(pbId) {
   return pbId === '1-1a' || pbId === '1-0a' || pbId === '1-1' || pbId === '1-0';
 }
+
+function setVariables(textObj, pbAnalyzer) {
+  let {fn, text} = textObj;
+  let hasVol = detectVol(text);
+  let vol1n = hasVol ? analyzeVol(fn, text).vol1n : pbAnalyzer(fn, text).pbVol1n;
+  return [fn, text, hasVol, vol1n];
+}
+
