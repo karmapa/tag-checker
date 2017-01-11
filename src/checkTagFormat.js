@@ -1,5 +1,5 @@
 import *  as regexs from './regexs.js';
-import {saveErr, reportErr} from './reportErr.js';
+import {saveErr, reportErr} from './handleErr.js';
 
 // cR correct regex, DgR global detect regex, DlR line detect regex
 const tagRules = [
