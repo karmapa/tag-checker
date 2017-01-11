@@ -1,6 +1,10 @@
 import *  as regexs from './regexs.js';
 import {saveErr, reportErr} from './handleErr.js';
 
+const emptyTagRegex = /<[\s\/]*>/g;
+const noEndArrowRegex = /<[^>]*?(<|\n|$)/g;
+const noStartArrowRegex = /(^|\n|>)[^<\n]*?>/g;
+
 // cR correct regex, DgR global detect regex, DlR line detect regex
 const tagRules = [
   {type: 'division', cR: regexs.divXWgRegex, DgR: regexs.divDgRegex, DlR: regexs.divDlRegex},
@@ -28,9 +32,9 @@ export default function checkTagFormat(textObjs) {
 
     confirmPbInFile(fn, text, pbRegex);
 
-    let emptyTags = text.match(regexs.emptyTag) || [];
-    let noEndArrows = text.match(regexs.noEndArrow) || [];
-    let noStartArrows = text.match(regexs.noStartArrow) || [];
+    let emptyTags = text.match(emptyTagRegex) || [];
+    let noEndArrows = text.match(noEndArrowRegex) || [];
+    let noStartArrows = text.match(noStartArrowRegex) || [];
     let wrongPropFormats = checkPropFormat(text, tagRules);
     saveErr(fn, emptyTags.concat(noEndArrows, noStartArrows, wrongPropFormats));
   });
@@ -45,6 +49,12 @@ function findPbRule(text) {
   }
   else {
     return {type: '(pb|jp)', cR: regexs.jpbXWgRegex, DgR: regexs.jpbDgRegex, DlR: regexs.jpbDlRegex};
+  }
+}
+
+function confirmPbInFile(fn, text, pbRegex) {
+  if (! pbRegex.test(text)) {
+    reportErr('No Pb Tag', [fn]);
   }
 }
 
@@ -63,10 +73,4 @@ function checkPropFormat(text, tagRules) {
     });
   });
   return wrongPropFormats;
-}
-
-function confirmPbInFile(fn, text, pbRegex) {
-  if (! pbRegex.test(text)) {
-    reportErr('No Pb Tag', [fn]);
-  }
 }
