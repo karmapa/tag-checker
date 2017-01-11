@@ -1,5 +1,5 @@
 import *  as regexs from './regexs.js';
-import reportErr from './reportErr.js';
+import {saveErr, reportErr} from './reportErr.js';
 
 // cR correct regex, DgR global detect regex, DlR line detect regex
 const tagRules = [
@@ -16,12 +16,13 @@ export default function checkTagFormat(textObjs) {
   let pbRegex = pbRule.cR;
   tagRules.push(pbRule);
 
+/*
   function saveErr(fn, wrongTags) {
     if (wrongTags.length > 0) {
       errMessages.push(fn + '\n' + wrongTags.join('\n'));
     }
   }
-
+*/
   textObjs.forEach((textObj) => {
     let {fn, text} = textObj;
 
