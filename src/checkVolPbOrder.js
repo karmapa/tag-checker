@@ -13,11 +13,10 @@ export default function checkVolPbOrder(textObjs) {
 
   textObjs.forEach((textObj) => {
     let [fn, text, volExist, vol1n] = setVariables(textObj, pbAnalyzer);
-
-    saveErr(errMessages, checkVol1nIn2Files(fn, vol1n, lastFn, lastVol1n, volExist));
-
     let pbBios = text.match(pbRegex).map(pbAnalyzer.bind(null, fn));
-    check1stPb(lastTextPbBio, pbBios[0]);
+    let text1stPbBio = pbBios[0];
+
+    checkFileContinuity(volExist, fn, vol1n, lastFn, lastVol1n, text1stPbBio);
 
     [lastFn, lastVol1n] = [fn, vol1n];
   });
@@ -66,8 +65,39 @@ function setVariables(textObj, pbAnalyzer) {
   let vol1n = volExist ? analyzeVol(fn, text).vol1n : pbAnalyzer(fn, text).pbVol1n;
   return [fn, text, volExist, vol1n];
 }
-//
-function checkVol1nIn2Files(fn, vol1n, lastFn, lastVol1n, volExist) {
+// checkFileContinuity
+function checkFileContinuity(volExist, fn, vol1n, lastFn, lastVol1n, text1stPbBio) {
+  let errMessages = [];
+  let args = [fn, vol1n, lastFn, lastVol1n];
+  let {pbVol2n, pbNL, tag} = text1stPbBio;
+
+  if (volExist) {
+    saveErr(errMessages, checkContinuityByVolTag(fn, vol1n, lastFn, lastVol1n, args));
+    if (! pbIsFirst(pbVol2n + '-' + pbNL)) {
+      saveErr(errMessages, 'Pb is not start from 1-1a, 1-0a, 1-1, or 1-0 ' + fn + ' ' + tag);
+    }
+  }
+  else {
+    checkContinuityByPbTag();
+  }
+
+  return errMessages;
+}
+
+function checkContinuityByVolTag(fn, vol1n, lastFn, lastVol1n, vars) {
+  let lessVol1n = vol1n < lastVol1n;
+  let vol1nJump = vol1n > lastVol1n + 1;
+
+  if (vol1nJump) {
+    warn(...message, 'Volumn not continuous! Texts may be missing');
+  }
+  else if (lessVol1n) {
+    return 'Error! Wrong vol order: ' + args.join(' ');
+  }
+}
+
+function checkContinuityByPbTag(lastPbBio, pbBio) {
+/*
   let lessVol1n = vol1n < lastVol1n;
   let sameVol1n = vol1n === lastVol1n;
   let vol1nAdd1 = vol1n === lastVol1n + 1;
@@ -89,10 +119,7 @@ function checkVol1nIn2Files(fn, vol1n, lastFn, lastVol1n, volExist) {
   else {
     return 'Error! Wrong vol order: ' + message.join(' ');
   }
-}
-
-function check1stPb(lastPbBio, pbBio) {
-
+*/
 }
 
 
