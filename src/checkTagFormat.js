@@ -98,12 +98,12 @@ function checkPropFormat(text, tagRules) {
   let wrongPropFormats = [];
 
   tagRules.forEach((tagRule) => {
-    let {type, correctRegex, lineWithTagRegex, suspectedRegex} = tagRule;
+    let {type, lineWithTagRegex, suspectedRegex correctRegex,} = tagRule;
 
     text.replace(lineWithTagRegex, (str) => {
       let suspectedTagsN = type !== 'division' ? str.match(suspectedRegex).length : str.match(suspectedRegex).length / 2;
-      let correctTags = str.match(correctRegex);
-      if (! correctTags || correctTags.length !== suspectedTagsN) {
+      let correctTagsN = (str.match(correctRegex) || []).length;
+      if (correctTagsN !== suspectedTagsN) {
         wrongPropFormats.push(type + ': ' + str);
       }
     });
