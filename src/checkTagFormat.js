@@ -1,4 +1,3 @@
-import *  as regexs from './regexs.js';
 import {saveErr, reportErr} from './handleErr.js';
 
 const repo = process.argv[2];
@@ -6,7 +5,6 @@ const emptyTagRegex = /<[\s\/]*>/g;
 const noEndArrowRegex = /<[^>]*?(<|\n|$)/g;
 const noStartArrowRegex = /(^|\n|>)[^<\n]*?>/g;
 
-// correctRegex correct regex, suspectedRegex global detect regex, lineWithTagRegex line detect regex
 let tagRules = [
   {
     type: 'division',
@@ -46,13 +44,6 @@ export default function checkTagFormat(textObjs) {
   let pbRegex = pbRule.correctRegex;
   tagRules.push(pbRule);
 
-/*
-  function saveErr(fn, wrongTags) {
-    if (wrongTags.length > 0) {
-      errMessages.push(fn + '\n' + wrongTags.join('\n'));
-    }
-  }
-*/
   textObjs.forEach((textObj) => {
     let {fn, text} = textObj;
 
