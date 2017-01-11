@@ -4,10 +4,10 @@ const volPosRegex2 = /^<vol/;
 const volRegex = /vol/g;
 const divRegex = /<division n="(\d+?)"/g;
 
-import {saveErr, warn, reportErr} from './handleErr.js';
+import {saveErr, saveErrs, warn, reportErr} from './handleErr.js';
 
 export default function checkStructure(textObjs) {
-  let multiVols = [], multiDivs = [], wrongDivOrders = [], allWrongTagPoses = [];
+  let multiVols = [], multiDivs = [], wrongDivOrders = [], wrongTagPoses = [];
   let lastDivN = 0, lastDivFile = 'First div n is not 1';
 
   textObjs.forEach((textObj) => {
@@ -31,14 +31,11 @@ export default function checkStructure(textObjs) {
     });
 
     if (1 === divNumber || 1 === volNumber) {
-      let wrongTagPoses = checkTagPos(text, divNumber, fn);
-      if (wrongTagPoses.length > 0) {
-        allWrongTagPoses = allWrongTagPoses.concat(wrongTagPoses);
-      }
+      saveErrs(wrongTagPoses, checkTagPos(text, divNumber, fn));
     }
   });
 
-  reportErr('Structure Error', multiVols.concat(multiDivs, repeatDivs, allWrongTagPoses));
+  reportErr('Structure Error', [...multiVols, ...multiDivs, ...wrongDivOrders, ...wrongTagPoses]);
 }
 
 function checkDivOrder(lastDivFile, lastDivN, fn, divN) {
@@ -64,7 +61,7 @@ function checkTagPos(text, divNumber, fn) {
       wrongTagPoses.push('Wrong vol tag position! ' + fn);
     }
     else if (text.match(volPosRegex2)) {
-      console.log('Warning! Vol not follow sutra!', fn);
+      warn('No sutra tag before vol tag!', fn);
     }
   }
 
