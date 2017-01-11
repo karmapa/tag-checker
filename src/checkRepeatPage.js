@@ -3,7 +3,7 @@ const pageTypes = [
   {pageType: 'jp', pageRegex: /<jp id="(.+?)"/g}
 ];
 
-import {saveErr, reportErr} from './reportErr.js';
+import {saveErr, reportErr} from './handleErr.js';
 
 export default function checkReteatPage(textObjs) {
   let errMessages = [];

@@ -1,4 +1,4 @@
-import {saveErr, reportErr} from './handleErr.js';
+import {saveErrs, reportErr} from './handleErr.js';
 
 const repo = process.argv[2];
 const emptyTagRegex = /<[\s\/]*>/g;
@@ -53,7 +53,7 @@ export default function checkTagFormat(textObjs) {
     let noEndArrows = text.match(noEndArrowRegex) || [];
     let noStartArrows = text.match(noStartArrowRegex) || [];
     let wrongPropFormats = checkPropFormat(text, tagRules);
-    saveErr(errMessages, fn, [...emptyTags, ...noEndArrows, ...noStartArrows, ...wrongPropFormats]);
+    saveErrs(errMessages, [...emptyTags, ...noEndArrows, ...noStartArrows, ...wrongPropFormats], fn);
   });
 
   reportErr('Worng Tag Format', errMessages);
