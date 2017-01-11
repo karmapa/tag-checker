@@ -1,3 +1,5 @@
+const pbRegex = /<pb.+?>/g;
+
 import {analyzePb4, analyzePb, analyzeVol} from './analyzeTag.js';
 import {detectVol} from './detectTag.js';
 import {saveErr} from './helper.js';
@@ -5,7 +7,7 @@ import reportErr from './reportErr.js';
 
 export default function checkVolPbOrder(textObjs) {
   let [pb1stBio, pbAnalyzer] = init(textObjs[0]);
-  let [lastFn, lastVol1n] = ['first-file', 0];
+  let [lastFn, lastVol1n, lastTextPbBio] = ['first-file', 0];
   let errMessages = [];
 
   check1stPb(pb1stBio);
@@ -15,6 +17,9 @@ export default function checkVolPbOrder(textObjs) {
 
     let wrongVol1nIn2Files = checkVol1nIn2Files(fn, vol1n, lastFn, lastVol1n, hasVol);
     saveErr(errMessages, [wrongVol1nIn2Files]);
+
+    let pbBios = text.match(pbRegex).map(pbAnalyzer.bind(null, fn));
+    check1stPb(lastTextPbBio, pbBios[0]);
 
     [lastFn, lastVol1n] = [fn, vol1n];
   });
@@ -86,6 +91,10 @@ function checkVol1nIn2Files(fn, vol1n, lastFn, lastVol1n, hasVol) {
   else {
     return 'Error! Wrong vol order: ' + message.join(' ');
   }
+}
+
+function check1stPb(lastPbBio, pbBio) {
+
 }
 
 

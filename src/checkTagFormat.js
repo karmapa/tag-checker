@@ -38,9 +38,8 @@ export default function checkTagFormat(textObjs) {
 };
 
 function findPbRule(text) {
-  let jpbLetterSuffixRegex = regexs.jpb4XWRegex;
-  let pbHasLetterSuffix = jpbLetterSuffixRegex.test(text);
-  if (pbHasLetterSuffix) {
+  let pbHasSuffix = /<(pb|jp) id="\d+?-\d+?-\d+?[abcd]"\/>/.test(text);
+  if (pbHasSuffix) {
     return {type: '(pb|jp)', cR: regexs.jpb4XWgRegex, DgR: regexs.jpbDgRegex, DlR: regexs.jpbDlRegex};
   }
   else {
