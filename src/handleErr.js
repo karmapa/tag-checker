@@ -6,7 +6,7 @@ export function reportErr(errType, errMessages) {
   }
 };
 
-export function saveErr(wholeErrs, message, newErrs) {
+export function saveErr(wholeErrs, message, newErrs = []) {
   if (message) {
     wholeErrs.splice(wholeErrs.length - 1, 0, message);
   }
