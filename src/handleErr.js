@@ -7,10 +7,10 @@ export function reportErr(errType, errMessages) {
 };
 
 export function saveErrs(wholeErrs, newErrs = [], additionalMessage) {
-  if (additionalMessage) {
-    wholeErrs.splice(wholeErrs.length - 1, 0, additionalMessage);
-  }
   if (newErrs.length > 0) {
+    if (additionalMessage) {
+      wholeErrs.splice(wholeErrs.length - 1, 0, additionalMessage);
+    }
     wholeErrs.splice(wholeErrs.length - 1, 0, ...newErrs);
   }
 };
