@@ -1,5 +1,5 @@
 export function saveErr(wholeErrs, newErrs) {
-  if (newErrs[0] !== undefined) {
+  if (newErrs.length > 0) {
     wholeErrs.splice(wholeErrs.length - 1, 0, ...newErrs);
   }
 };
