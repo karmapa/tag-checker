@@ -6,8 +6,8 @@ export function reportErr(errType, errMessages) {
   }
 };
 
-export function saveErr(wholeErrs, newErrs) {
+export function saveErr(wholeErrs, newErrs, message) {
   if (newErrs.length > 0) {
-    wholeErrs.splice(wholeErrs.length - 1, 0, ...newErrs);
+    wholeErrs.splice(wholeErrs.length - 1, 0, message, ...newErrs);
   }
 };

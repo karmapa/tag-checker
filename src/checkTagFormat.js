@@ -53,7 +53,7 @@ export default function checkTagFormat(textObjs) {
     let noEndArrows = text.match(noEndArrowRegex) || [];
     let noStartArrows = text.match(noStartArrowRegex) || [];
     let wrongPropFormats = checkPropFormat(text, tagRules);
-    saveErr(errMessages, [fn, ...emptyTags, ...noEndArrows, ...noStartArrows, ...wrongPropFormats]);
+    saveErr(errMessages, [...emptyTags, ...noEndArrows, ...noStartArrows, ...wrongPropFormats], fn);
   });
 
   reportErr('Worng Tag Format', errMessages);
@@ -89,7 +89,7 @@ function checkPropFormat(text, tagRules) {
   let wrongPropFormats = [];
 
   tagRules.forEach((tagRule) => {
-    let {type, lineWithTagRegex, suspectedRegex correctRegex,} = tagRule;
+    let {type, lineWithTagRegex, suspectedRegex, correctRegex} = tagRule;
 
     text.replace(lineWithTagRegex, (str) => {
       let suspectedTagsN = type !== 'division' ? str.match(suspectedRegex).length : str.match(suspectedRegex).length / 2;
