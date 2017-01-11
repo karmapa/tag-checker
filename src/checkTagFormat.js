@@ -1,23 +1,49 @@
 import *  as regexs from './regexs.js';
 import {saveErr, reportErr} from './handleErr.js';
 
+const repo = process.argv[2];
 const emptyTagRegex = /<[\s\/]*>/g;
 const noEndArrowRegex = /<[^>]*?(<|\n|$)/g;
 const noStartArrowRegex = /(^|\n|>)[^<\n]*?>/g;
 
-// cR correct regex, DgR global detect regex, DlR line detect regex
-const tagRules = [
-  {type: 'division', cR: regexs.divXWgRegex, DgR: regexs.divDgRegex, DlR: regexs.divDlRegex},
-  {type: 'vol', cR: regexs.volXWgRegex, DgR: regexs.volDgRegex, DlR: regexs.volDlRegex},
-  {type: 'sutra', cR: regexs.sutraXWgRegex, DgR: regexs.sutraDgRegex, DlR: regexs.sutraDlRegex},
-  {type: 'bampo', cR: regexs.bampoXWgRegex, DgR: regexs.bampoDgRegex, DlR: regexs.bampoDlRegex},
-  {type: 'head', cR: regexs.headXWgRegex, DgR: regexs.headDgRegex, DlR: regexs.headDlRegex}
+// correctRegex correct regex, suspectedRegex global detect regex, lineWithTagRegex line detect regex
+let tagRules = [
+  {
+    type: 'division',
+    correctRegex: new RegExp('<division n="(\\d+?)" t="[^<>\n]+?" i18n="' + repo + '-division-\\1"\\/>', 'g'),
+    suspectedRegex: /div/g,
+    lineWithTagRegex: /^.*?div.*?$/mg
+  },
+  {
+    type: 'vol',
+    correctRegex: /<vol n="\d+?" t="[\u0f00-\u0fff]+?"\/>/g,
+    suspectedRegex: /vol/g,
+    lineWithTagRegex: /^.*?vol.*?$/mg
+  },
+  {
+    type: 'sutra',
+    correctRegex: /<sutra id="[\da-zA-Z]*?[a-zA-Z]\d+?[a-zA-Z]?"\/>/g,
+    suspectedRegex: /sutra/g,
+    lineWithTagRegex: /^.*?sutra.*?$/mg
+  },
+  {
+    type: 'bampo',
+    correctRegex: /<bampo n="\d+?[a-zA-Z]?\.\d+?(\.\d+?)?"\/>/g,
+    suspectedRegex: /bampo/g,
+    lineWithTagRegex: /^.*?bampo.*?$/mg
+  },
+  {
+    type: 'head',
+    correctRegex: /<head n="\d+?" t="[\u0f00-\u0fff ]+?"( (type|zh|lv|st)="[^<>\n]+?")*?\/>/g,
+    suspectedRegex: /head/g,
+    lineWithTagRegex: /^.*?head.*?$/mg
+  }
 ];
 
 export default function checkTagFormat(textObjs) {
   let errMessages = [];
   let pbRule = findPbRule(textObjs[0].text);
-  let pbRegex = pbRule.cR;
+  let pbRegex = pbRule.correctRegex;
   tagRules.push(pbRule);
 
 /*
@@ -43,12 +69,22 @@ export default function checkTagFormat(textObjs) {
 };
 
 function findPbRule(text) {
-  let pbHasSuffix = /<(pb|jp) id="\d+?-\d+?-\d+?[abcd]"\/>/.test(text);
-  if (pbHasSuffix) {
-    return {type: '(pb|jp)', cR: regexs.jpb4XWgRegex, DgR: regexs.jpbDgRegex, DlR: regexs.jpbDlRegex};
+  let pbWithSuffix = /<(pb|jp) id="\d+?-\d+?-\d+?[abcd]"\/>/.test(text);
+  if (pbWithSuffix) {
+    return {
+      type: '(pb|jp)',
+      correctRegex: /<(pb|jp) id="\d+?-\d+?-\d+?[abcd]"\/>/g,
+      suspectedRegex: /pb|jp/g,
+      lineWithTagRegex: /^.*?(pb|jp).*?$/mg
+    };
   }
   else {
-    return {type: '(pb|jp)', cR: regexs.jpbXWgRegex, DgR: regexs.jpbDgRegex, DlR: regexs.jpbDlRegex};
+    return {
+      type: '(pb|jp)',
+      correctRegex: /<(pb|jp) id="\d+?-\d+?-\d+?"\/>/g,
+      suspectedRegex: /pb|jp/g,
+      lineWithTagRegex: /^.*?(pb|jp).*?$/mg
+    };
   }
 }
 
@@ -62,11 +98,11 @@ function checkPropFormat(text, tagRules) {
   let wrongPropFormats = [];
 
   tagRules.forEach((tagRule) => {
-    let {type, cR, DlR, DgR} = tagRule;
+    let {type, correctRegex, lineWithTagRegex, suspectedRegex} = tagRule;
 
-    text.replace(DlR, (str) => {
-      let suspectedTagsN = type !== 'division' ? str.match(DgR).length : str.match(DgR).length / 2;
-      let correctTags = str.match(cR);
+    text.replace(lineWithTagRegex, (str) => {
+      let suspectedTagsN = type !== 'division' ? str.match(suspectedRegex).length : str.match(suspectedRegex).length / 2;
+      let correctTags = str.match(correctRegex);
       if (! correctTags || correctTags.length !== suspectedTagsN) {
         wrongPropFormats.push(type + ': ' + str);
       }
