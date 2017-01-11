@@ -53,7 +53,7 @@ export default function checkTagFormat(textObjs) {
     let noEndArrows = text.match(noEndArrowRegex) || [];
     let noStartArrows = text.match(noStartArrowRegex) || [];
     let wrongPropFormats = checkPropFormat(text, tagRules);
-    saveErr(errMessages, [...emptyTags, ...noEndArrows, ...noStartArrows, ...wrongPropFormats], fn);
+    saveErr(errMessages, fn, [...emptyTags, ...noEndArrows, ...noStartArrows, ...wrongPropFormats]);
   });
 
   reportErr('Worng Tag Format', errMessages);

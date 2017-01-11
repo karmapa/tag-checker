@@ -6,8 +6,11 @@ export function reportErr(errType, errMessages) {
   }
 };
 
-export function saveErr(wholeErrs, newErrs, message) {
+export function saveErr(wholeErrs, message, newErrs) {
+  if (message) {
+    wholeErrs.splice(wholeErrs.length - 1, 0, message);
+  }
   if (newErrs.length > 0) {
-    wholeErrs.splice(wholeErrs.length - 1, 0, message, ...newErrs);
+    wholeErrs.splice(wholeErrs.length - 1, 0, ...newErrs);
   }
 };
