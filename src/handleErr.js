@@ -9,14 +9,14 @@ export function reportErr(errType, errMessages) {
 export function saveErrs(wholeErrs, newErrs = [], additionalMessage) {
   if (newErrs.length > 0) {
     if (additionalMessage) {
-      wholeErrs.splice(wholeErrs.length - 1, 0, additionalMessage);
+      wholeErrs.splice(wholeErrs.length, 0, additionalMessage);
     }
-    wholeErrs.splice(wholeErrs.length - 1, 0, ...newErrs);
+    wholeErrs.splice(wholeErrs.length, 0, ...newErrs);
   }
 };
 
 export function saveErr(wholeErrs, errMessage) {
   if (errMessage) {
-    wholeErrs.splice(wholeErrs.length - 1, 0, errMessage);
+    wholeErrs.splice(wholeErrs.length, 0, errMessage);
   }
 } 
