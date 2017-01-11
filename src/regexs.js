@@ -19,7 +19,7 @@ export const bampoXIRegex = /<bampo n="((\d+?)([a-zA-Z])?)\.((\d+?)(\.(\d+?))?)"
 //export const pb4XIRegex = /<pb id="((\d+?)-(\d+?))-((\d+?)([abcd]?))"/;
 //export const pbXIRegex = /<pb id="((\d+?)-(\d+?))-(\d+?)"/;
 
-export const divSIgRegex = /<division n="(\d+?)"/g;
+//export const divSIgRegex = /<division n="(\d+?)"/g;
 //export const pbSIgRegex = /<pb id="(.+?)"/g;
 //export const jpSIgRegex = /<jp id="(.+?)"/g;
 

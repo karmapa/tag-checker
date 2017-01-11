@@ -1,41 +1,32 @@
 const divPosRegex = /^<sutra.+?>\r?\n<division.+?>\r?\n<vol.+?>\r?\n<pb/;
 const volPosRegex1 = /^(<sutra.+?>\r?\n)?<vol.+?>\r?\n<pb/;
 const volPosRegex2 = /^<vol/;
+const volRegex = /vol/g;
+const divRegex = /<division n="(\d+?)"/g;
 
-import {volDgRegex, divSIgRegex} from './regexs.js';
-import reportErr from './reportErr.js';
+import {saveErr, warn, reportErr} from './handleErr.js';
 
 export default function checkStructure(textObjs) {
-  let multiVols = [], multiDivs = [], repeatDivs = [], allWrongTagPoses = [];
-  let divNs = {};
+  let multiVols = [], multiDivs = [], wrongDivOrders = [], allWrongTagPoses = [];
   let lastDivN = 0, lastDivFile = 'First div n is not 1';
 
   textObjs.forEach((textObj) => {
     let {fn, text} = textObj;
     let divNumber = 0;
 
-    let volNumber = (text.match(volDgRegex) || []).length;
+    let volNumber = (text.match(volRegex) || []).length;
     if (volNumber > 1) {
-      multiVols.push('Many vol tag in ' + fn);
+      saveErr(multiVols, 'Many vol tag in ' + fn);
     }
 
-    text.replace(divSIgRegex, (divTag, divN) => {
+    text.replace(divRegex, (divTag, divN) => {
       if (2 === ++ divNumber) {
-        multiDivs.push('Many division tag in ' + fn);
+        saveErr(multiDivs, 'Many division tag in ' + fn);
       }
 
       divN = Number(divN);
-      let storedDivN = divNs[divN];
-      if (! storedDivN) {
-        divNs[divN] = fn;
-      }
-      else {
-        repeatDivs.push('Repeat div n in ' + storedDivN + ' and ' + fn);
-      }
+      saveErr(wrongDivOrders, checkDivOrder(lastDivFile, lastDivN, fn, divN));
 
-      if (divN - lastDivN !== 1) {
-        console.log('Warning! Div n is not ordered!', lastDivFile, lastDivN, fn, divN);
-      }
       lastDivN = divN, lastDivFile = fn;
     });
 
@@ -48,6 +39,16 @@ export default function checkStructure(textObjs) {
   });
 
   reportErr('Structure Error', multiVols.concat(multiDivs, repeatDivs, allWrongTagPoses));
+}
+
+function checkDivOrder(lastDivFile, lastDivN, fn, divN) {
+  let divDiff = divN - lastDivN;
+  if (divDiff > 1) {
+    warn('Div n jump!', lastDivFile, lastDivN, fn, divN);
+  }
+  else if (divDiff < 1) {
+    return 'Wrong Div Order' + lastDivFile + ' ' + lastDivN + ' ' + fn + ' ' + divN;
+  }
 }
 
 function checkTagPos(text, divNumber, fn) {
