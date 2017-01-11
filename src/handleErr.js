@@ -19,4 +19,8 @@ export function saveErr(wholeErrs, errMessage) {
   if (errMessage) {
     wholeErrs.splice(wholeErrs.length, 0, errMessage);
   }
-} 
+};
+
+export function warn() {
+  console.log('Warning!', ...arguments);
+}
