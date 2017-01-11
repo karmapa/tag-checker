@@ -1,11 +1,12 @@
-const pbRegex = /<pb id="(.+?)"/g;
-const jpRegex = /<jp id="(.+?)"/g;
+const pageTypes = [
+  {pageType: 'pb', pageRegex: /<pb id="(.+?)"/g},
+  {pageType: 'jp', pageRegex: /<jp id="(.+?)"/g}
+];
 
-import reportErr from './reportErr.js';
+import {saveErr, reportErr} from './reportErr.js';
 
 export default function checkReteatPage(textObjs) {
   let errMessages = [];
-  let pageTypes = [{pageType: 'pb', pageRegex: pbRegex}, {pageType: 'jp', pageRegex: jpRegex}];
 
   pageTypes.forEach((pageTypeObj) => {
     let {pageType, pageRegex} = pageTypeObj;
@@ -21,7 +22,7 @@ export default function checkReteatPage(textObjs) {
           pageIdStore[pageId] = fn;
         }
         else {
-          errMessages.push(pageType + ' ' + pageId + ' in ' + storedId + ' and ' + fn);
+          saveErr(errMessages, pageType + ' ' + pageId + ' in ' + storedId + ' and ' + fn);
         }
       });
     });
