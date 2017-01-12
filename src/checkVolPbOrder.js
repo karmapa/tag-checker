@@ -72,6 +72,21 @@ function correctPbL(lastPbL, pbL) {
   }
 }
 
+function checkPbOrder(lastBio, pbBio, looseMode) {
+  let {lastPbN = pbN, lastTag = tag, lastFn = fn} = lastBio;
+  let {pbN, tag, fn} = pbBio;
+
+  if (sameNumber(lastPbN, pbN) || numberAdd1(lastPbN, pbN)) {
+    return;
+  }
+  else if (looseMode && numberJump(lastPbN, pbN)) {
+    warn(lastFn, lastTag, fn, tag);
+  }
+  else {
+    return 'Wrong pb order! ' + lastFn + ' ' + lastTag + ' ' + fn + ' ' + tag;
+  }
+}
+
 // check1stPb
 function checkRepo1stPb(pbBio) {
   let {fn, tag, pbVol1n, pbVol2n, pbNL} = pbBio;
