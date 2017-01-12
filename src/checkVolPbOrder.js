@@ -21,7 +21,7 @@ export default function checkVolPbOrder(textObjs) {
 
     restPbBios.forEach((pbBio, index) => {
       saveErr(errMessages, checkPbVol1n(vol1n, pbBio));
-      //saveErr(errMessages, checkVol2nAndPbOrder(pbBios[index], pbBio, pbOrderChecker));
+      saveErr(errMessages, checkPbVol2nAndOrder(pbBios[index], pbBio, pbOrderChecker));
     });
 
     [lastFn, lastVol1n, lastTextPbBio] = [fn, vol1n, pbBios[pbBios.length - 1]];
@@ -48,7 +48,7 @@ function setPbTool(pbWithSuffix) {
 }
 
 function checkPb4Order(lastBio, pbBio, looseMode) {
-  let {lastPbN = pbN, lastPbL = pbL, lastTag = tag, lastFn = fn} = lastBio;
+  let {pbN: lastPbN, pbL: lastPbL, tag: lastTag, fn: lastFn} = lastBio;
   let {pbN, pbL, tag, fn} = pbBio;
 
   if (sameNumber(lastPbN, pbN) && correctPbL(lastPbL + pbL) || numberAdd1(lastPbN, pbN) && 'a' === pbL) {
@@ -69,7 +69,7 @@ function correctPbL(str) {
 }
 
 function checkPbOrder(lastBio, pbBio, looseMode) {
-  let {lastPbN = pbN, lastTag = tag, lastFn = fn} = lastBio;
+  let {pbN: lastPbN, tag: lastTag, fn: lastFn} = lastBio;
   let {pbN, tag, fn} = pbBio;
 
   if (sameNumber(lastPbN, pbN) || numberAdd1(lastPbN, pbN)) {
@@ -166,7 +166,7 @@ function checkPbVol1n(vol1n, pbBio) {
   }
 }
 
-function checkVol2nAndPbOrder(lastPbBio, pbBio, pbOrderChecker) {
+function checkPbVol2nAndOrder(lastPbBio, pbBio, pbOrderChecker) {
   let {fn: lastFn, tag: lastTag, pbVol2n: lastPbVol2n} = lastPbBio;
   let {fn, tag, pbVol2n, pbNL, pbN} = pbBio;
   let messages = ['Wrong pb order!', lastFn, lastTag, fn, tag];
