@@ -1,6 +1,6 @@
 import {volHeadPbSWRegex, pbSIRegex, headDRegex, pbDRegex} from './regexs.js';
 import {analyzeHead} from './analyzeTag.js';
-import reportErr from './reportErr.js';
+import {reportErr} from './handleErr.js';
 
 export default function checkHeadN(textObjs) {
   let errMessages = [];
