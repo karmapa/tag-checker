@@ -9,8 +9,8 @@ let tagRules = [
   {
     type: 'division',
     correctRegex: new RegExp('<division n="(\\d+?)" t="[^<>\n]+?" i18n="' + repo + '-division-\\1"\\/>', 'g'),
-    suspectedRegex: /div/g,
-    lineWithTagRegex: /^.*?div.*?$/mg
+    suspectedRegex: /division/g,
+    lineWithTagRegex: /^.*?division.*?$/mg
   },
   {
     type: 'vol',
