@@ -9,7 +9,7 @@ export default function checkVolPbOrder(textObjs) {
   let [lastFn, lastVol1n, lastTextPbBio] = ['first-file', 0];
   let errMessages = [];
 
-  checkRopo1stPb(repo1stPbBio);
+  checkRepo1stPb(repo1stPbBio);
 
   textObjs.forEach((textObj) => {
     let [fn, text, volExist, vol1n] = setVariables(textObj, pbAnalyzer);
@@ -77,13 +77,10 @@ function setVariables(textObj, pbAnalyzer) {
 function checkFileContinuity(volExist, fn, vol1n, lastFn, lastVol1n, text1stPbBio) {
   let errMessages = [];
   let args = [fn, vol1n, lastFn, lastVol1n];
-  let {pbVol2n, pbNL, tag} = text1stPbBio;
 
   if (volExist) {
     saveErr(errMessages, checkContinuityByVolTag(fn, vol1n, lastFn, lastVol1n, args));
-    if (! pbIsFirst(pbVol2n + '-' + pbNL)) {
-      saveErr(errMessages, 'Pb is not start from 1-1a, 1-0a, 1-1, or 1-0 ' + fn + ' ' + tag);
-    }
+    saveErr(errMessages, checkVol1stPb(vol1n, text1stPbBio));
   }
   else {
     checkContinuityByPbTag();
@@ -100,11 +97,16 @@ function checkContinuityByVolTag(fn, vol1n, lastFn, lastVol1n, vars) {
     warn(...message, 'Volumn not continuous! Texts may be missing');
   }
   else if (lessVol1n) {
-    return 'Error! Wrong vol order: ' + args.join(' ');
+    return 'Wrong vol order: ' + args.join(' ');
   }
 }
 
-function checkVol1stPb() {};
+function checkVol1stPb(vol1n, pbBio) {
+  let {fn, pbVol1n, pbVol2n, pbNL} = pbBio;
+  if (pbVol1n !== vol1n || ! vol2nIs1(pbVol2n) || ! pbIsFirst(pbNL)) {
+    return 'Vol tag is not follow by first pbId ' + fn;
+  } 
+};
 
 function checkContinuityByPbTag(lastPbBio, pbBio) {
 /*
