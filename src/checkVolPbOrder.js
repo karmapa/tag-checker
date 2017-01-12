@@ -21,7 +21,7 @@ export default function checkVolPbOrder(textObjs) {
 
     restPbBios.forEach((pbBio, index) => {
       saveErr(errMessages, checkPbVol1n(pbBio, vol1n));
-      saveErr(errMessages, checkInTextPbOrder(pbBios[index], pbBio));
+      saveErr(errMessages, checkInTextPbOrder(pbBios[index], pbBio, pbOrderChecker));
     });
 
     [lastFn, lastVol1n, lastTextPbBio] = [fn, vol1n, pbBios[pbBios.length - 1]];
@@ -135,7 +135,7 @@ function checkVol1stPb(vol1n, pbBio) {
   if (pbVol1n !== vol1n || ! vol2nIs1(pbVol2n) || ! pbIsFirst(pbNL)) {
     return 'Vol tag is not follow by first pbId ' + fn;
   } 
-};
+}
 
 function checkContinuityByPbTag(lastPbBio, pbBio, pbOrderChecker) {
   let {lastPbVol1n: pbVol1n}
@@ -171,10 +171,12 @@ function checkPbVol1n(vol1n, pbBio) {
 }
 
 function checkInTextPbOrder(lastPbBio, pbBio, pbOrderChecker) {
-  let {pbVol2n: lastPbVol2n} = lastPbBio;
-  let {pbVol2n} = lastPbBio;
+  let {fn: lastFn, tag: lastTag, pbVol2n: lastPbVol2n} = lastPbBio;
+  let {fn, tag, pbVol2n} = lastPbBio;
+  let messages = ['Wrong pb order!', lastFn, lastTag, fn, tag];
 
-  if ()
-  pbOrderChecker(lastPbBio, pbBio);
+  if (! numberAdd1(lastPbVol2n, pbVol2n)) {
+    return messages.join(' ');
+  }
+  return pbOrderChecker(lastPbBio, pbBio);
 }
-
