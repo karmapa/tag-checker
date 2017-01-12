@@ -3,7 +3,7 @@ const pbRegex = /<pb.+?>/g;
 import {analyzePb4, analyzePb, analyzeVol} from './analyzeTag.js';
 import {detectVol} from './detectTag.js';
 import {saveErr, saveErrs, warn, reportErr} from './handleErr.js';
-import {numberJupm, numberAdd1, sameNumber, lessNumber} from './helper.js';
+import {numberJump, numberAdd1, sameNumber, lessNumber} from './helper.js';
 
 export default function checkVolPbOrder(textObjs) {
   let [repo1stPbBio, pbAnalyzer, pbOrderChecker] = init(textObjs[0]);
@@ -17,11 +17,11 @@ export default function checkVolPbOrder(textObjs) {
     let pbBios = text.match(pbRegex).map(pbAnalyzer.bind(null, fn));
     let [text1stPbBio, ...restPbBios] = pbBios;
 
-    saveErrs(errMessages, checkFileContinuity(volExist, fn, vol1n, text1stPbBio, lastFn, lastVol1n, lastTextPbBio));
+    saveErrs(errMessages, checkFileContinuity(volExist, fn, vol1n, text1stPbBio, lastFn, lastVol1n, lastTextPbBio, pbOrderChecker));
 
     restPbBios.forEach((pbBio, index) => {
-      saveErr(errMessages, checkPbVol1n(pbBio, vol1n));
-      saveErr(errMessages, checkInTextPbOrder(pbBios[index], pbBio, pbOrderChecker));
+      //saveErr(errMessages, checkPbVol1n(pbBio, vol1n));
+      //saveErr(errMessages, checkVol2nAndPbOrder(pbBios[index], pbBio, pbOrderChecker));
     });
 
     [lastFn, lastVol1n, lastTextPbBio] = [fn, vol1n, pbBios[pbBios.length - 1]];
@@ -112,13 +112,13 @@ function setVariables(textObj, pbAnalyzer) {
 // checkFileContinuity
 function checkFileContinuity(volExist, fn, vol1n, text1stPbBio, lastFn, lastVol1n, lastTextPbBio, pbOrderChecher) {
   let errMessages = [];
-  let messages = ['Volumn not continuous!', fn, vol1n, lastFn, lastVol1n];
+  let messages = ['Volumn not continuous!', lastFn, lastVol1n, fn, vol1n];
 
   if (volExist) {
     if (numberJump(lastVol1n, vol1n)) {
       warn(messages);
     }
-    else if (lessNumber) {
+    else if (lessNumber(lastVol1n, vol1n)) {
       saveErr(errMessages, messages.join(' '));
     }
     saveErr(errMessages, checkVol1stPb(vol1n, text1stPbBio));
@@ -138,39 +138,35 @@ function checkVol1stPb(vol1n, pbBio) {
 }
 
 function checkContinuityByPbTag(lastPbBio, pbBio, pbOrderChecker) {
-  let {lastPbVol1n: pbVol1n}
-/*
-  let lessVol1n = vol1n < lastVol1n;
-  let sameVol1n = vol1n === lastVol1n;
-  let vol1nAdd1 = vol1n === lastVol1n + 1;
-  let vol1nJump = vol1n > lastVol1n + 1;
-  let message = [lastFn, 'volumn', lastVol1n, fn, 'volumn', vol1n];
+  let {fn: lastFn, tag: lastTag, pbVol1n: lastPbVol1n, pbVol2n: lastPbVol2n} = lastPbBio;
+  let {fn, tag, pbVol1n, pbVol2n, pbNL, pbN} = pbBio;
+  let messages = ['Wrong pb order!', lastFn, lastTag, fn, tag];
 
-  if (volExist && vol1nAdd1 || ! volExist && sameVol1n) {
-    return;
+  if (sameNumber(lastPbVol1n ,pbVol1n)) {
+    if (sameNumber(lastPbVol2n, pbVol2n)) {
+      return pbOrderChecker(lastPbBio, pbBio, true);
+    }
+    else if (numberAdd1(lastPbVol2n, pbVol2n) && pbIsFirst(pbNL || String(pbN))) {
+      return;
+    }
   }
-  else if (volExist && vol1nJump) {
-    warn(...message, 'Volumn not continuous! Texts may be missing');
-  }
-  else if (! volExist && vol1nJump) {
-    warn(...message, 'Volumn not continuous! Texts or vol tag may be missing');
-  }
-  else if (! volExist && vol1nAdd1) {
-    warn(...message, 'A vol tag may be missing');
+  else if (numberAdd1(lastPbVol1n, pbVol1n)) {
+    if (vol2nIs1(pbVol2n) && pbIsFirst(pbNL || String(pbN))) {
+      return;
+    }
   }
   else {
-    return 'Error! Wrong vol order: ' + message.join(' ');
+    return messages.join(' ');
   }
-*/
 }
 
 function checkPbVol1n(vol1n, pbBio) {
-  if (! sameNumber(vol1n, pbVol1n)) {
+  if (! sameNumber(vol1n, pbBio.pbVol1n)) {
     return 'Wrong pb id! Volumn ' + vol1n + ' ' + pbBio.tag;
   }
 }
 
-function checkInTextPbOrder(lastPbBio, pbBio, pbOrderChecker) {
+function checkVol2nAndPbOrder(lastPbBio, pbBio, pbOrderChecker) {
   let {fn: lastFn, tag: lastTag, pbVol2n: lastPbVol2n} = lastPbBio;
   let {fn, tag, pbVol2n, pbNL, pbN} = pbBio;
   let messages = ['Wrong pb order!', lastFn, lastTag, fn, tag];
