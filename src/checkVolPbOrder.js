@@ -85,8 +85,8 @@ function checkPbOrder(lastBio, pbBio, looseMode) {
 
 // check1stPb
 function checkRepo1stPb(pbBio) {
-  let {fn, tag, pbVol1n, pbVol2n, pbNL} = pbBio;
-  if (! vol1nIs1(pbVol1n) || ! vol2nIs1(pbVol2n) || ! pbIsFirst(pbNL)) {
+  let {fn, tag, pbVol1n, pbVol2n, pbNL, pbN} = pbBio;
+  if (! vol1nIs1(pbVol1n) || ! vol2nIs1(pbVol2n) || ! pbIsFirst(pbNL || String(pbN))) {
     warn('Pb is not start from 1-1-1a, 1-1-0a, 1-1-1, or 1-1-0', fn, tag);
   }
 }
@@ -172,11 +172,16 @@ function checkPbVol1n(vol1n, pbBio) {
 
 function checkInTextPbOrder(lastPbBio, pbBio, pbOrderChecker) {
   let {fn: lastFn, tag: lastTag, pbVol2n: lastPbVol2n} = lastPbBio;
-  let {fn, tag, pbVol2n} = lastPbBio;
+  let {fn, tag, pbVol2n, pbNL, pbN} = lastPbBio;
   let messages = ['Wrong pb order!', lastFn, lastTag, fn, tag];
 
-  if (! numberAdd1(lastPbVol2n, pbVol2n)) {
+  if (sameNumber(lastPbVol2n, pbVol2n)) {
+    return pbOrderChecker(lastPbBio, pbBio);
+  }
+  if (numberAdd1(lastPbVol2n, pbVol2n) && pbIsFirst(pbNL || String(pbN))) {
+    return;
+  }
+  else {
     return messages.join(' ');
   }
-  return pbOrderChecker(lastPbBio, pbBio);
 }
