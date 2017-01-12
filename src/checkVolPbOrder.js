@@ -6,7 +6,7 @@ import {saveErr, saveErrs, warn, reportErr} from './handleErr.js';
 import {numberJupm, numberAdd1, sameNumber, lessNumber} from './helper.js';
 
 export default function checkVolPbOrder(textObjs) {
-  let [repo1stPbBio, pbAnalyzer] = init(textObjs[0]);
+  let [repo1stPbBio, pbAnalyzer, pbOrderChecker] = init(textObjs[0]);
   let [lastFn, lastVol1n, lastTextPbBio] = ['first-file', 0];
   let errMessages = [];
 
@@ -29,9 +29,9 @@ function init(textObj) {
   let {fn, text} = textObj;
   let prePbBio = analyzePb4(fn, text);
   let pbWithSuffix = detectPbType(prePbBio);
-  let [pbAnalyzer] = setPbTool(pbWithSuffix);
+  let [pbAnalyzer, pbOrderChecker] = setPbTool(pbWithSuffix);
   let pb1stBio = pbAnalyzer(fn, text);
-  return [pb1stBio, pbAnalyzer];
+  return [pb1stBio, pbAnalyzer, pbOrderChecker];
 }
 
 function detectPbType(pbBio) {
@@ -39,10 +39,7 @@ function detectPbType(pbBio) {
 }
 
 function setPbTool(pbWithSuffix) {
-  if (pbWithSuffix) {
-    return [analyzePb4];
-  }
-  return [analyzePb];
+  return pbWithSuffix ? [analyzePb4, checkPb4Order] : [analyzePb, checkPbOrder];
 }
 
 function checkPb4Order(lastBio, pbBio, looseMode) {
