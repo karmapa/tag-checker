@@ -3,7 +3,7 @@ const pbRegex = /<pb.+?>/g;
 import {analyzePb4, analyzePb, analyzeVol} from './analyzeTag.js';
 import {detectVol} from './detectTag.js';
 import {saveErr, saveErrs, warn, reportErr} from './handleErr.js';
-import {numberJupm, numberAdd1, sameNumber, lessNumber, checkNumberJumpOrLess} from './helper.js';
+import {numberJupm, numberAdd1, sameNumber, lessNumber} from './helper.js';
 
 export default function checkVolPbOrder(textObjs) {
   let [repo1stPbBio, pbAnalyzer, pbOrderChecker] = init(textObjs[0]);
@@ -115,7 +115,12 @@ function checkFileContinuity(volExist, fn, vol1n, text1stPbBio, lastFn, lastVol1
   let messages = ['Volumn not continuous!', fn, vol1n, lastFn, lastVol1n];
 
   if (volExist) {
-    saveErr(errMessages, checkNumberJumpOrLess(num1, num2, true, ...messages));
+    if (numberJump(lastVol1n, vol1n)) {
+      warn(messages);
+    }
+    else if (lessNumber) {
+      saveErr(errMessages, messages.join(' '));
+    }
     saveErr(errMessages, checkVol1stPb(vol1n, text1stPbBio));
   }
   else {
