@@ -172,7 +172,7 @@ function checkPbVol1n(vol1n, pbBio) {
 
 function checkInTextPbOrder(lastPbBio, pbBio, pbOrderChecker) {
   let {fn: lastFn, tag: lastTag, pbVol2n: lastPbVol2n} = lastPbBio;
-  let {fn, tag, pbVol2n, pbNL, pbN} = lastPbBio;
+  let {fn, tag, pbVol2n, pbNL, pbN} = pbBio;
   let messages = ['Wrong pb order!', lastFn, lastTag, fn, tag];
 
   if (sameNumber(lastPbVol2n, pbVol2n)) {
