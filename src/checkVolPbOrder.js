@@ -5,11 +5,11 @@ import {detectVol} from './detectTag.js';
 import {saveErr, saveErrs, warn, reportErr} from './handleErr.js';
 
 export default function checkVolPbOrder(textObjs) {
-  let [pb1stBio, pbAnalyzer] = init(textObjs[0]);
+  let [repo1stPbBio, pbAnalyzer] = init(textObjs[0]);
   let [lastFn, lastVol1n, lastTextPbBio] = ['first-file', 0];
   let errMessages = [];
 
-  check1stPb(pb1stBio);
+  checkRopo1stPb(repo1stPbBio);
 
   textObjs.forEach((textObj) => {
     let [fn, text, volExist, vol1n] = setVariables(textObj, pbAnalyzer);
@@ -48,7 +48,7 @@ function checkPb4Order(lastBio, pbBio) {
   
 }
 // check1stPb
-function check1stPb(pbBio) {
+function checkRepo1stPb(pbBio) {
   let {fn, tag, pbVol1n, pbVol2n, pbNL} = pbBio;
   if (! vol1nIs1(pbVol1n) || ! vol2nIs1(pbVol2n) || ! pbIsFirst(pbNL)) {
     warn('Pb is not start from 1-1-1a, 1-1-0a, 1-1-1, or 1-1-0', fn, tag);
@@ -103,6 +103,8 @@ function checkContinuityByVolTag(fn, vol1n, lastFn, lastVol1n, vars) {
     return 'Error! Wrong vol order: ' + args.join(' ');
   }
 }
+
+function checkVol1stPb() {};
 
 function checkContinuityByPbTag(lastPbBio, pbBio) {
 /*
