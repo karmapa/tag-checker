@@ -20,7 +20,7 @@ export default function checkVolPbOrder(textObjs) {
     saveErrs(errMessages, checkFileContinuity(volExist, fn, vol1n, text1stPbBio, lastFn, lastVol1n, lastTextPbBio, pbOrderChecker));
 
     restPbBios.forEach((pbBio, index) => {
-      //saveErr(errMessages, checkPbVol1n(pbBio, vol1n));
+      saveErr(errMessages, checkPbVol1n(vol1n, pbBio));
       //saveErr(errMessages, checkVol2nAndPbOrder(pbBios[index], pbBio, pbOrderChecker));
     });
 
