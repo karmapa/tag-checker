@@ -2,7 +2,7 @@ const pbRegex = /<pb.+?>/g;
 
 import {analyzePb4, analyzePb, analyzeVol} from './analyzeTag.js';
 import {detectVol} from './detectTag.js';
-import {saveErr, warn, reportErr} from './handleErr.js';
+import {saveErr, saveErrs, warn, reportErr} from './handleErr.js';
 
 export default function checkVolPbOrder(textObjs) {
   let [pb1stBio, pbAnalyzer] = init(textObjs[0]);
@@ -16,7 +16,7 @@ export default function checkVolPbOrder(textObjs) {
     let pbBios = text.match(pbRegex).map(pbAnalyzer.bind(null, fn));
     let text1stPbBio = pbBios[0];
 
-    checkFileContinuity(volExist, fn, vol1n, lastFn, lastVol1n, text1stPbBio);
+    saveErrs(errMessages, checkFileContinuity(volExist, fn, vol1n, lastFn, lastVol1n, text1stPbBio));
 
     [lastFn, lastVol1n] = [fn, vol1n];
   });
@@ -43,10 +43,14 @@ function setPbTool(pbWithSuffix) {
   }
   return [analyzePb];
 }
+
+function checkPb4Order(lastBio, pbBio) {
+  
+}
 // check1stPb
 function check1stPb(pbBio) {
   let {fn, tag, pbVol1n, pbVol2n, pbNL} = pbBio;
-  if (! vol1nIs1(pbVol1n) || ! pbIsFirst(pbVol2n + '-' + pbNL)) {
+  if (! vol1nIs1(pbVol1n) || ! vol2nIs1(pbVol2n) || ! pbIsFirst(pbNL)) {
     warn('Pb is not start from 1-1-1a, 1-1-0a, 1-1-1, or 1-1-0', fn, tag);
   }
 }
@@ -55,8 +59,12 @@ function vol1nIs1(vol1n) {
   return 1 === vol1n;
 }
 
+function vol2nIs1(vol2n) {
+  return 1 === vol2n;
+}
+
 function pbIsFirst(pbId) {
-  return pbId === '1-1a' || pbId === '1-0a' || pbId === '1-1' || pbId === '1-0';
+  return '1a' === pbId || '0a' === pbId || '1' === pbId || '0' === pbId;
 }
 // setVariables
 function setVariables(textObj, pbAnalyzer) {
