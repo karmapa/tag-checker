@@ -3,6 +3,7 @@ const pbRegex = /<pb.+?>/g;
 import {analyzePb4, analyzePb, analyzeVol} from './analyzeTag.js';
 import {detectVol} from './detectTag.js';
 import {saveErr, saveErrs, warn, reportErr} from './handleErr.js';
+import {numberJupm, numberAdd1, sameNumber, lessNumber} from './helper.js';
 
 export default function checkVolPbOrder(textObjs) {
   let [repo1stPbBio, pbAnalyzer] = init(textObjs[0]);
@@ -16,7 +17,7 @@ export default function checkVolPbOrder(textObjs) {
     let pbBios = text.match(pbRegex).map(pbAnalyzer.bind(null, fn));
     let text1stPbBio = pbBios[0];
 
-    saveErrs(errMessages, checkFileContinuity(volExist, fn, vol1n, lastFn, lastVol1n, text1stPbBio));
+    saveErrs(errMessages, checkFileContinuity(volExist, fn, vol1n, text1stPbBio, lastFn, lastVol1n, lastTextPbBio));
 
     [lastFn, lastVol1n] = [fn, vol1n];
   });
@@ -44,9 +45,33 @@ function setPbTool(pbWithSuffix) {
   return [analyzePb];
 }
 
-function checkPb4Order(lastBio, pbBio) {
-  
+function checkPb4Order(lastBio, pbBio, looseMode) {
+  let {lastPbN = pbN, lastPbL = pbL, lastTag = tag, lastFn = fn} = lastBio;
+  let {pbN, pbL, tag, fn} = pbBio;
+
+  if (sameNumber(lastPbN, pbN) && correctPbL(lastPbL, pbL) || numberAdd1(lastPbN, pbN) && 'a' === pbL) {
+      return;
+  }
+  else if (looseMode && numberJump(lastPbN, pbN) && 'a' === pbL) {
+    warn(lastFn, lastTag, fn, tag);
+  }
+  else {
+    return 'Wrong pb order! ' + lastFn + ' ' + lastTag + ' ' + fn + ' ' + tag;
+  }
 }
+
+function correctPbL(lastPbL, pbL) {
+  if ('a' === lastPbL && 'b' === pbL) {
+    return true;
+  }
+  if ('b' === lastPbL && 'c' === pbL) {
+    return true;
+  }
+  if ('c' === lastPbL && 'd' === pbL) {
+    return true;
+  }
+}
+
 // check1stPb
 function checkRepo1stPb(pbBio) {
   let {fn, tag, pbVol1n, pbVol2n, pbNL} = pbBio;
@@ -74,7 +99,7 @@ function setVariables(textObj, pbAnalyzer) {
   return [fn, text, volExist, vol1n];
 }
 // checkFileContinuity
-function checkFileContinuity(volExist, fn, vol1n, lastFn, lastVol1n, text1stPbBio) {
+function checkFileContinuity(volExist, fn, vol1n, text1stPbBio, lastFn, lastVol1n, lastTextPbBio, pbOrderChecher) {
   let errMessages = [];
   let args = [fn, vol1n, lastFn, lastVol1n];
 
@@ -83,7 +108,7 @@ function checkFileContinuity(volExist, fn, vol1n, lastFn, lastVol1n, text1stPbBi
     saveErr(errMessages, checkVol1stPb(vol1n, text1stPbBio));
   }
   else {
-    checkContinuityByPbTag();
+    saveErr(checkContinuityByPbTag(lastTextPbBio, text1stPbBio, pbOrderChecher));
   }
 
   return errMessages;
@@ -108,7 +133,7 @@ function checkVol1stPb(vol1n, pbBio) {
   } 
 };
 
-function checkContinuityByPbTag(lastPbBio, pbBio) {
+function checkContinuityByPbTag(lastPbBio, pbBio, pbOrderChecker) {
 /*
   let lessVol1n = vol1n < lastVol1n;
   let sameVol1n = vol1n === lastVol1n;
@@ -133,5 +158,4 @@ function checkContinuityByPbTag(lastPbBio, pbBio) {
   }
 */
 }
-
 
