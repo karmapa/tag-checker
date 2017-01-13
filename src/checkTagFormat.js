@@ -83,7 +83,7 @@ function confirmPbInFile(fn, text, pbRegex) {
   if (! pbRegex.test(text)) {
     reportErr('No Pb Tag', [fn]);
   }
-}
+};
 
 function checkPropFormat(text, tagRules) {
   let wrongPropFormats = [];

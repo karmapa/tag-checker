@@ -23,4 +23,4 @@ export function saveErr(wholeErrs, errMessage) {
 
 export function warn() {
   console.log('Warning!', ...arguments);
-}
+};
