@@ -9,15 +9,15 @@ export function reportErr(errType, errMessages) {
 export function saveErrs(wholeErrs, newErrs = [], additionalMessage) {
   if (newErrs.length > 0) {
     if (additionalMessage) {
-      wholeErrs.splice(wholeErrs.length, 0, additionalMessage);
+      wholeErrs.push(additionalMessage);
     }
-    wholeErrs.splice(wholeErrs.length, 0, ...newErrs);
+    wholeErrs.push(...newErrs);
   }
 };
 
 export function saveErr(wholeErrs, errMessage) {
   if (errMessage) {
-    wholeErrs.splice(wholeErrs.length, 0, errMessage);
+    wholeErrs.push(errMessage);
   }
 };
 
