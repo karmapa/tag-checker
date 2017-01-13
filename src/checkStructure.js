@@ -4,7 +4,7 @@ const volPosRegex2 = /^<vol/;
 const volRegex = /<vol/g;
 const divRegex = /<division n="(\d+?)"/g;
 
-import {saveErr, saveErrs, warn, reportErr} from './handleErr.js';
+import {warn, reportErr} from './handleErr.js';
 import {countTag} from './helper.js';
 
 export default function checkStructure(textObjs) {
@@ -16,55 +16,59 @@ export default function checkStructure(textObjs) {
     let divNumber = 0;
 
     let volNumber = countTag(text, volRegex);
-    if (volNumber > 1) {
-      multiVols.push('Many vol tag in ' + fn);
-    }
+    checkMultiVol(multiVols, fn, volNumber);
 
     text.replace(divRegex, (divTag, divN) => {
-      if (2 === ++ divNumber) {
-        saveErr(multiDivs, 'Many division tag in ' + fn);
-      }
+      checkMultiDiv(multiDivs, fn, divNumber ++);
 
       divN = Number(divN);
-      saveErr(wrongDivOrders, checkDivOrder(lastDivFile, lastDivN, fn, divN));
+      checkDivOrder(wrongDivOrders, lastDivFile, lastDivN, fn, divN);
 
       lastDivN = divN, lastDivFile = fn;
     });
 
     if (1 === divNumber || 1 === volNumber) {
-      saveErrs(wrongTagPoses, checkTagPos(text, divNumber, fn));
+      checkTagPos(wrongTagPoses, text, divNumber, fn);
     }
   });
-
   reportErr('Structure Error', [...multiVols, ...multiDivs, ...wrongDivOrders, ...wrongTagPoses]);
 }
 
-function checkDivOrder(lastDivFile, lastDivN, fn, divN) {
-  let divDiff = divN - lastDivN;
-  if (divDiff > 1) {
-    warn('Div n jump!', lastDivFile, lastDivN, fn, divN);
-  }
-  else if (divDiff < 1) {
-    return 'Wrong Div Order' + lastDivFile + ' ' + lastDivN + ' ' + fn + ' ' + divN;
+function checkMultiVol(store, fn, volNumber) {
+  if (volNumber > 1) {
+    store.push('Many vol tag in ' + fn);
   }
 }
 
-function checkTagPos(text, divNumber, fn) {
-  let wrongTagPoses = [];
+function checkMultiDiv(store, fn, divNumber) {
+  if (2 === divNumber) {
+    store.push('Many division tag in ' + fn);
+  }
+}
 
-  if (divNumber) {
-    if (! text.match(divPosRegex)) {
-      wrongTagPoses.push('Wrong division tag position! ' + fn);
-    }
+function checkDivOrder(store, lastDivFile, lastDivN, fn, divN) {
+  let divDiff = divN - lastDivN;
+  if (1 === divDiff) {
+    return;
+  }
+  else if (divDiff > 1) {
+    warn('Div n jump!', lastDivFile, lastDivN, fn, divN);
   }
   else {
-    if (! text.match(volPosRegex1)) {
-      wrongTagPoses.push('Wrong vol tag position! ' + fn);
-    }
-    else if (text.match(volPosRegex2)) {
-      warn('No sutra tag before vol tag!', fn);
+    store.push('Wrong Div Order' + lastDivFile + ' ' + lastDivN + ' ' + fn + ' ' + divN);
+  }
+}
+
+function checkTagPos(store, text, divNumber, fn) {
+  if (divNumber) {
+    if (! text.match(divPosRegex)) {
+      store.push('Wrong division tag position! ' + fn);
     }
   }
-
-  return wrongTagPoses;
+  else if (! text.match(volPosRegex1)) {
+    store.push('Wrong vol tag position! ' + fn);
+  }
+  else if (text.match(volPosRegex2)) {
+    warn('No sutra tag before vol tag!', fn);
+  }
 }
