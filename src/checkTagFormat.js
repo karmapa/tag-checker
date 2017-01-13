@@ -1,6 +1,6 @@
 import getTagRules from './getTagRules.js';
 import {saveErrs, reportErr, warn} from './handleErr.js';
-import {confirmPbInFile} from './helper.js';
+import {confirmPbInFile, countTag} from './helper.js';
 import {sameNumber} from './compareNumber.js';
 
 const emptyTagRegex = /<[\s\/]*>/g;
@@ -34,9 +34,9 @@ function checkPropFormat(fn, text, tagRules) {
     let {type, lineWithTagRegex, suspectedRegex, tagNameStrRegex, correctRegex} = tagRule;
 
     text.replace(lineWithTagRegex, (str) => {
-      let suspectedTagsN = (str.match(suspectedRegex) || []).length;
-      let tagNameStrN = type !== 'division' ? str.match(tagNameStrRegex).length : str.match(tagNameStrRegex).length / 2;
-      let correctTagsN = (str.match(correctRegex) || []).length;
+      let suspectedTagsN = countTag(str, suspectedRegex);
+      let tagNameStrN = type !== 'division' ? countTag(str, tagNameStrRegex) : countTag(str, tagNameStrRegex) / 2;
+      let correctTagsN = countTag(str, correctRegex);
 
       if (! sameNumber(correctTagsN, suspectedTagsN)) {
         wrongPropFormats.push(type + ': ' + str);

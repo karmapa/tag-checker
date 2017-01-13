@@ -24,7 +24,7 @@ function checkTag(globPatt) {
 
   checkTagFormat(textObjs, pbWithSuffix);
   checkRepeatPage(textObjs);
-//  checkStructure(textObjs);
+  checkStructure(textObjs);
 //  checkVolPbOrder(textObjs);
 //  checkSutraBampoOrder(textObjs);
 //  checkHeadN(textObjs);

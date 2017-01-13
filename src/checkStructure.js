@@ -1,10 +1,11 @@
 const divPosRegex = /^<sutra.+?>\r?\n<division.+?>\r?\n<vol.+?>\r?\n<pb/;
 const volPosRegex1 = /^(<sutra.+?>\r?\n)?<vol.+?>\r?\n<pb/;
 const volPosRegex2 = /^<vol/;
-const volRegex = /vol/g;
+const volRegex = /<vol/g;
 const divRegex = /<division n="(\d+?)"/g;
 
 import {saveErr, saveErrs, warn, reportErr} from './handleErr.js';
+import {countTag} from './helper.js';
 
 export default function checkStructure(textObjs) {
   let multiVols = [], multiDivs = [], wrongDivOrders = [], wrongTagPoses = [];
@@ -14,9 +15,9 @@ export default function checkStructure(textObjs) {
     let {fn, text} = textObj;
     let divNumber = 0;
 
-    let volNumber = (text.match(volRegex) || []).length;
+    let volNumber = countTag(text, volRegex);
     if (volNumber > 1) {
-      saveErr(multiVols, 'Many vol tag in ' + fn);
+      multiVols.push('Many vol tag in ' + fn);
     }
 
     text.replace(divRegex, (divTag, divN) => {

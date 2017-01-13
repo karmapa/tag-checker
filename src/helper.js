@@ -6,3 +6,8 @@ export function confirmPbInFile(fn, text, pbRegex) {
     reportErr('No Pb Tag', [fn]);
   }
 };
+
+export function countTag(str, regex) {
+  let matches = str.match(regex);
+  return matches ? matches.length : 0;
+};
