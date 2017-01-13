@@ -22,7 +22,7 @@ function checkTag(globPatt) {
   confirmPbInFile(fn, repo1stText, pbRegex);
   let pbWithSuffix = detectPbType(repo1stText);
 
-//  checkTagFormat(textObjs);
+  checkTagFormat(textObjs, pbWithSuffix);
 //  checkRepeatPage(textObjs);
 //  checkStructure(textObjs);
 //  checkVolPbOrder(textObjs);
