@@ -23,7 +23,7 @@ function checkTag(globPatt) {
   let pbWithSuffix = detectPbType(repo1stText);
 
   checkTagFormat(textObjs, pbWithSuffix);
-//  checkRepeatPage(textObjs);
+  checkRepeatPage(textObjs);
 //  checkStructure(textObjs);
 //  checkVolPbOrder(textObjs);
 //  checkSutraBampoOrder(textObjs);

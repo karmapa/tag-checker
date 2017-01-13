@@ -3,7 +3,7 @@ const pageTypes = [
   {pageType: 'jp', pageRegex: /<jp id="(.+?)"/g}
 ];
 
-import {saveErr, reportErr} from './handleErr.js';
+import {reportErr} from './handleErr.js';
 
 export default function checkReteatPage(textObjs) {
   let errMessages = [];
@@ -13,20 +13,19 @@ export default function checkReteatPage(textObjs) {
     let pageIdStore = {};
 
     textObjs.forEach((textObj) => {
-      let fn = textObj.fn;
+      let {fn, text} = textObj;
 
-      textObj.text.replace(pageRegex, (tag, pageId) => {
-        let storedId = pageIdStore[pageId];
+      text.replace(pageRegex, (tag, pageId) => {
+        let storedIdFn = pageIdStore[pageId];
 
-        if (! storedId) {
+        if (! storedIdFn) {
           pageIdStore[pageId] = fn;
         }
         else {
-          saveErr(errMessages, pageType + ' ' + pageId + ' in ' + storedId + ' and ' + fn);
+          errMessages.push(pageType + ' ' + pageId + ' in ' + storedIdFn + ' and ' + fn);
         }
       });
     });
   });
-
   reportErr('Repeat Page', errMessages);
 }
