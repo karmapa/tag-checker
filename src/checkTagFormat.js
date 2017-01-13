@@ -7,8 +7,9 @@ const noStartArrowRegex = /(^|\n|>)[^<\n]*?>/g;
 
 export default function checkTagFormat(textObjs, pbWithSuffix) {
   let errMessages = [];
-  let {tagRules, pbRegex} = getTagRules(pbWithSuffix);
-/*
+  let tagRules = getTagRules(pbWithSuffix);
+  let pbRegex = tagRules[0].correctRegex;
+
   textObjs.forEach((textObj) => {
     let {fn, text} = textObj;
 
@@ -22,7 +23,6 @@ export default function checkTagFormat(textObjs, pbWithSuffix) {
   });
 
   reportErr('Worng Tag Format', errMessages);
-*/
 };
 
 function confirmPbInFile(fn, text, pbRegex) {

@@ -50,7 +50,7 @@ let pbRules = {
 
 export default function getTagRules(pbWithSuffix) {
   if (pbWithSuffix) {
-    return tagRules.push(pbRules.pb4Rule);
+    return [pbRules.pb4Rule, ...tagRules];
   }
-  return tagRules.push(pbRules.pbRule);
+  return [pbRules.pb4Rule, ...tagRules];
 };
