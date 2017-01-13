@@ -1,5 +1,6 @@
 import getTagRules from './getTagRules.js';
 import {saveErrs, reportErr} from './handleErr.js';
+import {confirmPbInFile} from './helper.js';
 
 const emptyTagRegex = /<[\s\/]*>/g;
 const noEndArrowRegex = /<[^>]*?(<|\n|$)/g;
@@ -23,12 +24,6 @@ export default function checkTagFormat(textObjs, pbWithSuffix) {
   });
 
   reportErr('Worng Tag Format', errMessages);
-};
-
-function confirmPbInFile(fn, text, pbRegex) {
-  if (! pbRegex.test(text)) {
-    reportErr('No Pb Tag', [fn]);
-  }
 };
 
 function checkPropFormat(text, tagRules) {
