@@ -10,6 +10,6 @@ export function pbExist(str, regex = pb) {
   return regex.test(str);
 };
 
-export function detectVol(str) {
+export function volExist(str) {
   return vol.test(str);
 };

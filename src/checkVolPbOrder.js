@@ -1,18 +1,18 @@
 const pbRegex = /<pb.+?>/g;
 
 import {analyzePb4, analyzePb, analyzeVol} from './analyzeTag.js';
-import {detectVol} from './detectTag.js';
+import {volExist} from './detectTag.js';
 import {saveErr, saveErrs, warn, reportErr} from './handleErr.js';
 import {lessNumber, sameNumber, numberAdd1, numberJump} from './compareNumber.js';
 
-export default function checkVolPbOrder(textObjs) {
+export default function checkVolPbOrder(textObjs, pbWithSuffix) {
   let [repo1stPbBio, pbAnalyzer, pbOrderChecker] = init(textObjs[0], pbWithSuffix);
   let [lastFn, lastVol1n, lastTextPbBio] = ['first-file', 0];
   let errMessages = [];
 
   checkRepo1stPb(repo1stPbBio);
 
-  textObjs.forEach((textObj, pbWithSuffix) => {
+  textObjs.forEach((textObj) => {
     let [fn, text, volExist, vol1n] = setVariables(textObj, pbAnalyzer);
     let pbBios = text.match(pbRegex).map(pbAnalyzer.bind(null, fn));
     let [text1stPbBio, ...restPbBios] = pbBios;
@@ -91,8 +91,7 @@ function pbIsFirst(pbId) {
 // setVariables
 function setVariables(textObj, pbAnalyzer) {
   let {fn, text} = textObj;
-  let volExist = detectVol(text);
-  let vol1n = volExist ? analyzeVol(fn, text).vol1n : pbAnalyzer(fn, text).pbVol1n;
+  let vol1n = volExist(text) ? analyzeVol(fn, text).vol1n : pbAnalyzer(fn, text).pbVol1n;
   return [fn, text, volExist, vol1n];
 }
 // checkFileContinuity

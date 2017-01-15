@@ -6,8 +6,8 @@ const volAnalyzeRegex = /<vol n="(\d+?)"/;
 const pb4AnalyzeRegex = /<pb id="((\d+?)-(\d+?))-((\d+?)([abcd]))"/;
 const pbAnalyzeRegex = /<pb id="((\d+?)-(\d+?))-(\d+?)"/;
 
-export function analyzeVol(fn, tag) {
-  let bio = volAnalyzeRegex.exec(tag);
+export function analyzeVol(fn, tagStr) {
+  let bio = volAnalyzeRegex.exec(tagStr);
   return {
     fn: fn,
     tag: bio[0],
@@ -15,8 +15,8 @@ export function analyzeVol(fn, tag) {
   };
 }
 
-export function analyzePb4(fn, tag) {
-  let bio = pb4AnalyzeRegex.exec(tag);
+export function analyzePb4(fn, tagStr) {
+  let bio = pb4AnalyzeRegex.exec(tagStr);
   return {
     fn: fn,
     tag: bio[0],
@@ -29,8 +29,8 @@ export function analyzePb4(fn, tag) {
   };
 }
 
-export function analyzePb(fn, tag) {
-  let bio = pbAnalyzeRegex.exec(tag);
+export function analyzePb(fn, tagStr) {
+  let bio = pbAnalyzeRegex.exec(tagStr);
   return {
     fn: fn,
     tag: bio[0],
