@@ -80,21 +80,13 @@ function checkPbOrder(store, lastBio, pbBio, looseMode) {
 // check1stPb
 function checkRepo1stPb(pbBio) {
   let {fn, tag, pbVol1n, pbVol2n, pbNL, pbN} = pbBio;
-  if (! vol1nIs1(pbVol1n) || ! vol2nIs1(pbVol2n) || ! pbIsFirst(pbNL || String(pbN))) {
+  if (! sameNumber(pbVol1n, 1) || ! sameNumber(pbVol2n, 1) || ! pbIsFirst(pbNL || pbN)) {
     warn('Pb is not start from 1-1-1a, 1-1-0a, 1-1-1, or 1-1-0', fn, tag);
   }
 }
 
-function vol1nIs1(vol1n) {
-  return 1 === vol1n;
-}
-
-function vol2nIs1(vol2n) {
-  return 1 === vol2n;
-}
-
 function pbIsFirst(pbId) {
-  return '1a' === pbId || '0a' === pbId || '1' === pbId || '0' === pbId;
+  return '1a' === pbId || '0a' === pbId || 1 === pbId || 0 === pbId;
 }
 // setVariables
 function setVariables(textObj, pbAnalyzer) {
