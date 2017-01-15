@@ -3,16 +3,15 @@ const pbRegex = /<pb.+?>/g;
 import {analyzePb4, analyzePb, analyzeVol} from './analyzeTag.js';
 import {detectVol} from './detectTag.js';
 import {saveErr, saveErrs, warn, reportErr} from './handleErr.js';
-import {numberJump, numberAdd1, sameNumber, lessNumber} from './helper.js';
 
 export default function checkVolPbOrder(textObjs) {
-  let [repo1stPbBio, pbAnalyzer, pbOrderChecker] = init(textObjs[0]);
+  let [repo1stPbBio, pbAnalyzer, pbOrderChecker] = init(textObjs[0], pbWithSuffix);
   let [lastFn, lastVol1n, lastTextPbBio] = ['first-file', 0];
   let errMessages = [];
 
   checkRepo1stPb(repo1stPbBio);
 
-  textObjs.forEach((textObj) => {
+  textObjs.forEach((textObj, pbWithSuffix) => {
     let [fn, text, volExist, vol1n] = setVariables(textObj, pbAnalyzer);
     let pbBios = text.match(pbRegex).map(pbAnalyzer.bind(null, fn));
     let [text1stPbBio, ...restPbBios] = pbBios;
@@ -30,24 +29,18 @@ export default function checkVolPbOrder(textObjs) {
   reportErr('Wrong Volumn Pb Order!', errMessages);
 };
 // init
-function init(textObj) {
+function init(textObj, pbWithSuffix) {
   let {fn, text} = textObj;
-  let prePbBio = analyzePb4(fn, text);
-  let pbWithSuffix = detectPbType(prePbBio);
   let [pbAnalyzer, pbOrderChecker] = setPbTool(pbWithSuffix);
   let pb1stBio = pbAnalyzer(fn, text);
   return [pb1stBio, pbAnalyzer, pbOrderChecker];
-}
-
-function detectPbType(pbBio) {
-  return pbBio.pbL ? true : false;
 }
 
 function setPbTool(pbWithSuffix) {
   return pbWithSuffix ? [analyzePb4, checkPb4Order] : [analyzePb, checkPbOrder];
 }
 
-function checkPb4Order(lastBio, pbBio, looseMode) {
+function checkPb4Order(store, lastBio, pbBio, looseMode) {
   let {pbN: lastPbN, pbL: lastPbL, tag: lastTag, fn: lastFn} = lastBio;
   let {pbN, pbL, tag, fn} = pbBio;
 
@@ -55,10 +48,10 @@ function checkPb4Order(lastBio, pbBio, looseMode) {
       return;
   }
   else if (looseMode && numberJump(lastPbN, pbN) && 'a' === pbL) {
-    warn(lastFn, lastTag, fn, tag);
+    warn('Pb may be missing!', lastFn, lastTag, fn, tag);
   }
   else {
-    return 'Wrong pb order! ' + lastFn + ' ' + lastTag + ' ' + fn + ' ' + tag;
+    store.push('Wrong pb order! ' + lastFn + ' ' + lastTag + ' ' + fn + ' ' + tag);
   }
 }
 
@@ -68,7 +61,7 @@ function correctPbL(str) {
   }
 }
 
-function checkPbOrder(lastBio, pbBio, looseMode) {
+function checkPbOrder(store, lastBio, pbBio, looseMode) {
   let {pbN: lastPbN, tag: lastTag, fn: lastFn} = lastBio;
   let {pbN, tag, fn} = pbBio;
 
@@ -76,10 +69,10 @@ function checkPbOrder(lastBio, pbBio, looseMode) {
     return;
   }
   else if (looseMode && numberJump(lastPbN, pbN)) {
-    warn(lastFn, lastTag, fn, tag);
+    warn('Pb may be missing!', lastFn, lastTag, fn, tag);
   }
   else {
-    return 'Wrong pb order! ' + lastFn + ' ' + lastTag + ' ' + fn + ' ' + tag;
+    store.push('Wrong pb order! ' + lastFn + ' ' + lastTag + ' ' + fn + ' ' + tag);
   }
 }
 
