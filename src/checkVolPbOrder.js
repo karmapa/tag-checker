@@ -3,6 +3,7 @@ const pbRegex = /<pb.+?>/g;
 import {analyzePb4, analyzePb, analyzeVol} from './analyzeTag.js';
 import {detectVol} from './detectTag.js';
 import {saveErr, saveErrs, warn, reportErr} from './handleErr.js';
+import {lessNumber, sameNumber, numberAdd1, numberJump} from './compareNumber.js';
 
 export default function checkVolPbOrder(textObjs) {
   let [repo1stPbBio, pbAnalyzer, pbOrderChecker] = init(textObjs[0], pbWithSuffix);

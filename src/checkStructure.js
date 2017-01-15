@@ -6,6 +6,7 @@ const divRegex = /<division n="(\d+?)"/g;
 
 import {warn, reportErr} from './handleErr.js';
 import {countTag} from './helper.js';
+import {numberAdd1, numberJump} from './compareNumber.js';
 
 export default function checkStructure(textObjs) {
   let multiVols = [], multiDivs = [], wrongDivOrders = [], wrongTagPoses = [];
@@ -47,15 +48,14 @@ function checkMultiDiv(store, fn, divNumber) {
 }
 
 function checkDivOrder(store, lastDivFile, lastDivN, fn, divN) {
-  let divDiff = divN - lastDivN;
-  if (1 === divDiff) {
+  if (numberAdd1(lastDivN, divN)) {
     return;
   }
-  else if (divDiff > 1) {
-    warn('Div n jump!', lastDivFile, lastDivN, fn, divN);
+  else if (numberJump(lastDivN, divN)) {
+    warn('Division may be missing!', lastDivFile, lastDivN, fn, divN);
   }
   else {
-    store.push('Wrong Div Order' + lastDivFile + ' ' + lastDivN + ' ' + fn + ' ' + divN);
+    store.push('Wrong Division Order' + lastDivFile + ' ' + lastDivN + ' ' + fn + ' ' + divN);
   }
 }
 
