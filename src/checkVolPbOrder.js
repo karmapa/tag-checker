@@ -23,6 +23,9 @@ export default function checkVolPbOrder(textObjs, pbWithSuffix) {
     else if (lastTextPbBio) {
       checkFileContinuityByPb(errMessages, lastTextPbBio, text1stPbBio, pbOrderChecker);
     }
+    else {
+      warn('Vol tag may be missing', fn);
+    }
 
     restPbBios.forEach((pbBio, index) => {
       checkPbVol1n(errMessages, vol1n, pbBio);
