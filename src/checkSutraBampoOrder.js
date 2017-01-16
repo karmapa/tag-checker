@@ -44,7 +44,7 @@ export default function checkSutraBampoOrder(textObjs) {
         lastBio = tagBio;
       }
       else {
-        checkFirstBio(tagBio);
+        check1stBio(tagBio);
         lastBio = tagBio;
       }
     });
@@ -105,7 +105,7 @@ function checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errIn
     }
   }
   else {
-    if (numberAdd1(lastSutraN, sutraN) && sutraL && sutraL !== 'a' || numberJump(lastSutraN, sutraN)) {
+    if (numberAdd1(lastSutraN, sutraN) && sutraL && sutraL !== 'a' && sutraL !== 'A' || numberJump(lastSutraN, sutraN)) {
       warn('Sutra may be missing! ' + errInfo);
     }
     return true;
@@ -127,7 +127,7 @@ function checkSutra_bampoOrder(store, lastBio, bio, firstBampoAhead, errInfo) {
     check2ndBampo(bampoN, errInfo);
   }
   else {
-    check1stBampoN(store, bampoN, errInfo);
+    check1stBampo(store, bampoN, errInfo);
   }
 }
 
@@ -176,22 +176,22 @@ function checkBampoOrder(store, lastBio, bio, errInfo) {
   else {
     let correctSutraNL = checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
     if (correctSutraNL) {
-      check1stBampoN(bampoN, errInfo);
+      check1stBampo(bampoN, errInfo);
     }
   }
 }
 
-function checkFirstBio(bio) {
+function check1stBio(bio) {
   checkFirstSutraNL(bio.sutraNL);
 
   if (bio.type === 'bampo') {
-    console.log('Warning! No sutra before first bampo');
-    checkFirstBampoN(bio.bampoN, 'from the beginning');
+    warn('No sutra before first bampo');
+    check1stBampo(bio.bampoN, 'from the beginning');
   }
 }
 
 function checkFirstSutraNL(sutraNL) {
   if (sutraNL !== '1' && sutraNL !== '1a' && sutraNL !== '1A') {
-    console.log('Warning! Sutra id not start from 1, 1a, or 1A');
+    warn('Sutra id not start from 1, 1a, or 1A');
   }
 }
