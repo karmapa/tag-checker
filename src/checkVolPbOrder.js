@@ -20,7 +20,7 @@ export default function checkVolPbOrder(textObjs, pbWithSuffix) {
     if (volExist) {
       checkFileContinuityByVol(errMessages, lastFn, lastVol1n, fn, vol1n, text1stPbBio);
     }
-    else {
+    else if (lastTextPbBio) {
       checkFileContinuityByPb(errMessages, lastTextPbBio, text1stPbBio, pbOrderChecker);
     }
 
@@ -105,7 +105,7 @@ function checkFileContinuityByVol(store, lastFn, lastVol1n, fn, vol1n, text1stPb
   if (numberJump(lastVol1n, vol1n)) {
     warn(message);
   }
-  else if (lessNumber(lastVol1n, vol1n) && sameNumber(lastVol1n, vol1n)) {
+  else if (! numberAdd1(lastVol1n, vol1n)) {
     store.push(message);
   }
   checkVol1stPb(store, vol1n, text1stPbBio);
@@ -121,23 +121,24 @@ function checkVol1stPb(store, vol1n, pbBio) {
 function checkContinuityByPb(store, lastPbBio, pbBio, pbOrderChecker) {
   let {fn: lastFn, tag: lastTag, pbVol1n: lastPbVol1n, pbVol2n: lastPbVol2n} = lastPbBio;
   let {fn, tag, pbVol1n, pbVol2n, pbNL, pbN} = pbBio;
-  let message = 'Wrong pb order!' + ' ' + lastFn + ' ' + lastTag + ' ' + fn + ' ' + tag;
+  let message = 'Wrong pb order! ' + lastFn + ' ' + lastTag + ' ' + fn + ' ' + tag;
 
-  if (sameNumber(lastPbVol1n ,pbVol1n)) {
-    if (sameNumber(lastPbVol2n, pbVol2n)) {
+  if (lessNumber(lastPbVol1n, pbVol1n)) {
+    store.push(message);
+  }
+  else if (sameNumber(lastPbVol1n, pbVol1n)) {
+    if (lessNumber(lastPbVol2n, pbVol2n)) {
+      store.push(message);
+    }
+    else if (sameNumber(lastPbVol2n, pbVol2n)) {
       pbOrderChecker(store, lastPbBio, pbBio, true);
     }
-    else if (numberAdd1(lastPbVol2n, pbVol2n) && ! pbIsFirst(pbNL || pbN)) {
-      return;
+    else if (! (numberAdd1(lastPbVol2n, pbVol2n) && pbIsFirst(pbNL || pbN))) {
+      warn(message);
     }
   }
-  else if (numberAdd1(lastPbVol1n, pbVol1n)) {
-    if (vol2nIs1(pbVol2n) && pbIsFirst(pbNL || String(pbN))) {
-      return;
-    }
-  }
-  else {
-    return store.push(message);
+  else if (! (sameNumber(1, pbVol2n) && pbIsFirst(pbNL || pbN))) {
+    warn(message, 'Vol tag may be missing', fn);
   }
 }
 
