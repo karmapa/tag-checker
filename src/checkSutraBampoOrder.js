@@ -2,9 +2,9 @@ const sutraBampoPbRegex = /<(sutra|bampo).+?>|<pb.+?>(?=([\s\S](?!<pb))*?(?=<sut
 const pbRegex = /<pb id="(.+?)"/;
 
 import {pbExist, bampoExist} from './detectTag.js';
-import {reportErr} from './handleErr.js';
 import {analyzeSutra, analyzeBampo} from './analyzeTag.js';
-import {checkFirstBampoN, checkSutraNlOrder, isFirstBampoAhead} from './sutraBampoOrderHelper.js';
+import {lessNumber, sameNumber, numberAdd1, numberJump} from './compareNumber.js';
+import {warn, reportErr} from './handleErr.js';
 
 export default function checkSutraBampoOrder(textObjs) {
   let lastBio, lackSutraInBampos, firstBampoAhead, errMessages = [];
@@ -22,12 +22,9 @@ export default function checkSutraBampoOrder(textObjs) {
       tagBio = bampoExist(tag) ? analyzeBampo(fn, pb, tag) : analyzeSutra(fn, pb, tag);
       let type === tagBio.type;
 
-      else if (lastBio) {
+      if (lastBio) {
         let lastType = lastBio.type;
-        let wrongOrder = checkOrder(lastBio, tagBio, firstBampoAhead);
-        if (wrongOrder) {
-          errMessages = errMessages.concat(wrongOrder);
-        }
+        checkOrder(errMessages, lastBio, tagBio, firstBampoAhead);
 
         if (lastType === 'bampo' && type === 'sutra') {
           firstBampoAhead = isFirstBampoAhead(lastBio, tagBio);
@@ -56,13 +53,13 @@ export default function checkSutraBampoOrder(textObjs) {
   reportErr('Wrong Sutra Bampo Order', errMessages);
 }
 
-function checkOrder(lastBio, bio, firstBampoAhead) {
+function checkOrder(store, lastBio, bio, firstBampoAhead) {
   let {type: lastType, pb: lastPb, fn: lastFn, tag: lastTag} = lastBio;
   let {type, pb, fn, tag} = bio;
-  let errInfo = lastTag + ' ' + lastFn + ' ' + lastPb + ', ' + tag + ' ' + fn + ' ' + pb;
+  let errInfo = lastFn + ' ' + lastPb + ' ' + lastTag + ', ' + fn + ' ' + pb + ' ' + tag;
 
   if (lastType === 'sutra' && type === 'sutra') {
-    return checkSutraOrder(lastBio, bio, errInfo);
+    checkSutraOrder(store, lastBio, bio, errInfo);
   }
   else if (lastType === 'sutra' && type === 'bampo') {
     return checkSutra_bampoOrder(lastBio, bio, firstBampoAhead, errInfo);
@@ -75,21 +72,43 @@ function checkOrder(lastBio, bio, firstBampoAhead) {
   }
 }
 
-function checkSutraOrder(lastBio, bio, errInfo) {
-  let errMessages = [];
-  let {sutraN: lastSutraN, sutraL: lastSutraL} = lastBio;
-  let {sutraN, sutraL} = bio;
+function checkSutraOrder(store, lastBio, bio, errInfo) {
+  let {sutraV: lastSutraV, sutraN: lastSutraN, sutraL: lastSutraL} = lastBio;
+  let {sutraV, sutraN, sutraL} = bio;
 
-  if (lastBio.sutraV !== bio.sutraV) {
-    errMessages.push('Sutra id not consistent! ' + errInfo);
+  if (lastSutraV !== sutraV) {
+    store.push('Sutra id not consistent! ' + errInfo);
   }
 
-  let wrongSutraNlOrder = checkSutraNlOrder(lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
-  if (wrongSutraNlOrder[0]) {
-    errMessages = errMessages.concat(wrongSutraNlOrder);
-  }
+  checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
+}
 
-  return 0 === errMessages.length ? false : errMessages;
+function checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errInfo) {
+  if (lessNumber(lastSutraN, sutraN)) {
+    store.push('Wrong sutra order! ' + errInfo);
+  }
+  else if (sameNumber(lastSutraN, sutraN)) {
+    if (! sutraL || ! lastSutraL) {
+      store.push('Wrong sutra order! ' + errInfo);
+    }
+    else {
+      sutraL = sutraL.charCodeAt(0), lastSutraL = lastSutraL.charCodeAt(0);
+      if (numberJump(lastSutraL, sutraL)) {
+        warn('Sutra is missing! ' + errInfo);
+      }
+      else if (! numberAdd1(lastSutraL, sutraL)) {
+        store.push('Wrong sutra order! ' + errInfo);
+      }
+    }
+  }
+  else if (numberAdd1(lastSutraN, sutraN)) {
+    if (sutraL && sutraL !== 'a') {
+      warn('Sutra may be missing! ' + errInfo);
+    }
+  }
+  else {
+    warn('Sutra is missing! ' + errInfo);
+  }
 }
 
 function checkSutra_bampoOrder(lastBio, bio, firstBampoAhead, errInfo) {
