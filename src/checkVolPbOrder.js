@@ -25,8 +25,8 @@ export default function checkVolPbOrder(textObjs, pbWithSuffix) {
     }
 
     restPbBios.forEach((pbBio, index) => {
-      saveErr(errMessages, checkPbVol1n(vol1n, pbBio));
-      saveErr(errMessages, checkPbVol2nAndOrder(pbBios[index], pbBio, pbOrderChecker));
+      checkPbVol1n(errMessages, vol1n, pbBio);
+      checkPbVol2nAndOrder(errMessages, pbBios[index], pbBio, pbOrderChecker);
     });
 
     [lastFn, lastVol1n, lastTextPbBio] = [fn, vol1n, pbBios[pbBios.length - 1]];
@@ -100,7 +100,7 @@ function setVariables(textObj, pbAnalyzer) {
 }
 // checkFileContinuity
 function checkFileContinuityByVol(store, lastFn, lastVol1n, fn, vol1n, text1stPbBio) {
-  let message = 'Volumn not continuous!' + ' ' + lastFn + ' ' + lastVol1n + ' ' + fn + ' ' + vol1n;
+  let message = 'Volumn not continuous! ' + lastFn + ' ' + lastVol1n + ' ' + fn + ' ' + vol1n;
 
   if (numberJump(lastVol1n, vol1n)) {
     warn(message);
@@ -141,24 +141,24 @@ function checkContinuityByPb(store, lastPbBio, pbBio, pbOrderChecker) {
   }
 }
 
-function checkPbVol1n(vol1n, pbBio) {
+function checkPbVol1n(store, vol1n, pbBio) {
   if (! sameNumber(vol1n, pbBio.pbVol1n)) {
-    return 'Wrong pb id! Volumn ' + vol1n + ' ' + pbBio.tag;
+    store.push('Wrong pb id! Volumn ' + vol1n + ' ' + pbBio.tag);
   }
 }
 
-function checkPbVol2nAndOrder(lastPbBio, pbBio, pbOrderChecker) {
+function checkPbVol2nAndOrder(store, lastPbBio, pbBio, pbOrderChecker) {
   let {fn: lastFn, tag: lastTag, pbVol2n: lastPbVol2n} = lastPbBio;
   let {fn, tag, pbVol2n, pbNL, pbN} = pbBio;
-  let messages = ['Wrong pb order!', lastFn, lastTag, fn, tag];
+  let message = 'Wrong pb order! ' + lastFn + ' ' + lastTag + ' ' + fn + ' ' + tag;
 
   if (sameNumber(lastPbVol2n, pbVol2n)) {
-    return pbOrderChecker(lastPbBio, pbBio);
+    pbOrderChecker(store, lastPbBio, pbBio);
   }
-  if (numberAdd1(lastPbVol2n, pbVol2n) && pbIsFirst(pbNL || String(pbN))) {
+  else if (numberAdd1(lastPbVol2n, pbVol2n) && pbIsFirst(pbNL || pbN)) {
     return;
   }
   else {
-    return messages.join(' ');
+    store.push(message);
   }
 }
