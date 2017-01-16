@@ -105,7 +105,7 @@ function checkFileContinuityByVol(store, lastFn, lastVol1n, fn, vol1n, text1stPb
   if (numberJump(lastVol1n, vol1n)) {
     warn(message);
   }
-  else if (lessNumber(lastVol1n, vol1n)) {
+  else if (lessNumber(lastVol1n, vol1n) && sameNumber(lastVol1n, vol1n)) {
     store.push(message);
   }
   checkVol1stPb(store, vol1n, text1stPbBio);
@@ -137,7 +137,7 @@ function checkContinuityByPb(store, lastPbBio, pbBio, pbOrderChecker) {
     }
   }
   else {
-    return messages.join(' ');
+    return store.push(message);
   }
 }
 
