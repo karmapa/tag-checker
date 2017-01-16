@@ -1,8 +1,9 @@
 import {
-  headSIRegex, pbDRegex, pbSIRegex, sutraDRegex, sutraXIRegex, bampoXIRegex
+  pbDRegex, pbSIRegex, sutraDRegex, sutraXIRegex, bampoXIRegex
 } from './regexs.js';
 
 const volAnalyzeRegex = /<vol n="(\d+?)"/;
+const headAnalyzeRegex = /<head n="(\d+?)"/;
 const pb4AnalyzeRegex = /<pb id="((\d+?)-(\d+?))-((\d+?)([abcd]))"/;
 const pbAnalyzeRegex = /<pb id="((\d+?)-(\d+?))-(\d+?)"/;
 
@@ -13,7 +14,18 @@ export function analyzeVol(fn, tagStr) {
     tag: bio[0],
     vol1n: Number(bio[1])
   };
-}
+};
+
+export function analyzeHead(fn, pb, tag) {
+  let bio = headAnalyzeRegex.exec(tag);
+  return {
+    type: 'head',
+    fn: fn,
+    pb: pb,
+    tag: bio[0],
+    headN: Number(bio[1])
+  };
+};
 
 export function analyzePb4(fn, tagStr) {
   let bio = pb4AnalyzeRegex.exec(tagStr);
@@ -27,7 +39,7 @@ export function analyzePb4(fn, tagStr) {
     pbN: Number(bio[5]),
     pbL: bio[6]
   };
-}
+};
 
 export function analyzePb(fn, tagStr) {
   let bio = pbAnalyzeRegex.exec(tagStr);
@@ -39,18 +51,7 @@ export function analyzePb(fn, tagStr) {
     pbVol2n: Number(bio[3]),
     pbN: Number(bio[4])
   };
-}
-
-export function analyzeHead(fn, pb, tag) {
-  let bio = headSIRegex.exec(tag);
-  return {
-    type: 'head',
-    fn: fn,
-    pb: pb,
-    tag: bio[0],
-    headN: Number(bio[1])
-  };
-}
+};
 
 export function analyzeTag(tag, pb, fn) {
   if (pbDRegex.test(tag)) {
@@ -62,7 +63,7 @@ export function analyzeTag(tag, pb, fn) {
   else {
     return analyzeBampo(tag, pb, fn);
   }
-}
+};
 
 function analyzeBampo(tag, pb, fn) {
   let bio = bampoXIRegex.exec(tag);

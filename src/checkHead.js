@@ -1,27 +1,26 @@
-import {volHeadPbSWRegex, pbSIRegex, headDRegex, pbDRegex} from './regexs.js';
+const volHeadPbRegex = /<(vol|head).+?>|<pb.+?>(?=([\s\S](?!<pb))*?(?=<head))/g;
+const pbRegex =  /<pb id="(.+?)"/;
+
+import {pbExist, headExist} from './detectTag.js';
 import {analyzeHead} from './analyzeTag.js';
-import {reportErr} from './handleErr.js';
+import {warn, reportErr} from './handleErr.js';
 
 export default function checkHeadN(textObjs) {
   let errMessages = [];
-  let followVol, pbId, lastBio;
+  let followVol, pbId, lastHeadBio;
 
   textObjs.forEach((textObj) => {
     let {fn, text} = textObj;
 
-    text.replace(volHeadPbSWRegex, (tag) => {
-      if (pbDRegex.test(tag)) {
-        pbId = pbSIRegex.exec(tag)[1];
+    text.replace(volHeadPbRegex, (tag) => {
+      if (pbExist(tag)) {
+        pbId = pbRegex.exec(tag)[1];
       }
-      else if (headDRegex.test(tag)) {
-        let bio = analyzeHead(fn, pbId, tag);
+      else if (headExist(tag)) {
+        let headBio = analyzeHead(fn, pbId, tag);
+        check1stHeadAndOrder(errMessages, lastHeadBio, headBio, followVol);
 
-        let errMessage = check1stHeadAndOrder(lastBio, bio, followVol);
-        if (errMessage) {
-          errMessages.push(errMessage);
-        };
-
-        lastBio = bio, followVol = false;
+        lastHeadBio = headBio, followVol = false;
       }
       else {
         followVol = true;
@@ -32,7 +31,7 @@ export default function checkHeadN(textObjs) {
   reportErr('Wrong Head Order!', errMessages);
 };
 
-function check1stHeadAndOrder(lastBio, bio, followVol) {
+function check1stHeadAndOrder(store, lastBio, bio, followVol) {
   let {fn, pb, tag, headN} = bio;
   let bioMessage = fn + ' ' + pb + ' ' + tag;
 
@@ -41,23 +40,19 @@ function check1stHeadAndOrder(lastBio, bio, followVol) {
     let lastBioMessage = lastFn + ' ' + lastPb + ' ' + lastTag;
     checkHeadOrder(lastHeadN, headN, lastBioMessage, bioMessage);
   }
-  else if (lastBio && followVol) {
-    return check1stHead(headN, bioMessage);
-  }
   else {
-    check1stHead(headN, bioMessage)
-    if (! followVol) {
-      console.log('Warning! No Vol Tag At The Very Beginning!');
-    }
+    check1stHead(store, headN, bioMessage);
   }
 }
 
-function check1stHead(headN, bioMessage) {
-  return 1 === headN ? false : 'Head n is not 1 after vol tag! ' + bioMessage;
+function check1stHead(store, headN, bioMessage) {
+  if (headN !== 1) {
+    store.push('Head n is not 1 after vol tag or from the beginning! ' + bioMessage);
+  }
 }
 
 function checkHeadOrder(lastHeadN, headN, lastBioMessage, bioMessage) {
   if (headN - lastHeadN > 1) {
-    console.log('Warning! Head n might be missing!', lastBioMessage, bioMessage);
+    warn('Head n might be missing!', lastBioMessage, bioMessage);
   } 
 }
