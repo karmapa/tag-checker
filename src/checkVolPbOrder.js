@@ -2,14 +2,15 @@ const pbRegex = /<pb.+?>/g;
 
 import {analyzePb4, analyzePb, analyzeVol} from './analyzeTag.js';
 import {volExist} from './detectTag.js';
-import {saveErr, saveErrs, warn, reportErr} from './handleErr.js';
+import {warn, reportErr} from './handleErr.js';
 import {lessNumber, sameNumber, numberAdd1, numberJump} from './compareNumber.js';
 
 export default function checkVolPbOrder(textObjs, pbWithSuffix) {
-  let [repo1stPbBio, pbAnalyzer, pbOrderChecker] = init(textObjs[0], pbWithSuffix);
+  let [repo1stPbBio, firstText, pbAnalyzer, pbOrderChecker] = init(textObjs[0], pbWithSuffix);
   let [lastFn, lastVol1n, lastTextPbBio] = ['first-file', 0];
   let errMessages = [];
 
+  checkRepo1stVol(firstText);
   checkRepo1stPb(repo1stPbBio);
 
   textObjs.forEach((textObj) => {
@@ -23,13 +24,10 @@ export default function checkVolPbOrder(textObjs, pbWithSuffix) {
     else if (lastTextPbBio) {
       checkFileContinuityByPb(errMessages, lastTextPbBio, text1stPbBio, pbOrderChecker);
     }
-    else {
-      warn('Vol tag may be missing', fn);
-    }
 
     restPbBios.forEach((pbBio, index) => {
       checkPbVol1n(errMessages, vol1n, pbBio);
-      checkPbVol2nAndOrder(errMessages, pbBios[index], pbBio, pbOrderChecker);
+      checkPbVol2nAndOrderInFile(errMessages, pbBios[index], pbBio, pbOrderChecker);
     });
 
     [lastFn, lastVol1n, lastTextPbBio] = [fn, vol1n, pbBios[pbBios.length - 1]];
@@ -42,7 +40,7 @@ function init(textObj, pbWithSuffix) {
   let {fn, text} = textObj;
   let [pbAnalyzer, pbOrderChecker] = setPbTool(pbWithSuffix);
   let pb1stBio = pbAnalyzer(fn, text);
-  return [pb1stBio, pbAnalyzer, pbOrderChecker];
+  return [pb1stBio, text, pbAnalyzer, pbOrderChecker];
 }
 
 function setPbTool(pbWithSuffix) {
@@ -85,6 +83,12 @@ function checkPbOrder(store, lastBio, pbBio, looseMode) {
   }
 }
 
+function checkRepo1stVol(text) {
+  if (! (volExist(text) && 1 === analyzeVol(undefined, text).vol1n)) {
+    warn('No vol tag in first file!');
+  }
+}
+
 function checkRepo1stPb(pbBio) {
   let {fn, tag, pbVol1n, pbVol2n, pbNL, pbN} = pbBio;
   if (! sameNumber(pbVol1n, 1) || ! sameNumber(pbVol2n, 1) || ! pbIsFirst(pbNL || pbN)) {
@@ -101,7 +105,7 @@ function setVariables(textObj, pbAnalyzer) {
   let vol1n = volExist(text) ? analyzeVol(fn, text).vol1n : pbAnalyzer(fn, text).pbVol1n;
   return [fn, text, volExist, vol1n];
 }
-// checkFileContinuity
+
 function checkFileContinuityByVol(store, lastFn, lastVol1n, fn, vol1n, text1stPbBio) {
   let message = 'Volumn not continuous! ' + lastFn + ' ' + lastVol1n + ' ' + fn + ' ' + vol1n;
 
@@ -140,8 +144,8 @@ function checkContinuityByPb(store, lastPbBio, pbBio, pbOrderChecker) {
       warn(message);
     }
   }
-  else if (! (sameNumber(1, pbVol2n) && pbIsFirst(pbNL || pbN))) {
-    warn(message, 'Vol tag may be missing', fn);
+  else if (! (numberAdd1(lastPbVol1n, pbVol1n) && sameNumber(1, pbVol2n) && pbIsFirst(pbNL || pbN))) {
+    warn(message, 'Vol tag may be missing');
   }
 }
 
@@ -151,7 +155,7 @@ function checkPbVol1n(store, vol1n, pbBio) {
   }
 }
 
-function checkPbVol2nAndOrder(store, lastPbBio, pbBio, pbOrderChecker) {
+function checkPbVol2nAndOrderInFile(store, lastPbBio, pbBio, pbOrderChecker) {
   let {fn: lastFn, tag: lastTag, pbVol2n: lastPbVol2n} = lastPbBio;
   let {fn, tag, pbVol2n, pbNL, pbN} = pbBio;
   let message = 'Wrong pb order! ' + lastFn + ' ' + lastTag + ' ' + fn + ' ' + tag;
