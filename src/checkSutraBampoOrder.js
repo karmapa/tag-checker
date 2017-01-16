@@ -62,7 +62,7 @@ function checkOrder(store, lastBio, bio, firstBampoAhead) {
     checkSutraOrder(store, lastBio, bio, errInfo);
   }
   else if (lastType === 'sutra' && type === 'bampo') {
-    return checkSutra_bampoOrder(lastBio, bio, firstBampoAhead, errInfo);
+    checkSutra_bampoOrder(store, lastBio, bio, firstBampoAhead, errInfo);
   }
   else if (lastType === 'bampo' && type === 'sutra') {
     return checkBampo_sutraOrder(lastBio, bio, errInfo);
@@ -93,56 +93,57 @@ function checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errIn
     }
     else {
       sutraL = sutraL.charCodeAt(0), lastSutraL = lastSutraL.charCodeAt(0);
-      if (numberJump(lastSutraL, sutraL)) {
-        warn('Sutra is missing! ' + errInfo);
-      }
-      else if (! numberAdd1(lastSutraL, sutraL)) {
+      if (lessNumber(lastSutraL, sutraL) || sameNumber(lastSutraL, sutraL)) {
         store.push('Wrong sutra order! ' + errInfo);
       }
-    }
-  }
-  else if (numberAdd1(lastSutraN, sutraN)) {
-    if (sutraL && sutraL !== 'a') {
-      warn('Sutra may be missing! ' + errInfo);
+      else {
+        if (numberJump(lastSutraL, sutraL)) {
+          warn('Sutra is missing! ' + errInfo);
+        }
+        return true;
+      }
     }
   }
   else {
-    warn('Sutra is missing! ' + errInfo);
+    if (numberAdd1(lastSutraN, sutraN) && sutraL && sutraL !== 'a' || numberJump(lastSutraN, sutraN)) {
+      warn('Sutra may be missing! ' + errInfo);
+    }
+    return true;
   }
 }
 
-function checkSutra_bampoOrder(lastBio, bio, firstBampoAhead, errInfo) {
-  let errMessages = [];
+function checkSutra_bampoOrder(store, lastBio, bio, firstBampoAhead, errInfo) {
   let {sutraNL: lastSutraNL, sutraN: lastSutraN, sutraL: lastSutraL} = lastBio;
   let {sutraNL, sutraN, sutraL, bampoN} = bio;
   let sameSutraNL = lastSutraNL === sutraNL;
 
-  if (! firstBampoAhead && sameSutraNL) {
-    checkFirstBampoN(bampoN, errInfo);
-  }
-  else if (! firstBampoAhead && ! sameSutraNL) {
-    let wrongSutraNlOrder = checkSutraNlOrder(lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
-    if (wrongSutraNlOrder[0]) {
-      errMessages = errMessages.concat(wrongSutraNlOrder);
-    }
-    else {
-      checkFirstBampoN(bampoN, errInfo);
+  if (! sameSutraNL) {
+    let correctSutraNL = checkSutraNlOrder(store, lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
+    if (correctSutraNL) {
+      check1stBampo(bampoN, errInfo);
     }
   }
-  else if (firstBampoAhead && sameSutraNL) {
-    check2ndBampoN(bampoN, errInfo);
+  else if (firstBampoAhead) {
+    check2ndBampo(bampoN, errInfo);
   }
   else {
-    let wrongSutraNlOrder = checkSutraNlOrder(lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
-    if (wrongSutraNlOrder[0]) {
-      errMessages = errMessages.concat(wrongSutraNlOrder);
-    }
-    else {
-      checkFirstBampoN(bampoN, errInfo);
-    }
+    check1stBampoN(store, bampoN, errInfo);
   }
+}
 
-  return 0 === errMessages.length ? false : errMessages;
+function check1stBampo(bampoN, errInfo) {
+  if (bampoN !== 1) {
+    warn('Bampo n is not 1', errInfo);
+  }
+}
+
+function check2ndBampo(store, bampoN, errInfo) {
+  if (1 === bampoN ) {
+    store.push('Repeat bampo n 1', errInfo);
+  }
+  else if (bampoN !== 2) {
+    warn('Bampo n is not 2', errInfo);
+  }
 }
 
 function checkBampo_sutraOrder(lastBio, bio, errInfo) {
@@ -214,11 +215,5 @@ function checkFirstBio(bio) {
 function checkFirstSutraNL(sutraNL) {
   if (sutraNL !== '1' && sutraNL !== '1a' && sutraNL !== '1A') {
     console.log('Warning! Sutra id not start from 1, 1a, or 1A');
-  }
-}
-
-function check2ndBampoN(bampoN, errInfo = '') {
-  if (bampoN !== '2' && bampoN !== '2.1') {
-    console.log('Warning! Bampo n is not 2 or 2.1', errInfo);
   }
 }
