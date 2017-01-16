@@ -68,7 +68,7 @@ function checkOrder(store, lastBio, bio, firstBampoAhead) {
     checkBampo_sutraOrder(store, lastBio, bio, errInfo);
   }
   else {
-    return checkBampoOrder(lastBio, bio, firstBampoAhead);
+    checkBampoOrder(store, lastBio, bio, firstBampoAhead);
   }
 }
 
@@ -160,49 +160,25 @@ function isFirstBampoAhead(lastBio, bio) {
   return lastSutraNL === sutraNL && '1' === bampoN;
 };
 
-function checkBampoOrder(lastBio, bio, errInfo) {
-  let errMessages = [];
-  let {sutraNL: lastSutraNL, sutraN: lastSutraN, sutraL: lastSutraL, bampo1n: lastBampo1n, bampo2n: lastBampo2n} = lastBio;
-  let {sutraNL, sutraN, sutraL, bampo1n, bampo2n} = bio;
+function checkBampoOrder(store, lastBio, bio, errInfo) {
+  let {sutraNL: lastSutraNL, sutraN: lastSutraN, sutraL: lastSutraL, bampoN: lastBampoN} = lastBio;
+  let {sutraNL, sutraN, sutraL, bampoN} = bio;
   let sameSutraNL = lastSutraNL === sutraNL;
 
   if (sameSutraNL) {
-    if (! lastBampo2n && ! bampo2n) {
-      if (bampo1n <= lastBampo1n) {
-        errMessages.push('Wrong bampo order: ' + errInfo);
-      }
-      else if (bampo1n - lastBampo1n > 1) {
-        console.log('Warning! Bampo tag might be missing!', errInfo);
-      }
+    if (bampoN <= lastBampoN) {
+      errMessages.push('Wrong bampo order: ' + errInfo);
     }
-    else if (! lastBampo2n && bampo2n) {
-      if (bampo2n !== 1) {
-        console.log('Warning! Bampo tag might be missing!', errInfo);
-      }
-    }
-    else if (lastBampo2n && bampo2n && lastBampo1n === bampo1n) {
-      if (bampo2n <= lastBampo2n) {
-        errMessages.push('Wrong bampo order: ' + errInfo);
-      }
-      else if (bampo2n - lastBampo2n > 1) {
-        console.log('Warning! Bampo tag might be missing!', errInfo);
-      }
-    }
-    else if (lastBampo2n && bampo2n && lastBampo1n !== bampo1n) {
-      if (bampo1n < lastBampo1n) {
-        errMessages.push('Wrong bampo order: ' + errInfo);
-      }
-      else if (bampo1n - lastBampo1n > 1) {
-        console.log('Warning! Bampo tag might be missing!', errInfo);
-      }
-
-      if (bampo2n !== 1) {
-        console.log('Warning! Bampo tag might be missing!', errInfo);
-      }
+    else if (numberJump(lastBampoN, bampoN)) {
+      warn('Bampo tag might be missing!', errInfo);
     }
   }
-
-  return 0 === errMessages.length ? false : errMessages;
+  else {
+    let correctSutraNL = checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
+    if (correctSutraNL) {
+      check1stBampoN(bampoN, errInfo);
+    }
+  }
 }
 
 function checkFirstBio(bio) {
