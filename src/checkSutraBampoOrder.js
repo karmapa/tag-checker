@@ -1,22 +1,27 @@
 const sutraBampoPbRegex = /<(sutra|bampo).+?>|<pb.+?>(?=([\s\S](?!<pb))*?(?=<sutra|<bampo))/g;
+const pbRegex = /<pb id="(.+?)"/;
 
+import {pbExist} from './detectTag.js';
 import {reportErr} from './handleErr.js';
-import {analyzeTag} from './analyzeTag.js';
+import {analyzeSutra, analyzeBampo} from './analyzeTag.js';
 import {checkFirstBampoN, checkSutraNlOrder, isFirstBampoAhead} from './sutraBampoOrderHelper.js';
 
 export default function checkSutraBampoOrder(textObjs) {
   let lastBio, lackSutraInBampos, firstBampoAhead, errMessages = [];
 
   textObjs.forEach((textObj) => {
-    let pb = 'beforePb', fn = textObj.fn;
+    let {fn, text} = textObj;
+    let pb = 'beforePb';
 
-    textObj.text.replace(sutraBampoPbRegex, (tag) => {
-      let tagBio = analyzeTag(tag, pb, fn);
-      let type = tagBio.type;
-
-      if (type === 'pb') {
-        pb = tagBio.pb;
+    text.replace(sutraBampoPbRegex, (tag) => {
+      if (pbExist(tag)) {
+        pb = pbRegex.exec(tag)[1];
+        return;
       }
+
+      tagBio = bampoExist(tag) ? analyzeBampo(fn, pb, tag) : analyzeSutra(fn, pb, tag);
+      let type === tagBio.type;
+
       else if (lastBio) {
         let lastType = lastBio.type;
         let wrongOrder = checkOrder(lastBio, tagBio, firstBampoAhead);

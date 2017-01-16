@@ -3,7 +3,9 @@ import {
 } from './regexs.js';
 
 const volAnalyzeRegex = /<vol n="(\d+?)"/;
+const sutraRegex = /<sutra id="([\da-zA-Z]*?[a-zA-Z])((\d+?)([a-zA-Z])?)"/;
 const headAnalyzeRegex = /<head n="(\d+?)"/;
+const bampoRegex = /<bampo n="((\d+?)([a-zA-Z])?)\.(\d+?)"/;
 const pb4AnalyzeRegex = /<pb id="((\d+?)-(\d+?))-((\d+?)([abcd]))"/;
 const pbAnalyzeRegex = /<pb id="((\d+?)-(\d+?))-(\d+?)"/;
 
@@ -16,6 +18,20 @@ export function analyzeVol(fn, tagStr) {
   };
 };
 
+export function analyzeSutra(fn, pb, tag) {
+  let bio = sutraRegex.exec(tag);
+  return {
+    type: 'sutra',
+    pb: pb,
+    fn: fn,
+    tag: bio[0],
+    sutraV: bio[1],
+    sutraNL: bio[2],
+    sutraN: Number(bio[3]),
+    sutraL: bio[4]
+  }
+};
+
 export function analyzeHead(fn, pb, tag) {
   let bio = headAnalyzeRegex.exec(tag);
   return {
@@ -24,6 +40,20 @@ export function analyzeHead(fn, pb, tag) {
     pb: pb,
     tag: bio[0],
     headN: Number(bio[1])
+  };
+};
+
+export function analyzeBampo(fn, pb, tag) {
+  let bio = bampoRegex.exec(tag);
+  return {
+    type: 'bampo',
+    pb: pb,
+    fn: fn,
+    tag: bio[0],
+    sutraNL: bio[1],
+    sutraN: Number(bio[2]),
+    sutraL: bio[3],
+    bampoN: Number(bio[4])
   };
 };
 
@@ -52,45 +82,3 @@ export function analyzePb(fn, tagStr) {
     pbN: Number(bio[4])
   };
 };
-
-export function analyzeTag(tag, pb, fn) {
-  if (pbDRegex.test(tag)) {
-    return {type: 'pb', pb: pbSIRegex.exec(tag)[1]};
-  }
-  else if (sutraDRegex.test(tag)) {
-    return analyzeSutra(tag, pb, fn);
-  }
-  else {
-    return analyzeBampo(tag, pb, fn);
-  }
-};
-
-function analyzeBampo(tag, pb, fn) {
-  let bio = bampoXIRegex.exec(tag);
-  return {
-    type: 'bampo',
-    pb: pb,
-    fn: fn,
-    tag: bio[0],
-    sutraNL: bio[1],
-    sutraN: Number(bio[2]),
-    sutraL: bio[3],
-    bampoN: bio[4],
-    bampo1n: Number(bio[5]),
-    bampo2n: Number(bio[7])
-  }
-}
-
-function analyzeSutra(tag, pb, fn) {
-  let bio = sutraXIRegex.exec(tag);
-  return {
-    type: 'sutra',
-    pb: pb,
-    fn: fn,
-    tag: bio[0],
-    sutraV: bio[1],
-    sutraNL: bio[2],
-    sutraN: Number(bio[3]),
-    sutraL: bio[4]
-  }
-}
