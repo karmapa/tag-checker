@@ -1,7 +1,7 @@
 const sutraBampoPbRegex = /<(sutra|bampo).+?>|<pb.+?>(?=([\s\S](?!<pb))*?(?=<sutra|<bampo))/g;
 const pbRegex = /<pb id="(.+?)"/;
 
-import {pbExist} from './detectTag.js';
+import {pbExist, bampoExist} from './detectTag.js';
 import {reportErr} from './handleErr.js';
 import {analyzeSutra, analyzeBampo} from './analyzeTag.js';
 import {checkFirstBampoN, checkSutraNlOrder, isFirstBampoAhead} from './sutraBampoOrderHelper.js';
