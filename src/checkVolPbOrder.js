@@ -14,11 +14,11 @@ export default function checkVolPbOrder(textObjs, pbWithSuffix) {
   checkRepo1stPb(repo1stPbBio);
 
   textObjs.forEach((textObj) => {
-    let [fn, text, volExist, vol1n] = setVariables(textObj, pbAnalyzer);
+    let [fn, text, volInText, vol1n] = setVariables(textObj, pbAnalyzer);
     let pbBios = text.match(pbRegex).map(pbAnalyzer.bind(null, fn));
     let [text1stPbBio, ...restPbBios] = pbBios;
 
-    if (volExist) {
+    if (volInText) {
       checkFileContinuityByVol(errMessages, lastFn, lastVol1n, fn, vol1n, text1stPbBio);
     }
     else if (lastTextPbBio) {
@@ -102,8 +102,9 @@ function pbIsFirst(pbId) {
 
 function setVariables(textObj, pbAnalyzer) {
   let {fn, text} = textObj;
-  let vol1n = volExist(text) ? analyzeVol(fn, text).vol1n : pbAnalyzer(fn, text).pbVol1n;
-  return [fn, text, volExist, vol1n];
+  let volInText = volExist(text);
+  let vol1n = volInText ? analyzeVol(fn, text).vol1n : pbAnalyzer(fn, text).pbVol1n;
+  return [fn, text, volInText, vol1n];
 }
 
 function checkFileContinuityByVol(store, lastFn, lastVol1n, fn, vol1n, text1stPbBio) {
@@ -125,7 +126,7 @@ function checkVol1stPb(store, vol1n, pbBio) {
   } 
 }
 
-function checkContinuityByPb(store, lastPbBio, pbBio, pbOrderChecker) {
+function checkFileContinuityByPb(store, lastPbBio, pbBio, pbOrderChecker) {
   let {fn: lastFn, tag: lastTag, pbVol1n: lastPbVol1n, pbVol2n: lastPbVol2n} = lastPbBio;
   let {fn, tag, pbVol1n, pbVol2n, pbNL, pbN} = pbBio;
   let message = 'Wrong pb order! ' + lastFn + ' ' + lastTag + ' ' + fn + ' ' + tag;
