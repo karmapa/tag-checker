@@ -42,15 +42,12 @@ export default function checkSutraBampoOrder(textObjs) {
           lackSutraInBampos = checkBampoOrder(errMessages, lastBio, bio, errInfo);
         }
 
-        if (lackSutraInBampos[0]) {
+        if (lackSutraInBampos) {
           if (! firstBampoAhead) {
             warn('There is no sutra tag between bampos!', lackSutraInBampos[0]);
           }
-          lackSutraInBampos = [];
+          lackSutraInBampos = false;
         }
-      }
-      else {
-        check1stBio(tagBio);
       }
 
       lastBio = tagBio;
@@ -166,16 +163,15 @@ function checkBampo_sutraOrder(store, lastBio, bio, errInfo) {
 
 function isFirstBampoAhead(lastSutraNL, bampoN, sutraNL) {
   return lastSutraNL === sutraNL && 1 === bampoN;
-};
+}
 
 function checkBampoOrder(store, lastBio, bio, errInfo) {
   let {sutraNL: lastSutraNL, sutraN: lastSutraN, sutraL: lastSutraL, bampoN: lastBampoN} = lastBio;
   let {sutraNL, sutraN, sutraL, bampoN} = bio;
-  let sameSutraNL = lastSutraNL === sutraNL;
 
-  if (sameSutraNL) {
+  if (lastSutraNL === sutraNL) {
     if (bampoN <= lastBampoN) {
-      errMessages.push('Wrong bampo order: ' + errInfo);
+      store.push('Wrong bampo order: ' + errInfo);
     }
     else if (numberJump(lastBampoN, bampoN)) {
       warn('Bampo tag might be missing!', errInfo);
@@ -186,7 +182,10 @@ function checkBampoOrder(store, lastBio, bio, errInfo) {
     if (correctSutraNL) {
       let bampoNIs1 = check1stBampo(bampoN, errInfo);
       if (bampoNIs1) {
-        lackSutraInBampos.push(errInfo);
+        return true;
+      }
+      else {
+        warn('Sutra and bampo tag might be missing!', errInfo);
       }
     }
   }
