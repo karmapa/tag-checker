@@ -36,7 +36,10 @@ export default function checkSutraBampoOrder(textObjs) {
           checkSutra_bampoOrder(errMessages, lastBio, bio, firstBampoAhead, errInfo);
         }
         else if (lastType === 'bampo' && type === 'sutra') {
-          firstBampoAhead = checkBampo_sutraOrder(store, lastBio, bio, errInfo);
+          firstBampoAhead = checkBampo_sutraOrder(errMessages, lastBio, bio, errInfo);
+        }
+        else {
+          lackSutraInBampos = checkBampoOrder(errMessages, lastBio, bio, errInfo);
         }
 
         if (lackSutraInBampos[0]) {
@@ -45,8 +48,6 @@ export default function checkSutraBampoOrder(textObjs) {
           }
           lackSutraInBampos = [];
         }
-
-        checkBampoOrder(errMessages, lastBio, bio, lackSutraInBampos, errInfo);
       }
       else {
         check1stBio(tagBio);
@@ -167,7 +168,7 @@ function isFirstBampoAhead(lastSutraNL, bampoN, sutraNL) {
   return lastSutraNL === sutraNL && 1 === bampoN;
 };
 
-function checkBampoOrder(store, lastBio, bio, lackSutraInBampos, errInfo) {
+function checkBampoOrder(store, lastBio, bio, errInfo) {
   let {sutraNL: lastSutraNL, sutraN: lastSutraN, sutraL: lastSutraL, bampoN: lastBampoN} = lastBio;
   let {sutraNL, sutraN, sutraL, bampoN} = bio;
   let sameSutraNL = lastSutraNL === sutraNL;
