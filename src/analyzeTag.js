@@ -1,7 +1,3 @@
-import {
-  pbDRegex, pbSIRegex, sutraDRegex, sutraXIRegex, bampoXIRegex
-} from './regexs.js';
-
 const volAnalyzeRegex = /<vol n="(\d+?)"/;
 const sutraRegex = /<sutra id="([\da-zA-Z]*?[a-zA-Z])((\d+?)([a-zA-Z])?)"/;
 const headAnalyzeRegex = /<head n="(\d+?)"/;

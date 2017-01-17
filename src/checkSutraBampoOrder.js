@@ -19,14 +19,14 @@ export default function checkSutraBampoOrder(textObjs) {
         return;
       }
 
-      tagBio = bampoExist(tag) ? analyzeBampo(fn, pb, tag) : analyzeSutra(fn, pb, tag);
+      let bio = bampoExist(tag) ? analyzeBampo(fn, pb, tag) : analyzeSutra(fn, pb, tag);
 
       if (! lastBio) {
-        check1stBio(tagBio);
+        check1stBio(bio);
       }
       else {
         let {type: lastType, fn: lastFn, pb: lastPb, tag: lastTag} = lastBio;
-        let {type, fn, pb, tag} =tagBio;
+        let {type, fn, pb, tag} =bio;
         let errInfo = lastFn + ' ' + lastPb + ' ' + lastTag + ', ' + fn + ' ' + pb + ' ' + tag;
 
         if (lastType === 'sutra' && type === 'sutra') {
@@ -51,7 +51,7 @@ export default function checkSutraBampoOrder(textObjs) {
         }
       }
 
-      lastBio = tagBio;
+      lastBio = bio;
     });
   });
 
