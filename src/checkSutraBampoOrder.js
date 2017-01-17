@@ -7,7 +7,7 @@ import {lessNumber, sameNumber, numberAdd1, numberJump} from './compareNumber.js
 import {warn, reportErr} from './handleErr.js';
 
 export default function checkSutraBampoOrder(textObjs) {
-  let lastBio, lackSutraInBampos, firstBampoAhead, errMessages = [];
+  let lastBio, firstBampoShouldBeAhead, firstBampoAhead, errMessages = [];
 
   textObjs.forEach((textObj) => {
     let {fn, text} = textObj;
@@ -38,15 +38,16 @@ export default function checkSutraBampoOrder(textObjs) {
         else if (lastType === 'bampo' && type === 'sutra') {
           firstBampoAhead = checkBampo_sutraOrder(errMessages, lastBio, bio, errInfo);
         }
-        else {
-          lackSutraInBampos = checkBampoOrder(errMessages, lastBio, bio, errInfo);
+
+        if (firstBampoShouldBeAhead) {
+          if (! firstBampoAhead) {
+            warn('Sutra tag may be missing before bampo n 1!', fn, pb, tag);
+          }
+          firstBampoShouldBeAhead = false;
         }
 
-        if (lackSutraInBampos) {
-          if (! firstBampoAhead) {
-            warn('There is no sutra tag between bampos!', lackSutraInBampos[0]);
-          }
-          lackSutraInBampos = false;
+        if (lastType === 'bampo' && type === 'bampo') {
+          firstBampoShouldBeAhead = checkBampoOrder(errMessages, lastBio, bio, errInfo);
         }
       }
 
