@@ -33,7 +33,7 @@ export default function checkSutraBampoOrder(textObjs) {
           checkSutraOrder(errMessages, lastBio, bio, errInfo);
         }
         else if (lastType === 'sutra' && type === 'bampo') {
-          checkSutra_bampoOrder(store, lastBio, bio, firstBampoAhead, errInfo);
+          checkSutra_bampoOrder(errMessages, lastBio, bio, firstBampoAhead, errInfo);
         }
         else if (lastType === 'bampo' && type === 'sutra') {
           checkBampo_sutraOrder(store, lastBio, bio, errInfo);
@@ -139,19 +139,19 @@ function checkSutra_bampoOrder(store, lastBio, bio, firstBampoAhead, errInfo) {
     }
   }
   else if (firstBampoAhead) {
-    check2ndBampo(bampoN, errInfo);
+    check2ndBampo(store, bampoN, errInfo);
   }
   else {
-    check1stBampo(store, bampoN, errInfo);
+    check1stBampo(bampoN, errInfo);
   }
 }
 
 function check2ndBampo(store, bampoN, errInfo) {
-  if (1 === bampoN ) {
+  if (1 === bampoN) {
     store.push('Repeat bampo n 1', errInfo);
   }
-  else if (bampoN !== 2) {
-    warn('Bampo n is not 2', errInfo);
+  else if (bampoN > 2) {
+    warn('Bampo may be missing!', errInfo);
   }
 }
 
