@@ -17,7 +17,7 @@ let tagRules = [
   },
   {
     type: 'vol',
-    correctRegex: /<vol n="\d+?" t="[\u0f00-\u0fff]+?"\/>/g,
+    correctRegex: /<vol n="\d+?(-\d+?)?" t="[\u0f00-\u0fff]+?"\/>/g,
     suspectedRegex: /<vol/g,
     tagNameStrRegex: /vol/g,
     lineWithTagRegex: /^.*?vol.*?$/mg
