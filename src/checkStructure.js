@@ -3,7 +3,7 @@ const volPosRegex1 = /^(<sutra.+?>\r?\n)?<vol.+?>\r?\n<pb/;
 const volPosRegex2 = /^<vol/;
 const volRegex = /<vol/g;
 const divRegex = /<division n="(\d+?)"/g;
-const wrongSutraPosRegex = /<sutra.+?>(?!(\r?\n<vol|\r?\n<division|<head n="1"))/g;
+const wrongSutraPosRegex = /<sutra[^>]+?>(?!(\r?\n<vol|\r?\n<division|<head n="1"))/g;
 
 import {warn, reportErr} from './handleErr.js';
 import {countTag} from './helper.js';
@@ -76,9 +76,11 @@ function checkTagPos(store, text, divNumber, fn) {
   }
 }
 
-function checkSutraPos(store, text) {
+function checkSutraPos(store, fn, text) {
   let wrongSutraPoses = text.match(wrongSutraPosRegex);
   if (wrongSutraPoses) {
-    store.push(...wrongSutraPoses);
+    wrongSutraPoses.forEach((sutraTag) => {
+      store.push(fn + ' Wrong sutra tag position! ' + sutraTag);
+    });
   }
 }
