@@ -1,4 +1,4 @@
-const volAnalyzeRegex = /<vol n="(\d+?)"/;
+const volAnalyzeRegex = /<vol n="((\d+?)(-(\d+?))?)"/;
 const sutraRegex = /<sutra id="([\da-zA-Z]*?[a-zA-Z])((\d+?)([a-zA-Z])?)"/;
 const headAnalyzeRegex = /<head n="(\d+?)"/;
 const bampoRegex = /<bampo n="((\d+?)([a-zA-Z])?)\.(\d+?)"/;
@@ -10,7 +10,9 @@ export function analyzeVol(fn, tagStr) {
   return {
     fn: fn,
     tag: bio[0],
-    vol1n: Number(bio[1])
+    volN: bio[1],
+    vol1n: Number(bio[2]),
+    vol2n: Number(bio[4])
   };
 };
 
