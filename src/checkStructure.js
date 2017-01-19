@@ -3,6 +3,7 @@ const volPosRegex1 = /^(<sutra.+?>\r?\n)?<vol.+?>\r?\n<pb/;
 const volPosRegex2 = /^<vol/;
 const volRegex = /<vol/g;
 const divRegex = /<division n="(\d+?)"/g;
+const wrongSutraPosRegex = /<sutra.+?>(?!(\r?\n<vol|\r?\n<division|<head n="1"))/g;
 
 import {warn, reportErr} from './handleErr.js';
 import {countTag} from './helper.js';
@@ -31,6 +32,8 @@ export default function checkStructure(textObjs) {
     if (1 === divNumber || 1 === volNumber) {
       checkTagPos(wrongTagPoses, text, divNumber, fn);
     }
+
+    checkSutraPos(wrongTagPoses, fn, text);
   });
   reportErr('Structure Error', [...multiVols, ...multiDivs, ...wrongDivOrders, ...wrongTagPoses]);
 }
@@ -70,5 +73,12 @@ function checkTagPos(store, text, divNumber, fn) {
   }
   else if (text.match(volPosRegex2)) {
     warn('No sutra tag before vol tag!', fn);
+  }
+}
+
+function checkSutraPos(store, text) {
+  let wrongSutraPoses = text.match(wrongSutraPosRegex);
+  if (wrongSutraPoses) {
+    store.push(...wrongSutraPoses);
   }
 }
