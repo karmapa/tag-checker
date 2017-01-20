@@ -7,19 +7,20 @@ import {lessNumber, sameNumber, numberAdd1, numberJump} from './compareNumber.js
 
 export default function checkVolPbOrder(textObjs, pbWithSuffix) {
   let [repo1stPbBio, firstText, pbAnalyzer, pbOrderChecker] = init(textObjs[0], pbWithSuffix);
-  let [lastFn, lastVol1n, lastVol2n, lastTextPbBio] = ['first-file', 0, 0];
+  let [lastFn, lastVolN, lastVol1n, lastVol2n, lastTextPbBio] = ['first-file', 'first-file', 0, 0];
   let errMessages = [];
 
   checkRepo1stVol(firstText);
   checkRepo1stPb(repo1stPbBio);
 
   textObjs.forEach((textObj) => {
-    let [fn, text, volInText, vol1n, vol2n] = setVariables(textObj, pbAnalyzer);
+    let [fn, text, volInText, volN, vol1n, vol2n] = setVariables(textObj, pbAnalyzer);
     let pbBios = text.match(pbRegex).map(pbAnalyzer.bind(null, fn));
     let [text1stPbBio, ...restPbBios] = pbBios;
 
     if (volInText) {
-      checkFileContinuityByVol(errMessages, lastFn, lastVol1n, fn, vol1n, text1stPbBio);
+      let volMessage = 'Volumn not continuous! ' + lastFn + ' ' + lastVolN + ' ' + fn + ' ' + volN;
+      checkFileContinuityByVol(errMessages, volMessage, lastVol1n, lastVol2n, vol1n, vol2n, text1stPbBio);
     }
     else if (lastTextPbBio) {
       checkFileContinuityByPb(errMessages, lastTextPbBio, text1stPbBio, pbOrderChecker);
@@ -31,7 +32,7 @@ export default function checkVolPbOrder(textObjs, pbWithSuffix) {
     });
 
     lastTextPbBio = pbBios[pbBios.length - 1];
-    [lastFn, lastVol1n, lastVol2n] = [fn, vol1n, lastTextPbBio.pbVol2n];
+    [lastFn, lastVolN, lastVol1n, lastVol2n] = [fn, lastTextPbBio.pbVolN, vol1n, lastTextPbBio.pbVol2n];
   });
 
   reportErr('Wrong Volumn Pb Order!', errMessages);
@@ -106,17 +107,15 @@ function setVariables(textObj, pbAnalyzer) {
   let {fn, text} = textObj;
   let volInText = volExist(text);
   if (volInText) {
-    var {vol1n, vol2n} = analyzeVol(fn, text);
+    var {volN, vol1n, vol2n} = analyzeVol(fn, text);
   }
   else {
-    var {pbVol1n: vol1n, pbVol2n: vol2n} = pbAnalyzer(fn, text);
+    var {pbVolN: volN, pbVol1n: vol1n, pbVol2n: vol2n} = pbAnalyzer(fn, text);
   }
-  return [fn, text, volInText, vol1n, vol2n];
+  return [fn, text, volInText, volN, vol1n, vol2n];
 }
 
-function checkFileContinuityByVol(store, lastFn, lastVol1n, fn, vol1n, text1stPbBio) {
-  let message = 'Volumn not continuous! ' + lastFn + ' ' + lastVol1n + ' ' + fn + ' ' + vol1n;
-
+function checkFileContinuityByVol(store, message, lastVol1n, lastVol2n, vol1n, vol2n, text1stPbBio) {
   if (numberJump(lastVol1n, vol1n)) {
     warn(message);
   }
