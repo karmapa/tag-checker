@@ -7,7 +7,7 @@ import {lessNumber, sameNumber, numberAdd1, numberJump} from './compareNumber.js
 
 export default function checkVolPbOrder(textObjs, pbWithSuffix) {
   let [repo1stPbBio, firstText, pbAnalyzer, pbOrderChecker] = init(textObjs[0], pbWithSuffix);
-  let [lastFn, lastVol1n, lastTextPbBio, lastVol2n] = ['first-file', 0];
+  let [lastFn, lastVol1n, lastVol2n, lastTextPbBio] = ['first-file', 0, 0];
   let errMessages = [];
 
   checkRepo1stVol(firstText);
