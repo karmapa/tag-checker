@@ -14,7 +14,7 @@ export default function checkVolPbOrder(textObjs, pbWithSuffix) {
   checkRepo1stPb(repo1stPbBio);
 
   textObjs.forEach((textObj) => {
-    let [fn, text, volInText, vol1n] = setVariables(textObj, pbAnalyzer);
+    let [fn, text, volInText, vol1n, vol2n] = setVariables(textObj, pbAnalyzer);
     let pbBios = text.match(pbRegex).map(pbAnalyzer.bind(null, fn));
     let [text1stPbBio, ...restPbBios] = pbBios;
 
@@ -104,8 +104,13 @@ function pbIsFirst(pbId) {
 function setVariables(textObj, pbAnalyzer) {
   let {fn, text} = textObj;
   let volInText = volExist(text);
-  let vol1n = volInText ? analyzeVol(fn, text).vol1n : pbAnalyzer(fn, text).pbVol1n;
-  return [fn, text, volInText, vol1n];
+  if (volInText) {
+    let {vol1n, vol2n} = analyzeVol(fn, text);
+  }
+  else {
+    let {pbVol1n: vol1n, pbVol2n: vol2n} = pbAnalyzer(fn, text);
+  }
+  return [fn, text, volInText, vol1n, vol2n];
 }
 
 function checkFileContinuityByVol(store, lastFn, lastVol1n, fn, vol1n, text1stPbBio) {
