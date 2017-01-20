@@ -84,8 +84,9 @@ function checkPbOrder(store, lastBio, pbBio, looseMode) {
 }
 
 function checkRepo1stVol(text) {
-  if (! (volExist(text) && 1 === analyzeVol(undefined, text).vol1n)) {
-    warn('No vol tag in first file!');
+  let volN = analyzeVol('first file', text).volN;
+  if (! volExist(text) || volN !== '1' && volN !== '1-1') {
+    warn('No vol tag or volN not 1 or 1-1 in first file!');
   }
 }
 
