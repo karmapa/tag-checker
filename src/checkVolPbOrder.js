@@ -31,8 +31,7 @@ export default function checkVolPbOrder(textObjs, pbWithSuffix) {
     });
 
     lastTextPbBio = pbBios[pbBios.length - 1];
-    [lastFn, lastVol1n] = [fn, vol1n];
-    lastVol2n = lastTextPbBio.pbVol2n;
+    [lastFn, lastVol1n, lastVol2n] = [fn, vol1n, lastTextPbBio.pbVol2n];
   });
 
   reportErr('Wrong Volumn Pb Order!', errMessages);
