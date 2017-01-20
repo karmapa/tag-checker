@@ -7,7 +7,7 @@ import {lessNumber, sameNumber, numberAdd1, numberJump} from './compareNumber.js
 
 export default function checkVolPbOrder(textObjs, pbWithSuffix) {
   let [repo1stPbBio, firstText, pbAnalyzer, pbOrderChecker] = init(textObjs[0], pbWithSuffix);
-  let [lastFn, lastVol1n, lastTextPbBio] = ['first-file', 0];
+  let [lastFn, lastVol1n, lastTextPbBio, lastVol2n] = ['first-file', 0];
   let errMessages = [];
 
   checkRepo1stVol(firstText);
@@ -30,7 +30,9 @@ export default function checkVolPbOrder(textObjs, pbWithSuffix) {
       checkPbVol2nAndOrderInFile(errMessages, pbBios[index], pbBio, pbOrderChecker);
     });
 
-    [lastFn, lastVol1n, lastTextPbBio] = [fn, vol1n, pbBios[pbBios.length - 1]];
+    lastTextPbBio = pbBios[pbBios.length - 1];
+    [lastFn, lastVol1n] = [fn, vol1n];
+    lastVol2n = lastTextPbBio.pbVol2n;
   });
 
   reportErr('Wrong Volumn Pb Order!', errMessages);
