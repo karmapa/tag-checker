@@ -105,10 +105,10 @@ function setVariables(textObj, pbAnalyzer) {
   let {fn, text} = textObj;
   let volInText = volExist(text);
   if (volInText) {
-    let {vol1n, vol2n} = analyzeVol(fn, text);
+    var {vol1n, vol2n} = analyzeVol(fn, text);
   }
   else {
-    let {pbVol1n: vol1n, pbVol2n: vol2n} = pbAnalyzer(fn, text);
+    var {pbVol1n: vol1n, pbVol2n: vol2n} = pbAnalyzer(fn, text);
   }
   return [fn, text, volInText, vol1n, vol2n];
 }
