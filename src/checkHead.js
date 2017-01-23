@@ -1,5 +1,6 @@
 const volHeadPbRegex = /<(vol|head).+?>|<pb.+?>(?=([\s\S](?!<pb))*?(?=<head))/g;
 const pbRegex =  /<pb id="(.+?)"/;
+const tNameRegex = /^[\u0f00-\u0fff (]+?[།གཀ༑)]$/;
 
 import {pbExist, headExist} from './detectTag.js';
 import {analyzeHead} from './analyzeTag.js';
@@ -19,6 +20,7 @@ export default function checkHeadN(textObjs) {
       else if (headExist(tag)) {
         let headBio = analyzeHead(fn, pbId, tag);
         check1stHeadAndOrder(errMessages, lastHeadBio, headBio, followVol);
+        checkTname(fn, pbId, tag, headBio.tName)
 
         lastHeadBio = headBio, followVol = false;
       }
@@ -55,4 +57,10 @@ function checkHeadOrder(lastHeadN, headN, lastBioMessage, bioMessage) {
   if (headN - lastHeadN > 1) {
     warn('Head n might be missing!', lastBioMessage, bioMessage);
   } 
+}
+
+function checkTname(fn, pbId, tag, tname) {
+  if (! tNameRegex.test(tname)) {
+    warn('Head tibetan name might be wrong!', fn, pbId, tag);
+  }
 }
