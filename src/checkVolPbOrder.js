@@ -6,11 +6,10 @@ import {warn, reportErr} from './handleErr.js';
 import {lessNumber, sameNumber, numberAdd1, numberJump} from './compareNumber.js';
 
 export default function checkVolPbOrder(textObjs, pbWithSuffix) {
-  let [repo1stPbBio, firstText, pbAnalyzer, pbOrderChecker] = init(textObjs[0], pbWithSuffix);
+  let [repo1stPbBio, pbAnalyzer, pbOrderChecker] = init(textObjs[0], pbWithSuffix);
   let [lastFn, lastVolN, lastVol1n, lastVol2n, lastTextPbBio] = ['first-file', 'first-file', 0, 0];
   let errMessages = [];
 
-  checkRepo1stVol(firstText);
   checkRepo1stPb(repo1stPbBio);
 
   textObjs.forEach((textObj) => {
@@ -42,7 +41,7 @@ function init(textObj, pbWithSuffix) {
   let {fn, text} = textObj;
   let [pbAnalyzer, pbOrderChecker] = setPbTool(pbWithSuffix);
   let pb1stBio = pbAnalyzer(fn, text);
-  return [pb1stBio, text, pbAnalyzer, pbOrderChecker];
+  return [pb1stBio, pbAnalyzer, pbOrderChecker];
 }
 
 function setPbTool(pbWithSuffix) {
@@ -82,13 +81,6 @@ function checkPbOrder(store, lastBio, pbBio, looseMode) {
   }
   else {
     store.push('Wrong pb order! ' + lastFn + ' ' + lastTag + ' ' + fn + ' ' + tag);
-  }
-}
-
-function checkRepo1stVol(text) {
-  let volN = analyzeVol('first file', text).volN;
-  if (! volExist(text) || volN !== '1' && volN !== '1-1') {
-    warn('No vol tag or volN not 1 or 1-1 in first file!');
   }
 }
 
