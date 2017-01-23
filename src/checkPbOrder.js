@@ -5,7 +5,7 @@ import {volExist} from './detectTag.js';
 import {warn, reportErr} from './handleErr.js';
 import {lessNumber, sameNumber, numberAdd1, numberJump} from './compareNumber.js';
 
-export default function checkVolPbOrder(textObjs, pbWithSuffix) {
+export default function checkPbOrder(textObjs, pbWithSuffix) {
   let [repo1stPbBio, pbAnalyzer, pbOrderChecker] = init(textObjs[0], pbWithSuffix);
   let [lastFn, lastVolN, lastVol1n, lastVol2n, lastTextPbBio] = ['first-file', 'first-file', 0, 0];
   let errMessages = [];
@@ -45,10 +45,10 @@ function init(textObj, pbWithSuffix) {
 }
 
 function setPbTool(pbWithSuffix) {
-  return pbWithSuffix ? [analyzePb4, checkPb4Order] : [analyzePb, checkPbOrder];
+  return pbWithSuffix ? [analyzePb4, check2Pb4Order] : [analyzePb, check2PbOrder];
 }
 
-function checkPb4Order(store, lastBio, pbBio, looseMode) {
+function check2Pb4Order(store, lastBio, pbBio, looseMode) {
   let {pbN: lastPbN, pbL: lastPbL, tag: lastTag, fn: lastFn} = lastBio;
   let {pbN, pbL, tag, fn} = pbBio;
 
@@ -69,7 +69,7 @@ function correctPbL(str) {
   }
 }
 
-function checkPbOrder(store, lastBio, pbBio, looseMode) {
+function check2PbOrder(store, lastBio, pbBio, looseMode) {
   let {pbN: lastPbN, tag: lastTag, fn: lastFn} = lastBio;
   let {pbN, tag, fn} = pbBio;
 
