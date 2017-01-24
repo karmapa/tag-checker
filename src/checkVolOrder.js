@@ -12,14 +12,12 @@ export default function checkVolOrder(textObjs) {
     let {fn, text} = textObj;
 
     if (volExist(text)) {
-      let volBio = analyzeVol(text);
+      let volBio = analyzeVol(fn, text);
 
       if (lastVolBio) {
         check2VolOrder(errMessages, lastVolBio, volBio);
       }
-      else {
-        lastVolBio = volBio;
-      }
+      lastVolBio = volBio;
     }
   });
 
