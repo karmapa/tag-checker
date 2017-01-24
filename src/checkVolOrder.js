@@ -52,7 +52,7 @@ function check2VolOrder(store, lastBio, bio) {
 }
 
 function checkVol2nIs1st(vol2n, message) {
-  if (vol2n && '1' !== vol2n) {
+  if (vol2n && 1 !== vol2n) {
     warn('Vol might be missing!', message);
   }
 }
