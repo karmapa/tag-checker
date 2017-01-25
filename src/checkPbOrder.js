@@ -17,6 +17,9 @@ export default function checkPbOrder(textObjs, pbWithSuffix) {
     let [text1stPbBio, ...restPbBios] = pbBios;
 
     if (lastTextPbBio) {
+      if (volInText) {
+        check2pbVolN(errMessages, lastTextPbBio, text1stPbBio);
+      }
       checkFileContinuityByPb(errMessages, lastTextPbBio, text1stPbBio, pbOrderChecker);
     }
 
@@ -100,7 +103,7 @@ function setVariables(textObj, pbAnalyzer) {
   }
   return [fn, text, volInText, textVol1n];
 }
-// wait fix
+
 function checkVol1stPb(store, vol1n, pbBio) {
   let {fn, pbVol1n, pbVol2n, pbNL, pbN} = pbBio;
   if (! sameNumber(vol1n, pbVol1n) || ! sameNumber(pbVol2n, 1) || ! pbIs1st(pbNL || pbN)) {
