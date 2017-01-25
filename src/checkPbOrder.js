@@ -13,7 +13,7 @@ export default function checkPbOrder(textObjs, pbWithSuffix) {
   checkRepo1stPb(repo1stPbBio);
 
   textObjs.forEach((textObj) => {
-    let [fn, text, volInText, volN, vol1n, vol2n] = setVariables(textObj, pbAnalyzer);
+    let [fn, text, volInText, fileVol1n] = setVariables(textObj, pbAnalyzer);
     let pbBios = text.match(pbRegex).map(pbAnalyzer.bind(null, fn));
     let [text1stPbBio, ...restPbBios] = pbBios;
 
@@ -95,12 +95,12 @@ function setVariables(textObj, pbAnalyzer) {
   let {fn, text} = textObj;
   let volInText = volExist(text);
   if (volInText) {
-    var {volN, vol1n, vol2n} = analyzeVol(fn, text);
+    var {vol1n: fileVol1n} = analyzeVol(fn, text);
   }
   else {
-    var {pbVolN: volN, pbVol1n: vol1n, pbVol2n: vol2n} = pbAnalyzer(fn, text);
+    var {pbVol1n: fileVol1n} = pbAnalyzer(fn, text);
   }
-  return [fn, text, volInText, volN, vol1n, vol2n];
+  return [fn, text, volInText, fileVol1n];
 }
 // wait fix
 function checkVol1stPb(store, vol1n, pbBio) {
