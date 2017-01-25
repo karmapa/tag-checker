@@ -86,7 +86,7 @@ function check2PbOrder(store, lastBio, pbBio, looseMode) {
 
 function checkRepo1stPb(pbBio) {
   let {fn, tag, pbVol1n, pbVol2n, pbNL, pbN} = pbBio;
-  if (! sameNumber(pbVol1n, 1) || ! sameNumber(pbVol2n, 1) || ! pbIsFirst(pbNL || pbN)) {
+  if (1 !== pbVol1n || 1 !== pbVol2n || ! pbIsFirst(pbNL || pbN)) {
     warn('Pb is not start from 1-1-1a, 1-1-0a, 1-1-1, or 1-1-0', fn, tag);
   }
 }
