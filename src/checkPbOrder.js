@@ -7,13 +7,12 @@ import {lessNumber, sameNumber, numberAdd1, numberJump} from './compareNumber.js
 
 export default function checkPbOrder(textObjs, pbWithSuffix) {
   let [repo1stPbBio, pbAnalyzer, pbOrderChecker] = init(textObjs[0], pbWithSuffix);
-  let [lastFn, lastVolN, lastVol1n, lastVol2n, lastTextPbBio] = ['first-file', 'first-file', 0, 0];
-  let errMessages = [];
+  let lastTextPbBio, errMessages = [];
 
   checkRepo1stPb(repo1stPbBio);
 
   textObjs.forEach((textObj) => {
-    let [fn, text, volInText, fileVol1n] = setVariables(textObj, pbAnalyzer);
+    let [fn, text, volInText, textVol1n] = setVariables(textObj, pbAnalyzer);
     let pbBios = text.match(pbRegex).map(pbAnalyzer.bind(null, fn));
     let [text1stPbBio, ...restPbBios] = pbBios;
 
@@ -27,10 +26,9 @@ export default function checkPbOrder(textObjs, pbWithSuffix) {
     });
 
     lastTextPbBio = pbBios[pbBios.length - 1];
-    [lastFn, lastVolN, lastVol1n, lastVol2n] = [fn, lastTextPbBio.pbVolN, vol1n, lastTextPbBio.pbVol2n];
   });
 
-  reportErr('Wrong Volumn Pb Order!', errMessages);
+  reportErr('Wrong Pb Order!', errMessages);
 };
 
 function init(textObj, pbWithSuffix) {
@@ -100,7 +98,7 @@ function setVariables(textObj, pbAnalyzer) {
   else {
     var {pbVol1n: fileVol1n} = pbAnalyzer(fn, text);
   }
-  return [fn, text, volInText, fileVol1n];
+  return [fn, text, volInText, textVol1n];
 }
 // wait fix
 function checkVol1stPb(store, vol1n, pbBio) {
