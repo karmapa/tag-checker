@@ -17,11 +17,7 @@ export default function checkPbOrder(textObjs, pbWithSuffix) {
     let pbBios = text.match(pbRegex).map(pbAnalyzer.bind(null, fn));
     let [text1stPbBio, ...restPbBios] = pbBios;
 
-    if (volInText) {
-      let volMessage = 'Volumn not continuous! ' + lastFn + ' ' + lastVolN + ' ' + fn + ' ' + volN;
-      checkFileContinuityByVol(errMessages, volMessage, lastVol1n, lastVol2n, vol1n, vol2n, text1stPbBio);
-    }
-    else if (lastTextPbBio) {
+    if (lastTextPbBio) {
       checkFileContinuityByPb(errMessages, lastTextPbBio, text1stPbBio, pbOrderChecker);
     }
 
@@ -106,17 +102,7 @@ function setVariables(textObj, pbAnalyzer) {
   }
   return [fn, text, volInText, volN, vol1n, vol2n];
 }
-
-function checkFileContinuityByVol(store, message, lastVol1n, lastVol2n, vol1n, vol2n, text1stPbBio) {
-  if (numberJump(lastVol1n, vol1n)) {
-    warn(message);
-  }
-  else if (! numberAdd1(lastVol1n, vol1n)) {
-    store.push(message);
-  }
-  checkVol1stPb(store, vol1n, text1stPbBio);
-}
-
+// wait fix
 function checkVol1stPb(store, vol1n, pbBio) {
   let {fn, pbVol1n, pbVol2n, pbNL, pbN} = pbBio;
   if (! sameNumber(vol1n, pbVol1n) || ! sameNumber(pbVol2n, 1) || ! pbIs1st(pbNL || pbN)) {
