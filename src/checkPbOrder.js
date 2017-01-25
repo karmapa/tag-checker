@@ -86,12 +86,12 @@ function check2PbOrder(store, lastBio, pbBio, looseMode) {
 
 function checkRepo1stPb(pbBio) {
   let {fn, tag, pbVol1n, pbVol2n, pbNL, pbN} = pbBio;
-  if (1 !== pbVol1n || 1 !== pbVol2n || ! pbIsFirst(pbNL || pbN)) {
+  if (1 !== pbVol1n || 1 !== pbVol2n || ! pbIs1st(pbNL || pbN)) {
     warn('Pb is not start from 1-1-1a, 1-1-0a, 1-1-1, or 1-1-0', fn, tag);
   }
 }
 
-function pbIsFirst(pbId) {
+function pbIs1st(pbId) {
   return '1a' === pbId || '0a' === pbId || 1 === pbId || 0 === pbId;
 }
 
@@ -119,7 +119,7 @@ function checkFileContinuityByVol(store, message, lastVol1n, lastVol2n, vol1n, v
 
 function checkVol1stPb(store, vol1n, pbBio) {
   let {fn, pbVol1n, pbVol2n, pbNL, pbN} = pbBio;
-  if (! sameNumber(vol1n, pbVol1n) || ! sameNumber(pbVol2n, 1) || ! pbIsFirst(pbNL || pbN)) {
+  if (! sameNumber(vol1n, pbVol1n) || ! sameNumber(pbVol2n, 1) || ! pbIs1st(pbNL || pbN)) {
     store.push('Vol tag is not follow by first pbId ' + fn);
   } 
 }
@@ -139,11 +139,11 @@ function checkFileContinuityByPb(store, lastPbBio, pbBio, pbOrderChecker) {
     else if (sameNumber(lastPbVol2n, pbVol2n)) {
       pbOrderChecker(store, lastPbBio, pbBio, true);
     }
-    else if (! (numberAdd1(lastPbVol2n, pbVol2n) && pbIsFirst(pbNL || pbN))) {
+    else if (! (numberAdd1(lastPbVol2n, pbVol2n) && pbIs1st(pbNL || pbN))) {
       warn(message);
     }
   }
-  else if (! (numberAdd1(lastPbVol1n, pbVol1n) && sameNumber(1, pbVol2n) && pbIsFirst(pbNL || pbN))) {
+  else if (! (numberAdd1(lastPbVol1n, pbVol1n) && sameNumber(1, pbVol2n) && pbIs1st(pbNL || pbN))) {
     warn(message, 'Vol tag may be missing');
   }
 }
@@ -162,7 +162,7 @@ function checkPbVol2nAndOrderInFile(store, lastPbBio, pbBio, pbOrderChecker) {
   if (sameNumber(lastPbVol2n, pbVol2n)) {
     pbOrderChecker(store, lastPbBio, pbBio);
   }
-  else if (numberAdd1(lastPbVol2n, pbVol2n) && pbIsFirst(pbNL || pbN)) {
+  else if (numberAdd1(lastPbVol2n, pbVol2n) && pbIs1st(pbNL || pbN)) {
     return;
   }
   else {
