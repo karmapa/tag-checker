@@ -12,12 +12,16 @@ export default function checkPbOrder(textObjs, pbWithSuffix) {
   checkRepo1stPb(repo1stPbBio);
 
   textObjs.forEach((textObj) => {
-    let [fn, text, volInText, textVol1n] = setVariables(textObj, textsVol1n, pbAnalyzer);
+    let [fn, text, volInText, volBio, textVol1n] = setVariables(textObj, textsVol1n, pbAnalyzer);
     let pbBios = text.match(pbRegex).map(pbAnalyzer.bind(null, fn));
     let [text1stPbBio, ...restPbBios] = pbBios;
 
     if (volInText) {
       textsVol1n = textVol1n;
+      if (lastVolBio) {
+        checkPbAfterVol(errMessages, lastVolBio, volBio, text1stPbBio);
+      }
+      lastVolBio = volBio;
     }
 /*
     if (lastTextPbBio) {
@@ -100,7 +104,8 @@ function setVariables(textObj, textsVol1n, pbAnalyzer) {
   let {fn, text} = textObj;
   let volInText = volExist(text);
   if (volInText) {
-    var {vol1n: textVol1n} = analyzeVol(fn, text);
+    var volBio = analyzeVol(fn, text);
+    var textVol1n = volBio.vol1n;
   }
   else if (textsVol1n) {
     textVol1n = textsVol1n;
@@ -108,7 +113,11 @@ function setVariables(textObj, textsVol1n, pbAnalyzer) {
   else {
     var {pbVol1n: textVol1n} = pbAnalyzer(fn, text);
   }
-  return [fn, text, volInText, textVol1n];
+  return [fn, text, volInText, volBio, textVol1n];
+}
+
+function checkPbAfterVol(store, lastVolBio, volBio, text1stPbBio) {
+
 }
 
 function checkVol1stPb(store, vol1n, pbBio) {
