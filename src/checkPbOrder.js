@@ -117,14 +117,17 @@ function setVariables(textObj, textsVol1n, pbAnalyzer) {
 }
 
 function checkPbAfterVol(store, lastVolBio, volBio, text1stPbBio) {
-
-}
-
-function checkVol1stPb(store, vol1n, pbBio) {
-  let {fn, pbVol1n, pbVol2n, pbNL, pbN} = pbBio;
-  if (! sameNumber(vol1n, pbVol1n) || ! sameNumber(pbVol2n, 1) || ! pbIs1st(pbNL || pbN)) {
-    store.push('Vol tag is not follow by first pbId ' + fn);
-  } 
+  let {vol1n: lastVol1n, vol2n: lastVol2n} = lastVolBio;
+  let {vol1n, vol2n} = volBio;
+  let {fn, tag, pbVol2n, pbNL, pbN} = text1stPbBio;
+  if (lastVol1n !== vol1n) {
+    if (1 !== pbVol2n || ! pbIs1st(pbNL || pbN)) {
+      store.push('Pb not start x-1-1a or x-1-1! ' + fn + ' ' + tag);
+    }
+  }
+  else if (! pbIs1st(pbNL || pbN)) {
+    warn('Pb not start from 1a or 1!', fn, tag);
+  }
 }
 
 function checkFileContinuityByPb(store, lastPbBio, pbBio, pbOrderChecker) {
