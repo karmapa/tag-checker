@@ -7,15 +7,19 @@ import {lessNumber, sameNumber, numberAdd1, numberJump} from './compareNumber.js
 
 export default function checkPbOrder(textObjs, pbWithSuffix) {
   let [repo1stPbBio, pbAnalyzer, pbOrderChecker] = init(textObjs[0], pbWithSuffix);
-  let lastTextPbBio, errMessages = [];
+  let lastVolBio, textsVol1n, lastTextPbBio, errMessages = [];
 
   checkRepo1stPb(repo1stPbBio);
 
   textObjs.forEach((textObj) => {
-    let [fn, text, volInText, textVol1n] = setVariables(textObj, pbAnalyzer);
+    let [fn, text, volInText, textVol1n] = setVariables(textObj, textsVol1n, pbAnalyzer);
     let pbBios = text.match(pbRegex).map(pbAnalyzer.bind(null, fn));
     let [text1stPbBio, ...restPbBios] = pbBios;
 
+    if (volInText) {
+      textsVol1n = textVol1n;
+    }
+/*
     if (lastTextPbBio) {
       if (volInText) {
         check2pbVolN(errMessages, lastTextPbBio, text1stPbBio);
@@ -27,7 +31,7 @@ export default function checkPbOrder(textObjs, pbWithSuffix) {
       checkPbVol1n(errMessages, vol1n, pbBio);
       checkPbVol2nAndOrderInFile(errMessages, pbBios[index], pbBio, pbOrderChecker);
     });
-
+*/
     lastTextPbBio = pbBios[pbBios.length - 1];
   });
 
@@ -92,14 +96,17 @@ function pbIs1st(pbId) {
   return '1a' === pbId || '0a' === pbId || 1 === pbId || 0 === pbId;
 }
 
-function setVariables(textObj, pbAnalyzer) {
+function setVariables(textObj, textsVol1n, pbAnalyzer) {
   let {fn, text} = textObj;
   let volInText = volExist(text);
   if (volInText) {
-    var {vol1n: fileVol1n} = analyzeVol(fn, text);
+    var {vol1n: textVol1n} = analyzeVol(fn, text);
+  }
+  else if (textsVol1n) {
+    textVol1n = textsVol1n;
   }
   else {
-    var {pbVol1n: fileVol1n} = pbAnalyzer(fn, text);
+    var {pbVol1n: textVol1n} = pbAnalyzer(fn, text);
   }
   return [fn, text, volInText, textVol1n];
 }
