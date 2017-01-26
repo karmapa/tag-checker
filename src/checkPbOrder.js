@@ -23,14 +23,11 @@ export default function checkPbOrder(textObjs, pbWithSuffix) {
       }
       lastVolBio = volBio;
     }
-/*
-    if (lastTextPbBio) {
-      if (volInText) {
-        check2pbVolN(errMessages, lastTextPbBio, text1stPbBio);
-      }
-      checkFileContinuityByPb(errMessages, lastTextPbBio, text1stPbBio, pbOrderChecker);
-    }
 
+    if (lastTextPbBio) {
+      checkPbAcross2file(errMessages, lastTextPbBio, text1stPbBio, pbOrderChecker);
+    }
+/*
     restPbBios.forEach((pbBio, index) => {
       checkPbVol1n(errMessages, vol1n, pbBio);
       checkPbVol2nAndOrderInFile(errMessages, pbBios[index], pbBio, pbOrderChecker);
@@ -130,7 +127,7 @@ function checkPbAfterVol(store, lastVolBio, volBio, text1stPbBio) {
   }
 }
 
-function checkFileContinuityByPb(store, lastPbBio, pbBio, pbOrderChecker) {
+function checkPbAcross2file(store, lastPbBio, pbBio, pbOrderChecker) {
   let {fn: lastFn, tag: lastTag, pbVol1n: lastPbVol1n, pbVol2n: lastPbVol2n} = lastPbBio;
   let {fn, tag, pbVol1n, pbVol2n, pbNL, pbN} = pbBio;
   let message = 'Wrong pb order! ' + lastFn + ' ' + lastTag + ' ' + fn + ' ' + tag;
