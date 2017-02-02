@@ -17,9 +17,8 @@ export default function checkPbOrder(textObjs, pbWithSuffix) {
     let [text1stPbBio, ...restPbBios] = pbBios;
 
     if (volInText) {
-      textsVol1n = textVol1n;
       checkPbAfterVol(errMessages, lastVolBio, volBio, text1stPbBio);
-
+      textsVol1n = textVol1n;
       lastVolBio = volBio;
     }
 
@@ -113,22 +112,17 @@ function setVariables(textObj, textsVol1n, pbAnalyzer) {
 }
 
 function checkPbAfterVol(store, lastVolBio, volBio, text1stPbBio) {
-  let {vol1n, vol2n} = volBio;
+  let lastVol1n = lastVolBio.vol1n;
+  let vol1n = volBio.vol1n;
+  let vol1nChange = lastVolBio && lastVol1n !== vol1n;
   let {fn, tag, pbVol2n, pbNL, pbN} = text1stPbBio;
+  let pbIsFirst = pbIs1st(pbNL || pbN);
 
-  if (lastVolBio) {
-    let {vol1n: lastVol1n, vol2n: lastVol2n} = lastVolBio;
-    if (lastVol1n !== vol1n) {
-      if (1 !== pbVol2n || ! pbIs1st(pbNL || pbN)) {
-        store.push('Pb not start x-1-1a or x-1-1! ' + fn + ' ' + tag);
-      }
-    }
-    else if (! pbIs1st(pbNL || pbN)) {
-      warn('Pb not start from 1a or 1!', fn, tag);
-    }
+  if (vol1nChange && (1 !== pbVol2n || ! pbIsFirst)) {
+    store.push('Pb not start x-1-1a or x-1-1! ' + fn + ' ' + tag);
   }
-  else {
-
+  else if (! pbIsFirst) {
+    store.push('Pb not start from 1a or 1! ' + fn + ' ' + tag);
   }
 }
 
