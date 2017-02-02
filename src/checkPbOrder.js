@@ -104,7 +104,7 @@ function setVariables(textObj, textsVol1n, pbAnalyzer) {
     var textVol1n = volBio.vol1n;
   }
   else if (textsVol1n) {
-    textVol1n = textsVol1n;
+    var textVol1n = textsVol1n;
   }
   else {
     var {pbVol1n: textVol1n} = pbAnalyzer(fn, text);
