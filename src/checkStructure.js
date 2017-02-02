@@ -35,7 +35,11 @@ export default function checkStructure(textObjs) {
 
     checkSutraPos(wrongTagPoses, fn, text);
   });
-  reportErr('Structure Error', [...multiVols, ...multiDivs, ...wrongDivOrders, ...wrongTagPoses]);
+
+  if (multiVols.length > 0) {
+    warn(...multiVols);
+  }
+  reportErr('Structure Error', [...multiDivs, ...wrongDivOrders, ...wrongTagPoses]);
 }
 
 function checkMultiVol(store, fn, volNumber) {
