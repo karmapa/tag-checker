@@ -112,7 +112,7 @@ function setVariables(textObj, textsVol1n, pbAnalyzer) {
 }
 
 function checkPbAfterVol(store, lastVolBio, volBio, text1stPbBio) {
-  let lastVol1n = lastVolBio.vol1n;
+  let lastVol1n = lastVolBio ? lastVolBio.vol1n : undefined;
   let vol1n = volBio.vol1n;
   let vol1nChange = lastVolBio && lastVol1n !== vol1n;
   let {fn, tag, pbVol2n, pbNL, pbN} = text1stPbBio;
@@ -164,8 +164,13 @@ function checkPbVol2nAndOrderInFile(store, lastPbBio, pbBio, pbOrderChecker) {
   if (sameNumber(lastPbVol2n, pbVol2n)) {
     pbOrderChecker(store, lastPbBio, pbBio);
   }
-  else if (numberAdd1(lastPbVol2n, pbVol2n) && pbIs1st(pbNL || pbN)) {
-    return;
+  else if (numberAdd1(lastPbVol2n, pbVol2n)) {
+    if (pbIs1st(pbNL || pbN)) {
+      return;
+    }
+    else {
+      warn('Pb not from 1 or 1a!', fn, tag);
+    }
   }
   else {
     store.push(message);
