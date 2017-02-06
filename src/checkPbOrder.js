@@ -119,10 +119,10 @@ function checkPbAfterVol(store, lastVolBio, volBio, text1stPbBio) {
   let pbIsFirst = pbIs1st(pbNL || pbN);
 
   if (vol1nChange && (1 !== pbVol2n || ! pbIsFirst)) {
-    store.push('Pb not start x-1-1a or x-1-1! ' + fn + ' ' + tag);
+    warn('Pb not start x-1-1a or x-1-1!', fn, tag);
   }
   else if (! pbIsFirst) {
-    store.push('Pb not start from 1a or 1! ' + fn + ' ' + tag);
+    warn('Pb not start from 1a or 1!', fn, tag);
   }
 }
 
