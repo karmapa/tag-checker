@@ -25,12 +25,12 @@ export default function checkPbOrder(textObjs, pbWithSuffix) {
     if (lastTextPbBio) {
       checkPbAcross2file(errMessages, lastTextPbBio, text1stPbBio, pbOrderChecker);
     }
-/*
+
     restPbBios.forEach((pbBio, index) => {
-      checkPbVol1n(errMessages, vol1n, pbBio);
+      checkPbVol1n(errMessages, textVol1n, pbBio);
       checkPbVol2nAndOrderInFile(errMessages, pbBios[index], pbBio, pbOrderChecker);
     });
-*/
+
     lastTextPbBio = pbBios[pbBios.length - 1];
   });
 
