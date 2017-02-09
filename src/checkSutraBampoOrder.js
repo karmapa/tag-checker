@@ -154,7 +154,7 @@ function checkBampo_sutraOrder(store, lastBio, bio, errInfo) {
   let {sutraNL: lastSutraNL, sutraN: lastSutraN, sutraL: lastSutraL, bampoN} = lastBio;
   let {sutraNL, sutraN, sutraL} = bio;
 
-  if (! isFirstBampoAhead(lastSutraNL, bampoN, sutraNL)) {
+  if (! is1stBampoAhead(lastSutraNL, bampoN, sutraNL)) {
     checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
   }
   else {
@@ -162,7 +162,7 @@ function checkBampo_sutraOrder(store, lastBio, bio, errInfo) {
   }
 }
 
-function isFirstBampoAhead(lastSutraNL, bampoN, sutraNL) {
+function is1stBampoAhead(lastSutraNL, bampoN, sutraNL) {
   return lastSutraNL === sutraNL && 1 === bampoN;
 }
 
