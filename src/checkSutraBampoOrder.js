@@ -31,9 +31,11 @@ export default function checkSutraBampoOrder(textObjs) {
 
         if (lastType === 'sutra' && type === 'sutra') {
           checkSutraOrder(errMessages, lastBio, bio, errInfo);
+          firstBampoAhead = false;
         }
         else if (lastType === 'sutra' && type === 'bampo') {
           firstBampoShouldBeAhead = checkSutra_bampoOrder(errMessages, lastBio, bio, firstBampoAhead, errInfo);
+          firstBampoAhead = false;
         }
         else if (lastType === 'bampo' && type === 'sutra') {
           firstBampoAhead = checkBampo_sutraOrder(errMessages, lastBio, bio, errInfo);
