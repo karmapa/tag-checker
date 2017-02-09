@@ -154,7 +154,7 @@ function checkBampo_sutraOrder(store, lastBio, bio, errInfo) {
   let {sutraNL: lastSutraNL, sutraN: lastSutraN, sutraL: lastSutraL, bampoN} = lastBio;
   let {sutraNL, sutraN, sutraL} = bio;
 
-  if (! isFirstBampoAhead(lastBio, bio)) {
+  if (! isFirstBampoAhead(lastSutraNL, bampoN, sutraNL)) {
     checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
   }
   else {
