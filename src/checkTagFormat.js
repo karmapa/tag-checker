@@ -42,7 +42,7 @@ function checkPropFormat(fn, text, tagRules) {
         wrongPropFormats.push(type + ': ' + str);
       }
       else if (! sameNumber(correctTagsN, tagNameStrN)) {
-        warn('Suspected Wrong Tag Format', fn, str);
+        warn('Suspected Wrong' + type + 'Format', fn, str);
       }
     });
   });
