@@ -1,4 +1,5 @@
-const divPosRegex = /^<sutra.+?>\r?\n<division.+?>\r?\n<vol.+?>\r?\n<pb/;
+const divPosRegex1 = /^(<sutra.+?>\r?\n)?<division.+?>\r?\n<vol.+?>\r?\n<pb/;
+const divPosRegex2 = /^<division.+?>\r?\n<vol.+?>\r?\n<pb/;
 const volPosRegex1 = /^(<sutra.+?>\r?\n)?<vol.+?>\r?\n<pb/;
 const volPosRegex2 = /^<vol/;
 const volRegex = /<vol/g;
@@ -68,8 +69,11 @@ function checkDivOrder(store, lastDivFile, lastDivN, fn, divN) {
 
 function checkTagPos(store, text, divNumber, fn) {
   if (divNumber) {
-    if (! text.match(divPosRegex)) {
+    if (! text.match(divPosRegex1)) {
       store.push('Wrong division tag position! ' + fn);
+    }
+    else if (text.match(divPosRegex2)) {
+      warn('No sutra tag before division tag!', fn);
     }
   }
   else if (! text.match(volPosRegex1)) {
