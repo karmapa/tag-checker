@@ -38,7 +38,7 @@ let tagRules = [
   },
   {
     type: 'head',
-    correctRegex: /<head n="\d+?" t="[^<>\n]+?"( (type|zh|lv|st|headtype)="[^<>\n]+?")*?\/>/g,
+    correctRegex: /<head n="\d+?" t="[^<>\n]+?"( (type|zh|lv|st)="[^<>\n]+?")*?\/>/g,
     suspectedRegex: /<head/g,
     tagNameStrRegex: /head/g,
     lineWithTagRegex: /^.*?head.*?$/mg
