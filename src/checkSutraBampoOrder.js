@@ -33,8 +33,10 @@ export default function checkSutraBampoOrder(textObjs) {
           firstBampoAhead = checkBampo_sutraOrder(errMessages, lastBio, bio, errInfo);
         }
 
-        if (firstBampoShouldBeAhead && ! firstBampoAhead) {
-          warn('Sutra tag may be missing before bampo n 1!', fn, pb, tag);
+        if (firstBampoShouldBeAhead) {
+          if (! firstBampoAhead) {
+            warn('Sutra tag may be missing before bampo n 1!', fn, pb, tag);
+          }
           firstBampoShouldBeAhead = false;
         }
 
