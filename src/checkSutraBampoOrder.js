@@ -63,7 +63,9 @@ function check1stBio(bio) {
 
   if (bio.type === 'bampo') {
     warn('No sutra before first bampo');
-    check1stBampo(bio.bampoN, 'from the beginning');
+    if (! bampoNis1) {
+      warn('Bampo n is not 1 from the beginning!');
+    }
   }
 }
 
@@ -73,13 +75,8 @@ function check1stSutraNL(sutraNL) {
   }
 }
 
-function check1stBampo(bampoN, errInfo) {
-  if (1 === bampoN) {
-    return true;
-  }
-  else {
-    warn('Bampo n is not 1', errInfo);
-  }
+function bampoNis1(bampoN) {
+  return 1 === bampoN;
 }
 
 function checkSutraOrder(store, lastBio, bio, errInfo) {
@@ -129,27 +126,24 @@ function checkSutra_bampoOrder(store, lastBio, bio, firstBampoAhead, errInfo) {
 
   if (! sameSutraNL) {
     let correctSutraNL = checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
-    if (correctSutraNL) {
-      let bampoNIs1 = check1stBampo(bampoN, errInfo);
-      if (bampoNIs1) {
-        return 'firstBampoShouldBeAhead';
-      }
+    if (correctSutraNL && bampoNis1(bampoN)) {
+      return 'firstBampoShouldBeAhead';
     }
   }
   else if (firstBampoAhead) {
     check2ndBampo(store, bampoN, errInfo);
   }
-  else {
-    check1stBampo(bampoN, errInfo);
+  else if (! bampoNis1(bampoN)) {
+    store.push('Bampo n is not 1 ', errInfo);
   }
 }
 
 function check2ndBampo(store, bampoN, errInfo) {
   if (1 === bampoN) {
-    store.push('Repeat bampo n 1', errInfo);
+    store.push('Repeat bampo n 1 ', errInfo);
   }
   else if (bampoN > 2) {
-    warn('Bampo may be missing!', errInfo);
+    warn('Bampo may be missing! ', errInfo);
   }
 }
 
@@ -184,8 +178,7 @@ function checkBampoOrder(store, lastBio, bio, errInfo) {
   else {
     let correctSutraNL = checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
     if (correctSutraNL) {
-      let bampoNIs1 = check1stBampo(bampoN, errInfo);
-      if (bampoNIs1) {
+      if (bampoNis1(bampoN)) {
         return true;
       }
       else {
