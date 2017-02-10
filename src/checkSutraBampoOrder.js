@@ -29,6 +29,15 @@ export default function checkSutraBampoOrder(textObjs) {
         let {type, fn, pb, tag} =bio;
         let errInfo = lastFn + ' ' + lastPb + ' ' + lastTag + ', ' + fn + ' ' + pb + ' ' + tag;
 
+        if (lastType === 'bampo' && type === 'sutra') {
+          firstBampoAhead = checkBampo_sutraOrder(errMessages, lastBio, bio, errInfo);
+        }
+
+        if (firstBampoShouldBeAhead && ! firstBampoAhead) {
+          warn('Sutra tag may be missing before bampo n 1!', fn, pb, tag);
+          firstBampoShouldBeAhead = false;
+        }
+
         if (lastType === 'sutra' && type === 'sutra') {
           checkSutraOrder(errMessages, lastBio, bio, errInfo);
           firstBampoAhead = false;
@@ -37,18 +46,7 @@ export default function checkSutraBampoOrder(textObjs) {
           firstBampoShouldBeAhead = checkSutra_bampoOrder(errMessages, lastBio, bio, firstBampoAhead, errInfo);
           firstBampoAhead = false;
         }
-        else if (lastType === 'bampo' && type === 'sutra') {
-          firstBampoAhead = checkBampo_sutraOrder(errMessages, lastBio, bio, errInfo);
-        }
-
-        if (firstBampoShouldBeAhead) {
-          if (! firstBampoAhead) {
-            warn('Sutra tag may be missing before bampo n 1!', fn, pb, tag);
-          }
-          firstBampoShouldBeAhead = false;
-        }
-
-        if (lastType === 'bampo' && type === 'bampo') {
+        else if (lastType === 'bampo' && type === 'bampo') {
           firstBampoShouldBeAhead = checkBampoOrder(errMessages, lastBio, bio, errInfo);
         }
       }
