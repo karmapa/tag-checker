@@ -10,7 +10,7 @@ let tagRules = [
   },
   {
     type: 'division',
-    correctRegex: new RegExp('<division n="(\\d+?)" t="[^<>\n]+?" i18n="' + repo + '-division-\\1"\\/>', 'g'),
+    correctRegex: new RegExp('<division n="(\\d+?)" t="[^"<>\n]+?" i18n="' + repo + '-division-\\1"\\/>', 'g'),
     suspectedRegex: /<division/g,
     tagNameStrRegex: /division/g,  
     lineWithTagRegex: /^.*?division.*?$/mg
@@ -31,14 +31,14 @@ let tagRules = [
   },
   {
     type: 'bampo',
-    correctRegex: /<bampo n="\d+?[a-zA-Z]?\.\d+?"( zh="[^<>\n]+?")*?\/>/g,
+    correctRegex: /<bampo n="\d+?[a-zA-Z]?\.\d+?"( zh="[^"<>\n]+?")*?\/>/g,
     suspectedRegex: /<bampo/g,
     tagNameStrRegex: /bampo/g,
     lineWithTagRegex: /^.*?bampo.*?$/mg
   },
   {
     type: 'head',
-    correctRegex: /<head n="\d+?" t="[^<>\n]+?"( (type|zh|lv|st)="[^<>\n]+?")*?\/>/g,
+    correctRegex: /<head n="\d+?" t="[^"<>\n]+?"( (type|zh|lv|st)="[^"<>\n]+?")*?\/>/g,
     suspectedRegex: /<head/g,
     tagNameStrRegex: /head/g,
     lineWithTagRegex: /^.*?head.*?$/mg
