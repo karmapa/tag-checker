@@ -5,6 +5,7 @@ const volPosRegex2 = /^<vol/;
 const volRegex = /<vol/g;
 const divRegex = /<division n="(\d+?)"/g;
 const wrongSutraPosRegex = /<sutra[^>]+?>(?!(\r?\n<vol|\r?\n<division|<head n="1"))/g;
+const volHeadRegex = /<vol.+?>\r?\n<pb.+?>\r?\n<head n=/;
 
 import {warn, reportErr} from './handleErr.js';
 import {countTag} from './helper.js';
@@ -81,6 +82,10 @@ function checkTagPos(store, text, divNumber, fn) {
   }
   else if (text.match(volPosRegex2)) {
     warn('No sutra tag before vol tag!', fn);
+  }
+
+  if (! text.match(volHeadRegex)) {
+    warn('Vol is not followed by head tag!', fn);
   }
 }
 
