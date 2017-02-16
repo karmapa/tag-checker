@@ -1,6 +1,6 @@
 const volHeadPbRegex = /<(vol|head) .+?>|<pb .+?>(?=([\s\S](?!<pb ))*?(?=<head ))/g;
 const pbRegex =  /<pb id="(.+?)"/;
-const tNameRegex = /^[\u0f00-\u0fff ()]+?[།གཀ༑ཿ༽)]$/;
+const tNameRegex = /^[\u0f00-\u0fff ()]+?([།གཀ༑ཿ༽)]|་+)$/;
 
 import {pbExist, headExist} from './detectTag.js';
 import {analyzeHead} from './analyzeTag.js';
