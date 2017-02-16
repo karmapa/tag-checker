@@ -89,7 +89,7 @@ function checkSutraOrder(store, lastBio, bio, errInfo) {
     store.push('Sutra id not consistent! ' + errInfo);
   }
 
-  checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
+  checkSutraNL_Order(lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
 }
 
 function checkSutraNL_Order(lastSutraN, lastSutraL, sutraN, sutraL, errInfo) {
@@ -154,7 +154,7 @@ function checkBampo_sutraOrder(store, lastBio, bio, errInfo) {
   let {sutraNL, sutraN, sutraL} = bio;
 
   if (! is1stBampoAhead(lastSutraNL, bampoN, sutraNL)) {
-    checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
+    checkSutraNL_Order(lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
   }
   else {
     return true;
@@ -178,7 +178,7 @@ function checkBampoOrder(store, lastBio, bio, errInfo) {
     }
   }
   else {
-    let correctSutraNL = checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
+    let correctSutraNL = checkSutraNL_Order(lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
     if (correctSutraNL) {
       if (bampoNis1(bampoN)) {
         return true;
