@@ -1,4 +1,4 @@
-const volHeadPbRegex = /<(vol|head).+?>|<pb.+?>(?=([\s\S](?!<pb))*?(?=<head))/g;
+const volHeadPbRegex = /<(vol|head) .+?>|<pb .+?>(?=([\s\S](?!<pb ))*?(?=<head ))/g;
 const pbRegex =  /<pb id="(.+?)"/;
 const tNameRegex = /^[\u0f00-\u0fff ()]+?[།གཀ༑ཿ༽)]$/;
 
