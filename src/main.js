@@ -14,10 +14,10 @@ import checkHeadN from './checkHead.js';
 import {confirmPbInFile} from './helper.js';
 import {detectPbType} from './detectTag.js';
 
-checkTag(globPatt);
+checkTag();
 
-function checkTag(globPatt) {
-  let textObjs = getTextObjs(globPatt);
+function checkTag() {
+  let textObjs = getTextObjs(globPatt, repo);
   let {fn: fn, text: repo1stText} = textObjs[0];
 
   confirmPbInFile(fn, repo1stText, pbRegex);
