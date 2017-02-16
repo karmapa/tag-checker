@@ -92,18 +92,18 @@ function checkSutraOrder(store, lastBio, bio, errInfo) {
   checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
 }
 
-function checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errInfo) {
+function checkSutraNL_Order(lastSutraN, lastSutraL, sutraN, sutraL, errInfo) {
   if (lessNumber(lastSutraN, sutraN)) {
-    store.push('Wrong sutra order! ' + errInfo);
+    warn('Wrong sutra order! ' + errInfo);
   }
   else if (sameNumber(lastSutraN, sutraN)) {
     if (! sutraL || ! lastSutraL) {
-      store.push('Wrong sutra order! ' + errInfo);
+      warn('Wrong sutra order! ' + errInfo);
     }
     else {
       sutraL = sutraL.charCodeAt(0), lastSutraL = lastSutraL.charCodeAt(0);
       if (lessNumber(lastSutraL, sutraL) || sameNumber(lastSutraL, sutraL)) {
-        store.push('Wrong sutra order! ' + errInfo);
+        warn('Wrong sutra order! ' + errInfo);
       }
       else {
         if (numberJump(lastSutraL, sutraL)) {
@@ -127,7 +127,7 @@ function checkSutra_bampoOrder(store, lastBio, bio, firstBampoAhead, errInfo) {
   let sameSutraNL = lastSutraNL === sutraNL;
 
   if (! sameSutraNL) {
-    let correctSutraNL = checkSutraNL_Order(store, lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
+    let correctSutraNL = checkSutraNL_Order(lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
     if (correctSutraNL && bampoNis1(bampoN)) {
       return 'firstBampoShouldBeAhead';
     }
