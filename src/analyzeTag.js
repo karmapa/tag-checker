@@ -6,78 +6,78 @@ const pb4AnalyzeRegex = /<pb id="((\d+?)-(\d+?))-((\d+?)([abcd]))"/;
 const pbAnalyzeRegex = /<pb id="((\d+?)-(\d+?))-(\d+?)"/;
 
 export function analyzeVol(fn, tagStr) {
-  let bio = volAnalyzeRegex.exec(tagStr);
+  let volBio = volAnalyzeRegex.exec(tagStr);
   return {
     fn: fn,
-    tag: bio[0],
-    volN: bio[1],
-    vol1n: Number(bio[2]),
-    vol2n: Number(bio[4])
+    tag: volBio[0],
+    volN: volBio[1],
+    vol1n: Number(volBio[2]),
+    vol2n: Number(volBio[4])
   };
 };
 
 export function analyzeSutra(fn, pb, tag) {
-  let bio = sutraRegex.exec(tag);
+  let sutraBio = sutraRegex.exec(tag);
   return {
     type: 'sutra',
     pb: pb,
     fn: fn,
-    tag: bio[0],
-    sutraV: bio[1],
-    sutraNL: bio[2],
-    sutraN: Number(bio[3]),
-    sutraL: bio[4]
+    tag: sutraBio[0],
+    sutraV: sutraBio[1],
+    sutraNL: sutraBio[2],
+    sutraN: Number(sutraBio[3]),
+    sutraL: sutraBio[4]
   }
 };
 
 export function analyzeHead(fn, pb, tag) {
-  let bio = headAnalyzeRegex.exec(tag);
+  let headBio = headAnalyzeRegex.exec(tag);
   return {
     type: 'head',
     fn: fn,
     pb: pb,
-    tag: bio[0],
-    headN: Number(bio[1]),
-    tName: bio[2]
+    tag: headBio[0],
+    headN: Number(headBio[1]),
+    tName: headBio[2]
   };
 };
 
 export function analyzeBampo(fn, pb, tag) {
-  let bio = bampoRegex.exec(tag);
+  let bampoBio = bampoRegex.exec(tag);
   return {
     type: 'bampo',
     pb: pb,
     fn: fn,
-    tag: bio[0],
-    sutraNL: bio[1],
-    sutraN: Number(bio[2]),
-    sutraL: bio[3],
-    bampoN: Number(bio[4])
+    tag: bampoBio[0],
+    sutraNL: bampoBio[1],
+    sutraN: Number(bampoBio[2]),
+    sutraL: bampoBio[3],
+    bampoN: Number(bampoBio[4])
   };
 };
 
 export function analyzePb4(fn, tagStr) {
-  let bio = pb4AnalyzeRegex.exec(tagStr);
+  let pb4Bio = pb4AnalyzeRegex.exec(tagStr);
   return {
     fn: fn,
-    tag: bio[0],
-    pbVolN: bio[1],
-    pbVol1n: Number(bio[2]),
-    pbVol2n: Number(bio[3]),
-    pbNL: bio[4],
-    pbN: Number(bio[5]),
-    pbL: bio[6]
+    tag: pb4Bio[0],
+    pbVolN: pb4Bio[1],
+    pbVol1n: Number(pb4Bio[2]),
+    pbVol2n: Number(pb4Bio[3]),
+    pbNL: pb4Bio[4],
+    pbN: Number(pb4Bio[5]),
+    pbL: pb4Bio[6]
   };
 };
 
 export function analyzePb(fn, tagStr) {
-  let bio = pbAnalyzeRegex.exec(tagStr);
+  let pbBio = pbAnalyzeRegex.exec(tagStr);
   return {
     fn: fn,
-    tag: bio[0],
-    pbVolN: bio[1],
-    pbVol1n: Number(bio[2]),
-    pbVol2n: Number(bio[3]),
-    pbN: Number(bio[4])
+    tag: pbBio[0],
+    pbVolN: pbBio[1],
+    pbVol1n: Number(pbBio[2]),
+    pbVol2n: Number(pbBio[3]),
+    pbN: Number(pbBio[4])
   };
 };
