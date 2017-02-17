@@ -14,12 +14,12 @@ node index.js repository的名字
 ```
 tag有錯會在命令列顯示錯誤訊息
 ###2.travis
-在要檢查的經文repository的package.json檔加入以下資料即可
+在要檢查的經文repository的package.json檔加入以下資料即可(tag-checker後面自行指定版本號)
 ```
 "scripts": {
   "test": "node node_modules/tag-checker/index.js `basename $(git rev-parse --show-toplevel)`"
 },
 "dependencies": {
-  "tag-checker": "latest"
+  "tag-checker": "版本號"
 }
 ```
