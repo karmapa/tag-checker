@@ -20,6 +20,6 @@ tag有錯會在命令列顯示錯誤訊息
   "test": "node node_modules/tag-checker/index.js `basename $(git rev-parse --show-toplevel)`"
 },
 "dependencies": {
-  "tag-checker": "0.0.32"
+  "tag-checker": "latest"
 }
 ```
