@@ -1,4 +1,6 @@
 #tag-checker
+tag-checker
+
 ##目的:
 確保經文倒進資料庫不會出錯
 ##用法:
