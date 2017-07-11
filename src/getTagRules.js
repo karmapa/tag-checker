@@ -2,11 +2,18 @@ const repo = process.argv[2];
 
 let tagRules = [
   {
-    type: '(pb|jp)',
-    correctRegex: /<(pb|jp) id="\d+?-\d+?-\d+?[abcd]"\/>/g,
-    suspectedRegex: /<(pb|jp) /g,
-    tagNameStrRegex: /pb|jp/g,
-    lineWithTagRegex: /^.*?(pb|jp).*?$/mg
+    type: 'pb',
+    correctRegex: /^<pb id="\d+?-\d+?-\d+?[abcd]"\/>$/mg,
+    suspectedRegex: /<pb /g,
+    tagNameStrRegex: /pb/g,
+    lineWithTagRegex: /^.*?pb.*?$/mg
+  },
+  {
+    type: 'jp',
+    correctRegex: /<jp id="\d+?-\d+?-\d+?[abcd]"\/>/g,
+    suspectedRegex: /<jp /g,
+    tagNameStrRegex: /jp/g,
+    lineWithTagRegex: /^.*?jp.*?$/mg
   },
   {
     type: 'division',
