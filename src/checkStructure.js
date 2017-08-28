@@ -114,10 +114,7 @@ function getLineStatistics(statistics, fn, text) {
 
   pages.forEach((page) => {
     let pbId;
-
-    if (! /\r?\n$/.test(page)) {
-      page += '\n';
-    }
+    page = page.trim() + '\n';
 
     let pageText = page.replace(pbRegex, (pbTag, pbId1) => {
       pbId = pbId1;
