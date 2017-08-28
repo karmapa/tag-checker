@@ -122,13 +122,14 @@ function getLineStatistics(statistics, fn, text) {
     });
 
     let lineN = (pageText.match(/\r?\n/g) || []).length;
+    let charPerLine = Math.round(pageText.length / lineN) || 0;
 
     let groupByLines = statistics[lineN];
     if (groupByLines) {
-      groupByLines.push(fn + ', ' + pbId);
+      groupByLines.push(fn + ', ' + pbId + ', chars/per line: ' + charPerLine);
     }
     else {
-      statistics[lineN] = [fn + ', ' + pbId];
+      statistics[lineN] = [fn + ', ' + pbId + ', chars/per line: ' + charPerLine];
     }
   });
 }
