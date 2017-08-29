@@ -6,18 +6,18 @@ const volRegex = /<vol/g;
 const divRegex = /<division n="(\d+?)"/g;
 const wrongSutraPosRegex = /<sutra[^>]+?>(?!(\r?\n<vol|\r?\n<division|<head n="1"))/g;
 const volHeadRegex = /<vol.+?>\r?\n<pb.+?>\r?\n(<[A-z]p id.+?>)?<head n="1"/;
-const pbRegex = /<pb id="(.+?)"\/>(\r?\n)?/;
-const delimiter = '@delimiter@';
 
 import {warn, reportErr} from './handleErr.js';
 import {countTag} from './helper.js';
 import {numberAdd1, numberJump} from './compareNumber.js';
+import {getPageLineInfo, reportLongLinePage} from './checkPageLine.js';
 
 export default function checkStructure(textObjs) {
   let multiVols = [], multiDivs = [], wrongDivOrders = [], wrongTagPoses = [];
   let lastDivN = 0, lastDivFile = 'First div n is not 1';
 
-  let pageLinesStatistics = {};
+  let charsPerLineCollect = [];
+  let pageLineInfo = [];
 
   textObjs.forEach((textObj) => {
     let {fn, text} = textObj;
@@ -40,16 +40,17 @@ export default function checkStructure(textObjs) {
     }
 
     checkSutraPos(wrongTagPoses, fn, text);
-    getLineStatistics(pageLinesStatistics, fn, text);
+
+    pageLineInfo.push(getPageLineInfo(charsPerLineCollect, fn, text));
   });
 
   if (multiVols.length > 0) {
     warn(...multiVols);
   }
 
-  reportWrongLines(pageLinesStatistics);
-
   reportErr('Structure Error', [...multiDivs, ...wrongDivOrders, ...wrongTagPoses]);
+
+  reportLongLinePage(charsPerLineCollect, pageLineInfo);
 }
 
 function checkMultiVol(store, fn, volNumber) {
@@ -104,55 +105,4 @@ function checkSutraPos(store, fn, text) {
       store.push(fn + ' Wrong sutra tag position! ' + sutraTag);
     });
   }
-}
-
-function getLineStatistics(statistics, fn, text) {
-  let pages = text.replace(/(<pb)/g, delimiter + '$1')
-    .split(delimiter);
-
-  pages.shift();
-
-  pages.forEach((page) => {
-    let pbId;
-    page = page.trim() + '\n';
-
-    let pageText = page.replace(pbRegex, (pbTag, pbId1) => {
-      pbId = pbId1;
-      return '';
-    });
-
-    let lineN = (pageText.match(/\r?\n/g) || []).length;
-    let charPerLine = Math.round(pageText.length / lineN) || 0;
-
-    let groupByLines = statistics[lineN];
-    if (groupByLines) {
-      groupByLines.push(fn + ', ' + pbId + ', chars/per line: ' + charPerLine);
-    }
-    else {
-      statistics[lineN] = [fn + ', ' + pbId + ', chars/per line: ' + charPerLine];
-    }
-  });
-}
-
-function reportWrongLines(statistics) {
-  let mode, modeLine;
-  for (let line in statistics) {
-    if (! mode) {
-      mode = statistics[line];
-      modeLine = Number(line);
-    }
-    else {
-      let challenge = statistics[line];
-
-      if (challenge.length > mode.length) {
-        warn('Page lines: ' + modeLine + '! ' + mode.length + ' pages!\n' + mode.join('\n'));
-        mode = challenge;
-        modeLine = line;
-      }
-      else {
-        warn('Page lines: ' + line + '! ' + challenge.length + ' pages!\n' + challenge.join('\n'));
-      }
-    }
-  }
-  warn('Most Page lines: ' + modeLine + '! ' + mode.length + ' pages!');
 }
