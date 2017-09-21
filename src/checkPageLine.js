@@ -54,7 +54,7 @@ function getMaxOutValue(numbers) {
   let mean = Math.ceil(sum / n);
 
   console.log('Average line length:', mean);
-  return mean * 1.5;
+  return mean * 5 / 3;
 }
 
 function sortNumber(a, b) {
