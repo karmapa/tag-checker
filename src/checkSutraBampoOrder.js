@@ -82,12 +82,8 @@ function bampoNis1(bampoN) {
 }
 
 function checkSutraOrder(store, lastBio, bio, errInfo) {
-  let {sutraV: lastSutraV, sutraN: lastSutraN, sutraL: lastSutraL} = lastBio;
-  let {sutraV, sutraN, sutraL} = bio;
-
-  if (lastSutraV !== sutraV) {
-    store.push('Sutra id not consistent! ' + errInfo);
-  }
+  let {sutraN: lastSutraN, sutraL: lastSutraL} = lastBio;
+  let {sutraN, sutraL} = bio;
 
   checkSutraNL_Order(lastSutraN, lastSutraL, sutraN, sutraL, errInfo);
 }

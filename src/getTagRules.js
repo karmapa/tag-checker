@@ -1,4 +1,16 @@
 const repo = process.argv[2];
+const sutraVsets ={
+  'jiangkangyur': 'J',
+  'degekangyur': 'd',
+  'degetengyur': 'DT',
+  '8thkarmapa': '8KM',
+  'gampopa': 'GM',
+  'gorampa': 'GR',
+  'mipam': 'MP',
+  'tsongkhapa': 'JTs'
+};
+
+const sutraV = sutraVsets[repo];
 
 let tagRules = [
   {
@@ -31,7 +43,7 @@ let tagRules = [
   },
   {
     type: 'sutra',
-    correctRegex: /<sutra id="[\da-zA-Z]*?[a-zA-Z]\d+?[a-zA-Z]?"\/>/g,
+    correctRegex: new RegExp(`<sutra id="${sutraV}\\d+?[a-zA-Z]?"\\/>`, 'g'),
     suspectedRegex: /<sutra /g,
     tagNameStrRegex: /sutra/g,
     lineWithTagRegex: /^.*?sutra.*?$/mg
@@ -51,7 +63,7 @@ let tagRules = [
     lineWithTagRegex: /^.*?head.*?$/mg
   }
 ];
-
+console.log(tagRules[4].correctRegex);
 export default function getTagRules(pbWithSuffix) {
   if (! pbWithSuffix) {
     tagRules[0].correctRegex = /<(pb|jp) id="\d+?-\d+?-\d+?"\/>/g;
