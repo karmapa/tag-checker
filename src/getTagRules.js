@@ -63,7 +63,7 @@ let tagRules = [
     lineWithTagRegex: /^.*?head.*?$/mg
   }
 ];
-console.log(tagRules[4].correctRegex);
+
 export default function getTagRules(pbWithSuffix) {
   if (! pbWithSuffix) {
     tagRules[0].correctRegex = /<(pb|jp) id="\d+?-\d+?-\d+?"\/>/g;
