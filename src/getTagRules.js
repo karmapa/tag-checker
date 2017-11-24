@@ -7,7 +7,8 @@ const sutraVsets ={
   'gampopa': 'GM',
   'gorampa': 'GR',
   'mipam': 'MP',
-  'tsongkhapa': 'JTs'
+  'tsongkhapa': 'JTs',
+  'lhasakangyur': 'h'
 };
 
 const sutraV = sutraVsets[repo];
