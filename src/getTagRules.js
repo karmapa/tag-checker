@@ -30,14 +30,14 @@ let tagRules = [
   },
   {
     type: 'division',
-    correctRegex: new RegExp('<division n="(\\d+?)" t="[^"<>\n]+?" i18n="' + repo + '-division-\\1"\\/>', 'g'),
+    correctRegex: new RegExp('<division n="(\\d+?)" t="[^"<>\n]+?"( (bo|en|tw|cn)="[^"<>\n]+?")*? i18n="' + repo + '-division-\\1"\\/>', 'g'),
     suspectedRegex: /<division /g,
     tagNameStrRegex: /division/g,  
     lineWithTagRegex: /^.*?division.*?$/mg
   },
   {
     type: 'vol',
-    correctRegex: /<vol n="\d+?(-\d+?)?" t="[\u0f00-\u0fff]+?"\/>/g,
+    correctRegex: /<vol n="\d+?(-\d+?)?" t="[\u0f00-\u0fff]+?"( (bo|en|tw|cn)="[^"<>\n]+?")*?\/>/g,
     suspectedRegex: /<vol /g,
     tagNameStrRegex: /vol/g,
     lineWithTagRegex: /^.*?vol.*?$/mg
