@@ -2,7 +2,7 @@ const repo = process.argv[2];
 const sutraVsets ={
   'jiangkangyur': 'J',
   'degekangyur': 'd',
-  'degetengyur': 'DT',
+  'degetengyur': 'D',
   '8thkarmapa': '8KM',
   'gampopa': 'GM',
   'gorampa': 'GR',
