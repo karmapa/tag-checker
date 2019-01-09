@@ -162,7 +162,7 @@ function checkPbVol2nAndOrderInFile(store, lastPbBio, pbBio, pbOrderChecker) {
   let message = 'Wrong pb order! ' + lastFn + ' ' + lastTag + ' ' + fn + ' ' + tag;
 
   if (sameNumber(lastPbVol2n, pbVol2n)) {
-    pbOrderChecker(store, lastPbBio, pbBio);
+    pbOrderChecker(store, lastPbBio, pbBio, true);
   }
   else if (numberAdd1(lastPbVol2n, pbVol2n)) {
     if (pbIs1st(pbNL || pbN)) {
