@@ -9,6 +9,7 @@ const sutraVsets ={
   'gorampa': 'GR',
   'mipam': 'MP',
   'tsongkhapa': 'JTs',
+  'taranatha': 'JT',
   'bonpo': 'Bon'
 };
 
