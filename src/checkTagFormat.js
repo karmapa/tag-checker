@@ -7,7 +7,7 @@ const emptyTagRegex = /<[\s\/]*>/g;
 const noEndArrowRegex = /<[^>]*?(<|\n|$)/g;
 const noStartArrowRegex = /(^|\n|>)[^<\n]*?>/g;
 
-export default function checkTagFormat(textObjs, pbWithSuffix) {
+export default function checkTagFormat(textObjs, pbWithSuffix, looseMode) {
   let errMessages = [];
   let tagRules = getTagRules(pbWithSuffix);
   let pbRegex = tagRules[0].correctRegex;
@@ -21,7 +21,15 @@ export default function checkTagFormat(textObjs, pbWithSuffix) {
     let noEndArrows = text.match(noEndArrowRegex) || [];
     let noStartArrows = text.match(noStartArrowRegex) || [];
     let wrongPropFormats = checkPropFormat(fn, text, tagRules);
-    saveErrs(errMessages, [...emptyTags, ...noEndArrows, ...noStartArrows, ...wrongPropFormats], fn);
+
+    if (looseMode) {
+      let warningMessage = [...emptyTags, ...noEndArrows, ...noStartArrows].join('\n');
+      warn(`Strange Tag Format:\n${warningMessage}`);
+      saveErrs(errMessages, [...wrongPropFormats], fn);
+    }
+    else {
+      saveErrs(errMessages, [...emptyTags, ...noEndArrows, ...noStartArrows, ...wrongPropFormats], fn);
+    }
   });
 
   reportErr('Wrong Tag Format', errMessages);

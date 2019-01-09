@@ -23,7 +23,11 @@ function checkTag() {
   confirmPbInFile(fn, repo1stText, pbRegex);
   let pbWithSuffix = detectPbType(repo1stText);
 
-  checkTagFormat(textObjs, pbWithSuffix);
+  let shoudUseLooseMode = false;
+  if (['taranatha'].index(repo)) {
+    shoudUseLooseMode = true;
+  }
+  checkTagFormat(textObjs, pbWithSuffix, shoudUseLooseMode);
   checkRepeatPage(textObjs);
   checkStructure(textObjs);
   checkVolOrder(textObjs);
