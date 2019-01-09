@@ -23,8 +23,13 @@ export default function checkTagFormat(textObjs, pbWithSuffix, looseMode) {
     let wrongPropFormats = checkPropFormat(fn, text, tagRules);
 
     if (looseMode) {
-      let warningMessage = [...emptyTags, ...noEndArrows, ...noStartArrows].join('\n');
-      warn(`Strange Tag Format:\n${warningMessage}`);
+      const warningTags = [...emptyTags, ...noEndArrows, ...noStartArrows];
+
+      if (warningTags.length > 0) {
+        let warningMessage = warningTags.join('\n');
+        warn(`Strange Tag Format:\n${warningMessage}\n${fn}\n`);
+      }
+
       saveErrs(errMessages, [...wrongPropFormats], fn);
     }
     else {

@@ -24,7 +24,7 @@ function checkTag() {
   let pbWithSuffix = detectPbType(repo1stText);
 
   let shoudUseLooseMode = false;
-  if (['taranatha'].indexOf(repo)) {
+  if (-1 !== ['taranatha'].indexOf(repo)) {
     shoudUseLooseMode = true;
   }
   checkTagFormat(textObjs, pbWithSuffix, shoudUseLooseMode);
