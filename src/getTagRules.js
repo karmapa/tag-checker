@@ -9,9 +9,20 @@ const sutraVsets ={
   'gorampa': 'GR',
   'mipam': 'MP',
   'tsongkhapa': 'JTs',
-  'dolpopa': 'Dol',
+  'bonpokangyur': 'Bon',
+  'chodrapal': 'JCP',
+  'choglenamgyal': 'JCN',
+  'dolpopa': 'JDol',
+  'gharungpa': 'JGLG',
+  'logrosgragspa': 'JNLD',
+  'matipanchen': 'JSMP',
+  'nyadbonkungapal': 'JNKP',
+  'sonamgragpa': 'JZSD',
   'taranatha': 'JT',
-  'bonpokangyur': 'Bon'
+  'thugsrjebrtsongrus': 'JKTT',
+  'tshalminpa': 'JTSZ',
+  'yeshegyatsho': 'JKYG',
+  'yontenbzangpo': 'JNYZ'
 };
 
 const sutraV = sutraVsets[repo];
