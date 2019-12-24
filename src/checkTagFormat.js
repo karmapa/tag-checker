@@ -6,7 +6,7 @@ import {sameNumber} from './compareNumber.js';
 const emptyTagRegex = /<[\s\/]*>/g;
 const noEndArrowRegex = /<[^>]*?(<|\n|$)/g;
 const noStartArrowRegex = /(^|\n|>)[^<\n]*?>/g;
-const undefinedTagRegex = /<(?!(division|vol|head|pb|jp|sutra|bampo|headnote|\/?stitle|\/?ttitle))
+const undefinedTagRegex = /<(?!(division|vol|head|pb|jp|sutra|bampo|headnote|\/?stitle|\/?ttitle)).+?/g;
 
 export default function checkTagFormat(textObjs, pbWithSuffix, looseMode) {
   let errMessages = [];
