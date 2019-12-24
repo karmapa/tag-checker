@@ -6,6 +6,7 @@ import {sameNumber} from './compareNumber.js';
 const emptyTagRegex = /<[\s\/]*>/g;
 const noEndArrowRegex = /<[^>]*?(<|\n|$)/g;
 const noStartArrowRegex = /(^|\n|>)[^<\n]*?>/g;
+const undefinedTagRegex = /<(?!(division|vol|head|pb|jp|sutra|bampo|headnote|\/?stitle|\/?ttitle))
 
 export default function checkTagFormat(textObjs, pbWithSuffix, looseMode) {
   let errMessages = [];
@@ -20,10 +21,11 @@ export default function checkTagFormat(textObjs, pbWithSuffix, looseMode) {
     let emptyTags = text.match(emptyTagRegex) || [];
     let noEndArrows = text.match(noEndArrowRegex) || [];
     let noStartArrows = text.match(noStartArrowRegex) || [];
+    let undefinedTagRegex = text.match(undefinedTagRegex) || [];
     let wrongPropFormats = checkPropFormat(fn, text, tagRules);
 
     if (looseMode) {
-      const warningTags = [...emptyTags, ...noEndArrows, ...noStartArrows];
+      const warningTags = [...emptyTags, ...noEndArrows, ...noStartArrows, ...undefinedTagRegex];
 
       if (warningTags.length > 0) {
         let warningMessage = warningTags.join('\n');
@@ -33,7 +35,7 @@ export default function checkTagFormat(textObjs, pbWithSuffix, looseMode) {
       saveErrs(errMessages, [...wrongPropFormats], fn);
     }
     else {
-      saveErrs(errMessages, [...emptyTags, ...noEndArrows, ...noStartArrows, ...wrongPropFormats], fn);
+      saveErrs(errMessages, [...emptyTags, ...noEndArrows, ...noStartArrows, ...undefinedTagRegex, ...wrongPropFormats], fn);
     }
   });
 
