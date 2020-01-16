@@ -1,5 +1,5 @@
 const repo = process.argv[2];
-const sutraVsets ={
+const sutraVsets = {
   'jiangkangyur': 'J',
   'degekangyur': 'd',
   'lhasakangyur': 'h',
@@ -14,6 +14,7 @@ const sutraVsets ={
   'choglenamgyal': 'JCN',
   'dolpopa': 'JDol',
   'gharungpa': 'JGLG',
+  'lodropal': 'JLP',
   'logrosgragspa': 'JNLD',
   'matipanchen': 'JSMP',
   'nyadbonkungapal': 'JNKP',
