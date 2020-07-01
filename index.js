@@ -1,5 +1,6 @@
-require('babel-register')({
+require('@babel/register')({
   ignore: /node_modules\/(?!tag-checker)/
 });
-require('babel-polyfill');
+require('core-js/stable');
+require('regenerator-runtime/runtime');
 require('./src/main.js');
