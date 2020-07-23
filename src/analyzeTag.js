@@ -1,6 +1,6 @@
 const volAnalyzeRegex = /<vol n="((\d+?)(-(\d+?))?)"/;
 const sutraRegex = /<sutra id="[\da-zA-Z]*?[a-zA-Z]((\d+?)([a-zA-Z])?)"/;
-const headAnalyzeRegex = /<head n="(\d+?)" t="(.+?)"/;
+const headAnalyzeRegex = /<head n="(\d+?)" (t|bo|tw|en|cn)="(.+?)"/;
 const bampoRegex = /<bampo n="((\d+?)([a-zA-Z])?)\.(\d+?)"/;
 const pb4AnalyzeRegex = /<pb id="((\d+?)-(\d+?))-((\d+?)([abcd]))"/;
 const pbAnalyzeRegex = /<pb id="((\d+?)-(\d+?))-(\d+?)"/;
