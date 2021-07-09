@@ -20,7 +20,7 @@ export default function checkHeadN(textObjs) {
       else if (headExist(tag)) {
         let headBio = analyzeHead(fn, pbId, tag);
         check1stHeadAndOrder(errMessages, lastHeadBio, headBio, followVol);
-        checkTname(fn, pbId, tag, headBio.tName)
+        // checkTname(fn, pbId, tag, headBio.tName)
 
         lastHeadBio = headBio, followVol = false;
       }
