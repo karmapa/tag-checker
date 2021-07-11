@@ -24,7 +24,8 @@ const sutraVsets = {
   'tshalminpa': 'JTSZ',
   'yeshegyatsho': 'JKYG',
   'yontenbzangpo': 'JNYZ',
-  'qianlong': 'Q'
+  'qianlong': 'Q',
+  'terdzo': 'TD'
 };
 
 const sutraV = sutraVsets[repo];
