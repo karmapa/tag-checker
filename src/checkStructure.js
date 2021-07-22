@@ -2,7 +2,7 @@ const divPosRegex1 = /^(<sutra.+?>\r?\n)?<division.+?>\r?\n<vol.+?>\r?\n<pb/;
 const divPosRegex2 = /^<division.+?>\r?\n<vol.+?>\r?\n<pb/;
 const volPosRegex1 = /^(<sutra.+?>\r?\n)?<vol.+?>\r?\n<pb/;
 const volPosRegex2 = /^<vol/;
-const volRegex = /<vol/g;
+const volRegex = /<vol /g;
 const divRegex = /<division n="(\d+?)"/g;
 const wrongSutraPosRegex = /<sutra[^>]+?>(?!(\r?\n<vol|\r?\n<division|<head n="1"))/g;
 const volHeadRegex = /<vol.+?>\r?\n<pb.+?>\r?\n(<[A-z]p id.+?>)?<head n="1"/;
