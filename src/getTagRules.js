@@ -54,7 +54,7 @@ let tagRules = [
   },
   {
     type: 'vol',
-    correctRegex: /<vol n="\d+?(-\d+?)?"( (t|bo|en|tw|cn)="[^"<>\n]+?")+?\/>/g,
+    correctRegex: /<vol n="\d+?(-\d+?)?"( (t|bo|en|tw|cn)="[^"<>\n]*?")+?\/>/g,
     suspectedRegex: /<vol /g,
     tagNameStrRegex: /vol(?!text|cover|toc)/g,
     lineWithTagRegex: /^.*?vol.*?$/mg
