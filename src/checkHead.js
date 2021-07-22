@@ -49,7 +49,7 @@ function check1stHeadAndOrder(store, lastBio, bio, followVol) {
 
 function check1stHead(store, headN, bioMessage) {
   if (headN !== 1) {
-    store.push('Head n is not 1 after vol tag or from the beginning! ' + bioMessage);
+    warn('Head n is not 1 after vol tag or from the beginning! ' + bioMessage);
   }
 }
 
