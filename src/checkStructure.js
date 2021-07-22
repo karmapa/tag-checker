@@ -102,7 +102,7 @@ function checkSutraPos(store, fn, text) {
   let wrongSutraPoses = text.match(wrongSutraPosRegex);
   if (wrongSutraPoses) {
     wrongSutraPoses.forEach((sutraTag) => {
-      store.push(fn + ' Wrong sutra tag position! ' + sutraTag);
+      warn(fn + ' Wrong sutra tag position! ' + sutraTag);
     });
   }
 }
