@@ -82,7 +82,7 @@ let tagRules = [
   },
   {
     type: 'voltext',
-    correctRegex: /<voltext( (t|bo|en|tw|cn)="[^"<>\n]*?")*?( type="(volcover|blankpage|headnote|voltoc)")\/?>|<\/voltext>|<voltext\/>/g,
+    correctRegex: /<voltext( (t|bo|en|tw|cn|voltext)="[^"<>\n]*?")*?\/?>|<\/voltext>|<voltext\/>/g,
     suspectedRegex: /<voltext |<\/voltext>|<voltext\/>/g,
     tagNameStrRegex: /voltext/g,
     lineWithTagRegex: /^.*?voltext.*?$/mg
