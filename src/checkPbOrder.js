@@ -35,7 +35,7 @@ export default function checkPbOrder(textObjs, pbWithSuffix) {
   });
 
   reportErr('Wrong Pb Order!', errMessages);
-};
+}
 
 function init(textObj, pbWithSuffix) {
   let {fn, text} = textObj;
@@ -98,15 +98,17 @@ function pbIs1st(pbId) {
 function setVariables(textObj, textsVol1n, pbAnalyzer) {
   let {fn, text} = textObj;
   let volInText = volExist(text);
+  let textVol1n;
   if (volInText) {
     var volBio = analyzeVol(fn, text);
-    var textVol1n = volBio.vol1n;
+    textVol1n = volBio.vol1n;
   }
   else if (textsVol1n) {
-    var textVol1n = textsVol1n;
+    textVol1n = textsVol1n;
   }
   else {
-    var {pbVol1n: textVol1n} = pbAnalyzer(fn, text);
+    let { pbVol1n } = pbAnalyzer(fn, text);
+    textVol1n = pbVol1n;
   }
   return [fn, text, volInText, volBio, textVol1n];
 }

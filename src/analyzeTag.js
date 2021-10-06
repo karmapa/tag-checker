@@ -14,7 +14,7 @@ export function analyzeVol(fn, tagStr) {
     vol1n: Number(volBio[2]),
     vol2n: Number(volBio[4])
   };
-};
+}
 
 export function analyzeSutra(fn, pb, tag) {
   let sutraBio = sutraRegex.exec(tag);
@@ -27,7 +27,7 @@ export function analyzeSutra(fn, pb, tag) {
     sutraN: Number(sutraBio[2]),
     sutraL: sutraBio[3]
   }
-};
+}
 
 export function analyzeHead(fn, pb, tag) {
   let headBio = headAnalyzeRegex.exec(tag);
@@ -39,7 +39,7 @@ export function analyzeHead(fn, pb, tag) {
     headN: Number(headBio[1]),
     tName: headBio[2]
   };
-};
+}
 
 export function analyzeBampo(fn, pb, tag) {
   let bampoBio = bampoRegex.exec(tag);
@@ -53,7 +53,7 @@ export function analyzeBampo(fn, pb, tag) {
     sutraL: bampoBio[3],
     bampoN: Number(bampoBio[4])
   };
-};
+}
 
 export function analyzePb4(fn, tagStr) {
   let pb4Bio = pb4AnalyzeRegex.exec(tagStr);
@@ -67,7 +67,7 @@ export function analyzePb4(fn, tagStr) {
     pbN: Number(pb4Bio[5]),
     pbL: pb4Bio[6]
   };
-};
+}
 
 export function analyzePb(fn, tagStr) {
   let pbBio = pbAnalyzeRegex.exec(tagStr);
@@ -79,4 +79,4 @@ export function analyzePb(fn, tagStr) {
     pbVol2n: pbBio[3] ? Number(pbBio[3]) : 1,
     pbN: Number(pbBio[4])
   };
-};
+}
