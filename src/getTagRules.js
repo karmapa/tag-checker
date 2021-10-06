@@ -91,7 +91,7 @@ let tagRules = [
 
 export default function getTagRules(pbWithSuffix) {
   if (! pbWithSuffix) {
-    tagRules[0].correctRegex = /<(pb|jp) id="\d+?-\d+?-\d+?"\/>/g;
+    tagRules[0].correctRegex = /<(pb|jp) id="\d+?-(\d+?-)?\d+?"\/>/g;
   }
   return tagRules;
 };

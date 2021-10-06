@@ -2,7 +2,7 @@ const vol = /<vol /;
 const head = /<head /;
 const bampo = /<bampo /;
 const pb = /<pb /;
-const pbWithSuffix = /<pb id="\d+?-\d+?-\d+?[abcd]"\/>/;
+const pbWithSuffix = /<pb id="\d+?-(\d+?-)?\d+?[abcd]"\/>/;
 
 export function detectPbType(str) {
   return pbWithSuffix.test(str);
