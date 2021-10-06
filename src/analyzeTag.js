@@ -2,8 +2,8 @@ const volAnalyzeRegex = /<vol n="((\d+?)(-(\d+?))?)"/;
 const sutraRegex = /<sutra id="[\da-zA-Z]*?[a-zA-Z]((\d+?)([a-zA-Z])?)"/;
 const headAnalyzeRegex = /<head n="(\d+?)" (t|bo|tw|en|cn)="(.+?)"/;
 const bampoRegex = /<bampo n="((\d+?)([a-zA-Z])?)\.(\d+?)"/;
-const pb4AnalyzeRegex = /<pb id="((\d+?)-?(\d+?)?)-((\d+?)([abcd]))"/;
-const pbAnalyzeRegex = /<pb id="((\d+?)-?(\d+?)?)-(\d+?)"/;
+const pb4AnalyzeRegex = /<pb id="((\d+?)(-(\d+?))?)-((\d+?)([abcd]))"/;
+const pbAnalyzeRegex = /<pb id="((\d+?)(-(\d+?))?)-(\d+?)"/;
 
 export function analyzeVol(fn, tagStr) {
   let volBio = volAnalyzeRegex.exec(tagStr);
@@ -62,10 +62,10 @@ export function analyzePb4(fn, tagStr) {
     tag: pb4Bio[0],
     pbVolN: pb4Bio[1],
     pbVol1n: Number(pb4Bio[2]),
-    pbVol2n: pb4Bio[3] ? Number(pb4Bio[3]) : 1,
-    pbNL: pb4Bio[4],
-    pbN: Number(pb4Bio[5]),
-    pbL: pb4Bio[6]
+    pbVol2n: pb4Bio[4] ? Number(pb4Bio[4]) : 1,
+    pbNL: pb4Bio[5],
+    pbN: Number(pb4Bio[6]),
+    pbL: pb4Bio[7]
   };
 }
 
@@ -76,7 +76,7 @@ export function analyzePb(fn, tagStr) {
     tag: pbBio[0],
     pbVolN: pbBio[1],
     pbVol1n: Number(pbBio[2]),
-    pbVol2n: pbBio[3] ? Number(pbBio[3]) : 1,
-    pbN: Number(pbBio[4])
+    pbVol2n: pbBio[4] ? Number(pbBio[4]) : 1,
+    pbN: Number(pbBio[5])
   };
 }
