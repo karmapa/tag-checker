@@ -40,7 +40,7 @@ export default function checkTagFormat(textObjs, pbWithSuffix, looseMode) {
   });
 
   reportErr('Wrong Tag Format', errMessages);
-};
+}
 
 function checkPropFormat(fn, text, tagRules) {
   let wrongPropFormats = [];

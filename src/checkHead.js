@@ -22,7 +22,8 @@ export default function checkHeadN(textObjs) {
         check1stHeadAndOrder(errMessages, lastHeadBio, headBio, followVol);
         // checkTname(fn, pbId, tag, headBio.tName)
 
-        lastHeadBio = headBio, followVol = false;
+        lastHeadBio = headBio;
+        followVol = false;
       }
       else {
         followVol = true;
@@ -31,7 +32,7 @@ export default function checkHeadN(textObjs) {
   });
 
   reportErr('Wrong Head Order!', errMessages);
-};
+}
 
 function check1stHeadAndOrder(store, lastBio, bio, followVol) {
   let {fn, pb, tag, headN} = bio;
@@ -56,7 +57,7 @@ function check1stHead(store, headN, bioMessage) {
 function checkHeadOrder(lastHeadN, headN, lastBioMessage, bioMessage) {
   if (headN - lastHeadN > 1) {
     warn('Head n might be missing!', lastBioMessage, bioMessage);
-  } 
+  }
 }
 
 function checkTname(fn, pbId, tag, tname) {
