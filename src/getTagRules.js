@@ -25,7 +25,19 @@ const sutraVsets = {
   'yeshegyatsho': 'JKYG',
   'yontenbzangpo': 'JNYZ',
   'qianlong': 'Q',
-  'terdzo': 'TD'
+  'terdzo': 'TD',
+  "1stdalailamasungbum": "1DL",
+  "2nddalailamasungbum": "2DL",
+  "3rddalailamasungbum": "3DL",
+  "5thdalailamasungbum": "5DL",
+  "6thdalailamasungbum": "6DL",
+  "7thdalailamasungbum": "7DL",
+  "8thdalailamasungbum": "8DL",
+  "9thdalailamasungbum": "9DL",
+  "10thdalailamasungbum": "10DL",
+  "11thdalailamasungbum": "11DL",
+  "12thdalailamasungbum": "12DL",
+  "13thdalailamasungbum": "13DL",
 };
 
 const sutraV = sutraVsets[repo];
