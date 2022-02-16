@@ -59,7 +59,7 @@ let tagRules = [
   },
   {
     type: 'division',
-    correctRegex: new RegExp('<division n="(\\d+?)" t="[^"<>\n]+?"( (bo|en|tw|cn)="[^"<>\n]+?")*? i18n="' + repo + '-division-\\1"\\/>', 'g'),
+    correctRegex: new RegExp('<division n="(\\d.+?)(\\.\\d+?)?" t="[^"<>\n]+?"( (bo|en|tw|cn)="[^"<>\n]+?")*?( i18n="' + repo + '-division-\\1")?\\/>', 'g'),
     suspectedRegex: /<division /g,
     tagNameStrRegex: /division/g,
     lineWithTagRegex: /^.*?division.*$/mg
