@@ -73,7 +73,7 @@ function checkDivOrder(store, lastDivFile, lastDivN, fn, divN) {
     warn('Division may be missing!', lastDivFile, lastDivN, fn, divN);
   }
   else {
-    store.push('Wrong Division Order' + lastDivFile + ' ' + lastDivN + ' ' + fn + ' ' + divN);
+    warn('Wrong Division Order' + lastDivFile + ' ' + lastDivN + ' ' + fn + ' ' + divN);
   }
 }
 
