@@ -1,6 +1,6 @@
-const divPosRegex1 = /^(<sutra.+?>\r?\n)?<division.+?>\r?\n<vol.+?>\r?\n<pb/;
+const divPosRegex1 = /^(<sutra.+?>\r?\n)?(<division.+?>\r?\n)+<vol.+?>\r?\n<pb/;
 const divPosRegex2 = /^<division.+?>\r?\n<vol.+?>\r?\n<pb/;
-const volPosRegex1 = /^(<sutra.+?>\r?\n)?<vol.+?>\r?\n<pb/;
+const volPosRegex1 = /^(<sutra.+?>\r?\n)?<vol .+?>\r?\n<pb/;
 const volPosRegex2 = /^<vol/;
 const volRegex = /<vol /g;
 const divRegex = /<division n="(\d+?)"/g;
