@@ -80,7 +80,7 @@ let tagRules = [
   },
   {
     type: 'bampo',
-    correctRegex: /<bampo n="\d+?[a-zA-Z]?\.\d+?"( (t|bo|en|tw|cn)="[^"<>\n]*?")*( zh="[^"<>\n]+?")*?\/>/g,
+    correctRegex: /<bampo n="\d+?[a-zA-Z]?\.\d+?"( (t|bo|en|tw|cn|zh)="[^"<>\n]*?")*\/>/g,
     suspectedRegex: /<bampo /g,
     tagNameStrRegex: /bampo/g,
     lineWithTagRegex: /^.*?bampo.*$/mg
