@@ -38,6 +38,7 @@ const sutraVsets = {
   "11thdalailamasungbum": "11DL",
   "12thdalailamasungbum": "12DL",
   "13thdalailamasungbum": "13DL",
+  "dalailamasungbum": "DL"
 };
 
 const sutraV = sutraVsets[repo];
