@@ -1,6 +1,6 @@
 const volAnalyzeRegex = /<vol n="((\d+?)(-(\d+?))?)"/;
 const sutraRegex = /<sutra id="[\da-zA-Z]*?[a-zA-Z]((\d+?)([a-zA-Z])?)"/;
-const headAnalyzeRegex = /<head n="(\d+?)" (t|bo|tw|en|cn)="(.+?)"/;
+const headAnalyzeRegex = /<head( n="(\d+?)"| (t|bo|tw|en|cn)="(.+?)")/;
 const bampoRegex = /<bampo n="((\d+?)([a-zA-Z])?)\.(\d+?)"/;
 const pb4AnalyzeRegex = /<pb id="((\d+?)(-(\d+?))?)-((\d+?)([abcd]))"/;
 const pbAnalyzeRegex = /<pb id="((\d+?)(-(\d+?))?)-(\d+?)"/;
@@ -31,13 +31,14 @@ export function analyzeSutra(fn, pb, tag) {
 
 export function analyzeHead(fn, pb, tag) {
   let headBio = headAnalyzeRegex.exec(tag);
+
   return {
     type: 'head',
     fn: fn,
     pb: pb,
     tag: headBio[0],
-    headN: Number(headBio[1]),
-    tName: headBio[2]
+    headN: Number(headBio[2]),
+    tName: headBio[4]
   };
 }
 
