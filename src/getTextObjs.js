@@ -9,6 +9,9 @@ export default function getTextObjs(globPat, repo) {
     .map((route) => {
       let fileName = route.replace(rootRegex, '');
       let text = fs.readFileSync(route, 'utf8');
+
+      text = text.replace(/<\/?(translator|reviser|note|tr|tempnote|add|extra|pr)\/?>/g, '');
+
       return {fn: fileName, text: text};
     });
 };
