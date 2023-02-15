@@ -4,6 +4,7 @@ const sutraVsets = {
   'degekangyur': 'd',
   'lhasakangyur': 'h',
   'degetengyur': 'D',
+  '1stkarmapa': '1KM',
   '8thkarmapa': '8KM',
   'gampopa': 'GM',
   'gorampa': 'GR',
