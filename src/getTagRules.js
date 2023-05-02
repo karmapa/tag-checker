@@ -1,9 +1,13 @@
 const repo = process.argv[2];
 const sutraVsets = {
+  // kangyur
   'jiangkangyur': 'J',
   'degekangyur': 'd',
   'lhasakangyur': 'h',
+  // tengyur
   'degetengyur': 'D',
+  // བཀའ་བརྒྱུད་པ་
+  'tilopa': 'TIL',
   '1stkarmapa': '1KM',
   '8thkarmapa': '8KM',
   'gampopa': 'GM',
