@@ -7,7 +7,7 @@ const sutraVsets = {
   // tengyur
   'degetengyur': 'D',
   // བཀའ་བརྒྱུད་པ་
-  'tilopa': 'TIL',
+  'tilopa': 'TILO',
   '1stkarmapa': '1KM',
   '8thkarmapa': '8KM',
   'gampopa': 'GM',
