@@ -8,6 +8,7 @@ const sutraVsets = {
   'degetengyur': 'D',
   // བཀའ་བརྒྱུད་པ་
   'tilopa': 'TILO',
+  'naropa': 'NARO',
   '1stkarmapa': '1KM',
   '8thkarmapa': '8KM',
   'gampopa': 'GM',
