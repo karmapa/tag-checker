@@ -9,6 +9,7 @@ const sutraVsets = {
   // བཀའ་བརྒྱུད་པ་
   'tilopa': 'TILO',
   'naropa': 'NARO',
+  'marpa': 'MARPA',
   '1stkarmapa': '1KM',
   '8thkarmapa': '8KM',
   'gampopa': 'GM',
