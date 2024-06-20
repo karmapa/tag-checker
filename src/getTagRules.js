@@ -15,6 +15,7 @@ const sutraVsets = {
   '2ndkarmapa': '2KM',
   '7thkarmapa': '7KM',
   '8thkarmapa': '8KM',
+  'padkar': 'PK',
   'gampopa': 'GM',
   'gorampa': 'GR',
   'shakyachogden': 'skc',
