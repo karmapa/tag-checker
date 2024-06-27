@@ -17,6 +17,10 @@ const sutraVsets = {
   '8thkarmapa': '8KM',
   'padkar': 'PK',
   'gampopa': 'GM',
+  // sakya
+  'sonamgyaltsen': 'SG',
+  'sakyalotsawa': 'SL',
+  'dragpagyaltsen': 'KD',
   'gorampa': 'GR',
   'shakyachogden': 'skc',
   'mipam': 'MP',
