@@ -17,12 +17,42 @@ const sutraVsets = {
   '8thkarmapa': '8KM',
   'padkar': 'PK',
   'gampopa': 'GM',
-  // sakya
+  // sakya ས་སྐྱ།
+  // 1-5
   'sonamgyaltsen': 'SG',
   'sakyalotsawa': 'SL',
   'dragpagyaltsen': 'KD',
+  'ngawangkungasonam': 'ANK',
+  'ngawangkungalodroe': 'KL',
+  // 6-10
+  'goekhugpalhatse': 'GK',
+  'chomdenrigral': 'RR',
+  'panglotsalodrotenpa': 'PL',
+  'zhonnulodroe': 'RDG',
+  'rongtonsakyagyaltsen': 'RT',
+  // 11-15
+  'gyaltsabje': 'GJ',
+  'tagtsanglotsawa': 'TL',
+  'panglotsalodrotenpa': 'LG',
+  'ngorkhenpaldon': 'PD',
+  'sangyephuntsok': 'SP',
+  // 16-20
+  'ngawanglegpa': 'NL',
+  'kungatenpaigyaltsen': 'AJ',
+  'lamasbiography': 'NT',
+  'earlymasters': 'KH',
+  'earlysakyapastantras': 'KHG',
+  // 21-26
+  'earlymasterstantra': 'KHN',
+  'tsarchenlosalgyamtso': 'TSR',
+  'shangpakagyud': 'NG',
+  'collectionsoftantras': 'GT',
+  'greatsixsutras': 'ZTS',
+  'mindtrainingsutras': 'LJ',
+  // others
   'gorampa': 'GR',
   'shakyachogden': 'skc',
+  // 
   'mipam': 'MP',
   'tsongkhapa': 'JTs',
   'bonpokangyur': 'Bon',
