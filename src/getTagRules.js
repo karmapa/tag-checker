@@ -33,7 +33,7 @@ const sutraVsets = {
   // 11-15
   'gyaltsabje': 'GJ',
   'tagtsanglotsawa': 'TL',
-  'panglotsalodrotenpa': 'LG',
+  'ludrubgyatso': 'LG',
   'ngorkhenpaldon': 'PD',
   'sangyephuntsok': 'SP',
   // 16-20
