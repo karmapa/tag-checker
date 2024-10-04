@@ -39,22 +39,27 @@ const sutraVsets = {
   // 16-20
   'ngawanglegpa': 'NL',
   'kungatenpaigyaltsen': 'AJ',
-  'lamasbiography': 'NT',
-  'earlymasters': 'KH',
-  'earlysakyapastantras': 'KHG',
+  'sakyapalamabiographies': 'NT',
+  'earlysakyapamasters': 'KH',
+  'earlysakyapatantras': 'KHG',
   // 21-26
-  'earlymasterstantra': 'KHN',
+  'earlysakyapamastertantras': 'KHN',
   'tsarchenlosalgyamtso': 'TSR',
   'shangpakagyud': 'NG',
-  'collectionsoftantras': 'GT',
+  'sakyapatantracollection': 'GT',
   'greatsixsutras': 'ZTS',
   'mindtrainingsutras': 'LJ',
   // others
   'gorampa': 'GR',
   'shakyachogden': 'skc',
-  // 
+  // 寧瑪
+  'longchenpa': 'LCR',
   'mipam': 'MP',
+  // 格魯
   'tsongkhapa': 'JTs',
+  'khedrupje': 'KDJ',
+  'dalailamasungbum': 'DL',
+  //
   'bonpokangyur': 'Bon',
   'chodrapal': 'JCP',
   'choglenamgyal': 'JCN',
@@ -72,7 +77,6 @@ const sutraVsets = {
   'yontenbzangpo': 'JNYZ',
   'qianlong': 'Q',
   'terdzo': 'TD',
-  "dalailamasungbum": "DL",
   "bshadmdzod": "AK"
 };
 
