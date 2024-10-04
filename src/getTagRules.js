@@ -23,7 +23,7 @@ const sutraVsets = {
   'sakyalotsawa': 'SL',
   'dragpagyaltsen': 'KD',
   'ngawangkungasonam': 'ANK',
-  'ngawangkungalodroe': 'KL',
+  'ngawangkungalodroe': 'NKL',
   // 6-10
   'goekhugpalhatse': 'GK',
   'chomdenrigral': 'RR',
