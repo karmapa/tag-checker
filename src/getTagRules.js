@@ -28,17 +28,17 @@ const sutraVsets = {
   'goekhugpalhatse': 'GK',
   'chomdenrigral': 'RR',
   'panglotsalodrotenpa': 'PL',
-  'zhonnulodroe': 'RDG',
-  'rongtonsakyagyaltsen': 'RT',
+  'zhonnulodroe': 'RD',
+  'rongtonsakyagyaltsen': 'RSG',
   // 11-15
   'gyaltsabje': 'GJ',
   'tagtsanglotsawa': 'TL',
   'ludrubgyatso': 'LG',
-  'ngorkhenpaldon': 'PD',
+  'ngorkhenpaldon': 'NPD',
   'sangyephuntsok': 'SP',
   // 16-20
-  'ngawanglegpa': 'NL',
-  'kungatenpaigyaltsen': 'AJ',
+  'ngawanglegpa': 'NL', //
+  'kungatenpaigyaltsen': 'JTG', //
   'sakyapalamabiographies': 'NT',
   'earlysakyapamasters': 'KH',
   'earlysakyapatantras': 'KHG',
@@ -47,7 +47,7 @@ const sutraVsets = {
   'tsarchenlosalgyamtso': 'TSR',
   'shangpakagyud': 'NG',
   'sakyapatantracollection': 'GT',
-  'greatsixsutras': 'ZTS',
+  'greatsixsutras': 'Ztsa',
   'mindtrainingsutras': 'LJ',
   // others
   'gorampa': 'GR',
