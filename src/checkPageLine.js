@@ -48,6 +48,11 @@ export function reportLongLinePage(charsPerLineCollect, pageLineInfo) {
 
 function getMaxOutValue(numbers) {
   let n = numbers.length;
+
+  if (n === 0) {
+    return 99999999;
+  }
+
   let sum = numbers.reduce((a, b) => {
     return a + b;
   });
