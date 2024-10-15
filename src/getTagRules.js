@@ -4,6 +4,7 @@ const sutraVsets = {
   'jiangkangyur': 'J',
   'degekangyur': 'd',
   'lhasakangyur': 'h',
+  'conekangyur': 'C',
   // tengyur
   'degetengyur': 'D',
   // བཀའ་བརྒྱུད་པ་
