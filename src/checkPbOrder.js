@@ -55,7 +55,7 @@ function check2Pb4Order(store, lastBio, pbBio, looseMode) {
   if (sameNumber(lastPbN, pbN) && correctPbL(lastPbL + pbL) || numberAdd1(lastPbN, pbN) && 'a' === pbL) {
       return;
   }
-  else if (looseMode && numberJump(lastPbN, pbN) && 'a' === pbL) {
+  else if (looseMode && numberJump(lastPbN, pbN)) {
     warn('Pb may be missing!', lastFn, lastTag, fn, tag);
   }
   else {
