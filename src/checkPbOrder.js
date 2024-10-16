@@ -52,7 +52,7 @@ function check2Pb4Order(store, lastBio, pbBio, looseMode) {
   let {pbN: lastPbN, pbL: lastPbL, tag: lastTag, fn: lastFn} = lastBio;
   let {pbN, pbL, tag, fn} = pbBio;
 
-  if (sameNumber(lastPbN, pbN) && correctPbL(lastPbL + pbL) || numberAdd1(lastPbN, pbN) && 'a' === pbL) {
+  if (sameNumber(lastPbN, pbN) && correctPbL(lastPbL + pbL) || (numberAdd1(lastPbN, pbN) && 'a' === pbL && ('b' === lastPbL || 'd' === lastPbL))) {
       return;
   }
   else if (looseMode && (numberJump(lastPbN, pbN) || numberAdd1(lastPbN, pbN))) {
