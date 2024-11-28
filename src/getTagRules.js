@@ -6,6 +6,7 @@ const sutraVsets = {
   'lhasakangyur': 'h',
   'conekangyur': 'C',
   'urgakangyur': 'U',
+  'narthangkangyur': 'N',
   'pekingkangyur': 'P',
   // tengyur
   'degetengyur': 'D',
@@ -88,7 +89,7 @@ const sutraV = sutraVsets[repo];
 let tagRules = [
   {
     type: 'pb',
-    correctRegex: /^<pb id="\d+?-(\d+?-)?\d+?[abcd]?"\/>$/mg,
+    correctRegex: /^<pb id="\d+?-(\d+?-)?\d+?[abcdef]?"\/>$/mg,
     suspectedRegex: /<pb /g,
     tagNameStrRegex: /pb/g,
     lineWithTagRegex: /^.*?pb.*$/mg

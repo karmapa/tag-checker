@@ -1,6 +1,6 @@
 const repo = process.argv[2];
 const globPatt = './' + repo + '*/**/' + repo + '[0-9]*.xml';
-const pbRegex = /<pb id="\d+?-(\d+?-)?\d+?[abcd]?"\/>/;
+const pbRegex = /<pb id="\d+?-(\d+?-)?\d+?[abcdef]?"\/>/;
 
 import getTextObjs from './getTextObjs';
 import checkTagFormat from './checkTagFormat.js';

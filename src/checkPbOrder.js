@@ -52,7 +52,7 @@ function check2Pb4Order(store, lastBio, pbBio, looseMode) {
   let {pbN: lastPbN, pbL: lastPbL, tag: lastTag, fn: lastFn} = lastBio;
   let {pbN, pbL, tag, fn} = pbBio;
 
-  if (sameNumber(lastPbN, pbN) && correctPbL(lastPbL + pbL) || (numberAdd1(lastPbN, pbN) && 'a' === pbL && ('b' === lastPbL || 'd' === lastPbL))) {
+  if (sameNumber(lastPbN, pbN) && correctPbL(lastPbL + pbL) || (numberAdd1(lastPbN, pbN) && 'a' === pbL && ('b' === lastPbL || 'd' === lastPbL || 'f' === lastPbL))) {
       return;
   }
   else if (looseMode && (numberJump(lastPbN, pbN) || numberAdd1(lastPbN, pbN))) {
@@ -64,7 +64,7 @@ function check2Pb4Order(store, lastBio, pbBio, looseMode) {
 }
 
 function correctPbL(str) {
-  if ('ab' === str || 'bc' === str || 'cd' === str) {
+  if ('ab' === str || 'bc' === str || 'cd' === str || 'de' === str || 'ef' === str) {
     return true;
   }
 }
