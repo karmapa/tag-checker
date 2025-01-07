@@ -10,6 +10,7 @@ const sutraVsets = {
   'pekingkangyur': 'P',
   // tengyur
   'degetengyur': 'D',
+  'pedurmatengyur': 'BT',
   // བཀའ་བརྒྱུད་པ་
   'tilopa': 'TILO',
   'naropa': 'NARO',
