@@ -8,6 +8,8 @@ const sutraVsets = {
   'urgakangyur': 'U',
   'narthangkangyur': 'N',
   'pekingkangyur': 'P',
+  'qianlong': 'Q',
+  'koreakangyur': 'KO',
   // tengyur
   'degetengyur': 'D',
   'pedurmatengyur': 'BT',
@@ -80,7 +82,6 @@ const sutraVsets = {
   'tshalminpa': 'JTSZ',
   'yeshegyatsho': 'JKYG',
   'yontenbzangpo': 'JNYZ',
-  'qianlong': 'Q',
   'terdzo': 'TD',
   "bshadmdzod": "AK"
 };
