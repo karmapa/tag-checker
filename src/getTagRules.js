@@ -64,6 +64,7 @@ const sutraVsets = {
   'mipam': 'MP',
   // 格魯
   'tsongkhapa': 'JTs',
+  // 'gyaltsabje': 'GJ', 和薩迦派重複
   'khedrupje': 'KDJ',
   'dalailamasungbum': 'DL',
   //
