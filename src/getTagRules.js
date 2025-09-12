@@ -24,6 +24,8 @@ const sutraVsets = {
   '8thkarmapa': '8KM',
   'padkar': 'PK',
   'gampopa': 'GM',
+  // kamtshang
+  'kamtsanggampopa': 'kamtsanggampopa',
   // sakya ས་སྐྱ།
   // 1-5
   'sonamgyaltsen': 'SG',
