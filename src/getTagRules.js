@@ -25,9 +25,9 @@ const sutraVsets = {
   'padkar': 'PK',
   'gampopa': 'GM',
   // kamtshang
-  'kamtsanggampopa': 'kamtsanggampopa',
-  'kamtsanggarchen': 'kamtsanggarchen',
-  'kamtsangchagchen': 'kamtsangchagchen',
+  'kamtshanggampopa': 'kamtshanggampopa',
+  'kamtshanggarchen': 'kamtshanggarchen',
+  'kamtshangchagchen': 'kamtshangchagchen',
   // sakya ས་སྐྱ།
   // 1-5
   'sonamgyaltsen': 'SG',
