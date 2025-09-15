@@ -13,7 +13,7 @@ const sutraVsets = {
   // tengyur
   'degetengyur': 'D',
   'pedurmatengyur': 'BT',
-  // བཀའ་བརྒྱུད་པ་
+  // བཀའ་བརྒྱུད་པ།
   'tilopa': 'TILO',
   'naropa': 'NARO',
   'marpa': 'MARPA',
@@ -26,6 +26,8 @@ const sutraVsets = {
   'gampopa': 'GM',
   // kamtshang
   'kamtsanggampopa': 'kamtsanggampopa',
+  'kamtsanggarchen': 'kamtsanggarchen',
+  'kamtsangchagchen': 'kamtsangchagchen',
   // sakya ས་སྐྱ།
   // 1-5
   'sonamgyaltsen': 'SG',
