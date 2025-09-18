@@ -25,6 +25,8 @@ const sutraVsets = {
   'padkar': 'PK',
   'gampopa': 'GM',
   // kamtshang
+  'kamtshangnamthar': 'kamtshangnamthar',
+  'kamtshangmithrugpa': 'kamtshangmithrugpa',
   'kamtshanggampopa': 'kamtshanggampopa',
   'kamtshanggarchen': 'kamtshanggarchen',
   'kamtshangchagchen': 'kamtshangchagchen',
