@@ -37,6 +37,18 @@ const sutraVsets = {
   'kamtshangzogchen': 'kamtshangzogchen',
   'kamtshangbuton': 'kamtshangbuton',
   'kamtshangngawangdragpa': 'kamtshangngawangdragpa',
+  'kamtshangnaroyoga': 'kamtshangnaroyoga',
+  'kamtshangpaworinpoche': 'kamtshangpaworinpoche',
+  'kamtshangtsurphujamyang': 'kamtshangtsurphujamyang',
+  'kamtshang3rdkarmapa': 'kamtshang3rdkarmapa',
+  'kamtshangtsewangyal': 'kamtshangtsewangyal',
+  'kamtshanggolotsawa': 'kamtshanggolotsawa',
+  'kamtshanggzhanfenwangpo': 'kamtshanggzhanfenwangpo',
+  'kamtshangthorbu': 'kamtshangthorbu',
+  'kamtshangupamarton': 'kamtshangupamarton',
+  'kamtshanggzhonuhoe': 'kamtshanggzhonuhoe',
+  'kamtshangzabmonangdon': 'kamtshangzabmonangdon',
+  'kamtshangkontsek': 'kamtshangkontsek',
   // sakya ས་སྐྱ།
   // 1-5
   'sonamgyaltsen': 'SG',
