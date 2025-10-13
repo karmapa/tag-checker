@@ -109,7 +109,15 @@ const sutraVsets = {
   'yeshegyatsho': 'JKYG',
   'yontenbzangpo': 'JNYZ',
   'terdzo': 'TD',
-  "bshadmdzod": "AK"
+  "bshadmdzod": "AK",
+  // 法王外文書
+  'chi': 'chi',
+  'fpvo': 'fpvo',
+  'ktis': 'ktis',
+  'imw': 'imw',
+  'tfmt': 'tfmt',
+  'tgtrwr': 'tgtrwr',
+  'tta': 'tta'
 };
 
 const sutraV = sutraVsets[repo];
