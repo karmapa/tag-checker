@@ -174,6 +174,9 @@ function checkPbVol2nAndOrderInFile(store, lastPbBio, pbBio, pbOrderChecker) {
       warn('Pb not from 1 or 1a!', fn, tag);
     }
   }
+  else if (pbVol2n > lastPbVol2n) {
+    warn('Pb Vol2n may be missing!', message);
+  }
   else {
     store.push(message);
   }
