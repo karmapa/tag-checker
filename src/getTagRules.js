@@ -12,6 +12,7 @@ const sutraVsets = {
   'koreakangyur': 'KO',
   // tengyur
   'degetengyur': 'D',
+  'narthangtengyur': 'NT',
   'pedurmatengyur': 'BT',
   // བཀའ་བརྒྱུད་པ།
   'tilopa': 'TILO',
