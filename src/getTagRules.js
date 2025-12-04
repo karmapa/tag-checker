@@ -136,7 +136,7 @@ const sutraVsets = {
   'terdzo': 'TD',
   "bshadmdzod": "AK",
   // 法王外文書
-  'buddisttextchinesemordentranslation': 'BTCMT',
+  'buddisttextchinesemordentranslation': 'buddisttextchinesemordentranslation',
   'mbas': 'mbas',
   'fgbt': 'fgbt',
   'gjbs': 'gjbs',
