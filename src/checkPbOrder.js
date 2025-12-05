@@ -64,7 +64,7 @@ function check2Pb4Order(store, lastBio, pbBio, looseMode) {
 }
 
 function correctPbL(str) {
-  if ('ab' === str || 'bc' === str || 'cd' === str || 'de' === str || 'ef' === str) {
+  if (str.charCodeAt(1) - str.charCodeAt(0) === 1) {
     return true;
   }
 }

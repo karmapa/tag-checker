@@ -182,7 +182,7 @@ const sutraV = sutraVsets[repo];
 let tagRules = [
   {
     type: 'pb',
-    correctRegex: /^<pb id="\d+?-(\d+?-)?\d+?[abcdef]?"\/>$/mg,
+    correctRegex: /^<pb id="\d+?-(\d+?-)?\d+?[a-z]?"\/>$/mg,
     suspectedRegex: /<pb /g,
     tagNameStrRegex: /pb/g,
     lineWithTagRegex: /^.*?pb.*$/mg
