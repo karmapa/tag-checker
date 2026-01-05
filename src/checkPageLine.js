@@ -40,7 +40,7 @@ export function reportLongLinePage(charsPerLineCollect, pageLineInfo) {
       let {pbId, line, longest} = pbInfo;
 
       if (longest > maxOutValue) {
-        warn(fn, pbId, 'has', line, 'lines, longest line:', longest);
+        // warn(fn, pbId, 'has', line, 'lines, longest line:', longest);
       }
     }
   }
