@@ -8,6 +8,7 @@ const sutraVsets = {
   'urgakangyur': 'U',
   'narthangkangyur': 'N',
   'pekingkangyur': 'P',
+  'ulisakangyur' : 'ulisa',
   'qianlong': 'Q',
   'koreakangyur': 'KO',
   // tengyur
