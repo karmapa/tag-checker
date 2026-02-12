@@ -132,7 +132,7 @@ function checkSutra_bampoOrder(store, lastBio, bio, firstBampoAhead, errInfo) {
     check2ndBampo(store, bampoN, errInfo);
   }
   else if (! bampoNis1(bampoN)) {
-    store.push('Bampo n is not 1 ', errInfo);
+    warn('Bampo n is not 1 ', errInfo);
   }
 }
 
