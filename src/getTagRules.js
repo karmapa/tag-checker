@@ -9,7 +9,7 @@ const sutraVsets = {
   'narthangkangyur': 'N',
   'pekingkangyur': 'P',
   'ulisakangyur' : 'ulisa',
-  'tshalpakangyur': 'TGK',
+  'tshalpakangyur': 'TKG',
   'qianlong': 'Q',
   'koreakangyur': 'KO',
   // tengyur
