@@ -98,7 +98,7 @@ const sutraVsets = {
   // 16-20
   'ngawanglegpa': 'NL', //
   'kungatenpaigyaltsen': 'JTG', //
-  'sakyapalamabiographies': 'NT',
+  'sakyapalamabiographies': 'SNT',
   'earlysakyapamasters': 'KH',
   'earlysakyapatantras': 'KHG',
   // 21-26
