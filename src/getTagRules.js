@@ -112,6 +112,7 @@ const sutraVsets = {
   'gorampa': 'GR',
   'shakyachogden': 'skc',
   // 寧瑪
+  'ngagyurnyingma': 'ngnm',
   'longchenpa': 'LCR',
   'mipam': 'MP',
   // 格魯
