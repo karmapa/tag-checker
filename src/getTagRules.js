@@ -214,7 +214,7 @@ let tagRules = [
   },
   {
     type: 'sutra',
-    correctRegex: new RegExp(`<sutra id="${sutraV}\\d+?[a-zA-Z]?"( (t|bo|en|tw|cn)="[^"<>\n]*?")*\\/>`, 'g'),
+    correctRegex: new RegExp(`<sutra id="${sutraV}\\d+?(?:[a-zA-Z]||\(\d+\))?"( (t|bo|en|tw|cn)="[^"<>\n]*?")*\\/>`, 'g'),
     suspectedRegex: /<sutra /g,
     tagNameStrRegex: /sutra/g,
     lineWithTagRegex: /^.*?sutra.*$/mg
