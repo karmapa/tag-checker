@@ -12,6 +12,7 @@ const sutraVsets = {
   'tshalpakangyur': 'TKG',
   'qianlong': 'Q',
   'koreakangyur': 'KO',
+  'ylpt': 'ylpt',
   'themspangsmakangyur': 'tbmk',
   // tengyur
   'degetengyur': 'D',
